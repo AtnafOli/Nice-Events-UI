@@ -2,20 +2,156 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 30 33% 98%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    /* Warm rose gold primary */
+    --primary: 20 40% 60%;
+    --primary-foreground: 60 9.1% 97.8%;
+
+    /* Sage green secondary */
+    --secondary: 150 15% 60%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    /* Warm gold accent */
+    --accent: 40 40% 60%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+    --ring: 40 40% 60%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+
+    --primary: 20 40% 60%;
+    --primary-foreground: 60 9.1% 97.8%;
+
+    --secondary: 150 15% 30%;
+    --secondary-foreground: 60 9.1% 97.8%;
+
+    --muted: 20 14.3% 14.1%;
+    --muted-foreground: 20 14.3% 64.1%;
+
+    --accent: 40 40% 40%;
+    --accent-foreground: 60 9.1% 97.8%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+
+    --border: 20 14.3% 14.1%;
+    --input: 20 14.3% 14.1%;
+    --ring: 40 40% 60%;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+  }
+}
+
+/* Custom utilities for events/weddings */
+@layer utilities {
+  .bg-gradient-elegant {
+    @apply bg-gradient-to-r from-rose-100 via-background to-gold-100;
+  }
+
+  .bg-gradient-celebration {
+    @apply bg-gradient-to-r from-gold-200 via-rose-100 to-sage-100;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-gold-600 to-rose-500;
+  }
+}
+
+/* Custom components for events/weddings */
+@layer components {
+  .event-card {
+    @apply rounded-lg border border-gold-200/30 bg-white/70 backdrop-blur-sm 
+           shadow-lg shadow-gold-500/5 transition-all duration-300 
+           hover:shadow-gold-500/10 hover:border-gold-200/50;
+  }
+
+  .elegant-button {
+    @apply px-6 py-3 rounded-full bg-gradient-to-r from-rose-500 to-gold-500 
+           text-white shadow-lg shadow-gold-500/20 transition-all duration-300 
+           hover:shadow-gold-500/40 hover:scale-105;
+  }
+
+  .decorative-border {
+    @apply border-2 border-gold-200/30 rounded-lg p-1;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-heading font-bold text-gradient mb-6;
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gold-200 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gold-300;
 }
