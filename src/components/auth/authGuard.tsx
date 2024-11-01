@@ -12,7 +12,6 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isSessionLoading && session && user) {
-      console.log("user", user);
       const redirectPath = getRouteByRole(user.role);
       router.push(redirectPath);
     }

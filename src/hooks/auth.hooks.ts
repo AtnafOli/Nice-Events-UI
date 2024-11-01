@@ -7,9 +7,11 @@ import { useRouter } from "next/navigation";
 import { ApiError } from "@/lib/api-client";
 import { getRouteByRole } from "@/lib/routes";
 import { SignInCredentials } from "@/types/auth/sign-in";
+import { useUser } from "@/context/userContext";
 
 export function useAuth() {
   const router = useRouter();
+  const { setUser } = useUser();
 
   const { data: session, isLoading: isSessionLoading } = useQuery({
     queryKey: ["auth-session"],
@@ -17,13 +19,14 @@ export function useAuth() {
   });
 
   const signInMutation = useMutation<
-    LoginResponse,
+    LoginResponse["data"],
     ApiError,
     SignInCredentials
   >({
     mutationFn: (credentials) => authService.signIn(credentials),
     onSuccess: (data) => {
-      const redirectPath = getRouteByRole(data?.data?.user?.role);
+      setUser(data.user);
+      const redirectPath = getRouteByRole(data.user.role);
       router.push(redirectPath);
     },
   });

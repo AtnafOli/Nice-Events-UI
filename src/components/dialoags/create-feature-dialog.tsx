@@ -1,0 +1,148 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useFeatures } from "@/hooks/features.hook";
+
+interface FeatureFormValues {
+  name: string;
+  description: string;
+  status: "active" | "inactive";
+}
+
+export function CreateFeatureDialog({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { createFeature, isCreating, createError } = useFeatures();
+  const [open, setOpen] = useState(false);
+  const form = useForm<FeatureFormValues>({
+    defaultValues: {
+      name: "",
+      description: "",
+      status: "active",
+    },
+  });
+
+  async function onSubmit(values: FeatureFormValues) {
+    try {
+      await createFeature(values);
+      setOpen(false);
+      form.reset();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add New Feature</DialogTitle>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              rules={{
+                required: "Name is required",
+                minLength: {
+                  value: 2,
+                  message: "Name must be at least 2 characters",
+                },
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Feature name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              rules={{
+                required: "Description is required",
+                minLength: {
+                  value: 2,
+                  message: "Description must be at least 2 characters",
+                },
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Feature description" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="status"
+              rules={{ required: "Status is required" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Status</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="inactive">Inactive</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {createError && (
+              <div className="text-red-500 text-sm">{createError.message}</div>
+            )}
+            <Button type="submit" className="w-full" disabled={isCreating}>
+              {isCreating ? "Creating..." : "Create Feature"}
+            </Button>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+}

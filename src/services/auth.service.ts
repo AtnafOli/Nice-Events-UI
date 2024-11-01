@@ -3,12 +3,15 @@ import { LoginResponse } from "@/types/api";
 import { SignInCredentials } from "@/types/auth/sign-in";
 
 export const authService = {
-  signIn: async (credentials: SignInCredentials): Promise<LoginResponse> => {
+  signIn: async (
+    credentials: SignInCredentials
+  ): Promise<LoginResponse["data"]> => {
     const { data } = await api.post<LoginResponse>(
       "/auth/sign-in",
       credentials
     );
-    return data;
+
+    return data.data;
   },
 
   signOut: async (): Promise<void> => {
@@ -17,10 +20,11 @@ export const authService = {
 
   checkAuth: async () => {
     try {
-      const { data } = await api.get<{ user: LoginResponse["data"]["user"] }>(
+      const { data } = await api.get<{ data: LoginResponse["data"] }>(
         "/auth/me"
       );
-      return data;
+
+      return data.data;
     } catch (error) {
       return null;
     }

@@ -28,7 +28,6 @@ function SignInForm() {
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            {console.log(error)}
             {error.message?.message || "An error occurred during sign in"}
           </AlertDescription>
         </Alert>
