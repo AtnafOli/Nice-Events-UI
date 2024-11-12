@@ -5,26 +5,45 @@ import type {
   PlanUpdateData,
   PlansResponse,
   PlanResponse,
+  AddNewFeatureToPlanData,
+  AddPriceToPlanData,
+  PriceResponse,
 } from "@/types/plan/plan";
 
 export const plansService = {
-  getPlans: async (params?: {
-    page?: number;
-    limit?: number;
-    search?: string;
-    status?: string;
-  }): Promise<PlansResponse> => {
-    const { data } = await api.get<PlansResponse>("/plan", { params });
+  getPlans: async (params?: any): Promise<PlansResponse> => {
+    const { data } = await api.get<PlansResponse>("/plan", params);
+    return data;
+  },
+
+  getPrice: async (params?: any): Promise<PriceResponse> => {
+    const { data } = await api.get<PriceResponse>("/prices", params);
     return data;
   },
 
   getPlanById: async (id: number): Promise<PlanResponse> => {
-    const { data } = await api.get<PlanResponse>(`/plan/${id}`);
+    const { data } = await api.get<PlanResponse>(`/plan?id=${id}`);
     return data;
   },
 
   createPlan: async (planData: PlanCreateData): Promise<PlanResponse> => {
     const { data } = await api.post<PlanResponse>("/plan", planData);
+    return data;
+  },
+
+  addFeatureToPlan: async (
+    planId: number,
+    featureToPlan: AddNewFeatureToPlanData
+  ) => {
+    const { data } = await api.post(
+      `/plan/add-feature/${planId}`,
+      featureToPlan
+    );
+    return data;
+  },
+
+  addPriceToPlan: async (featureToPlan: AddPriceToPlanData) => {
+    const { data } = await api.post(`/prices`, featureToPlan);
     return data;
   },
 
@@ -38,25 +57,5 @@ export const plansService = {
 
   deletePlan: async (id: number): Promise<void> => {
     await api.delete(`/plan/${id}`);
-  },
-
-  togglePlanActive: async (id: number): Promise<PlanResponse> => {
-    const { data } = await api.patch<PlanResponse>(`/plan/${id}/toggle-active`);
-    return data;
-  },
-
-  getPlanFeatures: async (id: number) => {
-    const { data } = await api.get(`/plan/${id}/features`);
-    return data;
-  },
-
-  getPlanPrices: async (id: number) => {
-    const { data } = await api.get(`/plan/${id}/prices`);
-    return data;
-  },
-
-  getPlanSubscriptions: async (id: number) => {
-    const { data } = await api.get(`/plan/${id}/subscriptions`);
-    return data;
   },
 };

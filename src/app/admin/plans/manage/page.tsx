@@ -1,7 +1,7 @@
 "use client";
 
-import { PlansList } from "@/components/tables/plan-list";
-import { CreatePlanDialog } from "@/components/dialoags/create-plan-dialog";
+import { PlansList } from "@/components/plan/plan-list";
+import { CreatePlanDialog } from "@/features/plan/create-plan-dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";

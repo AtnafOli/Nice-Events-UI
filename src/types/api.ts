@@ -15,6 +15,10 @@ export interface User {
   email: string;
   name: string;
   role: "admin" | "vendor" | "customer";
+  Profile?: any;
+  Subscriptions?: any[];
+  PaymentMethod?: any[];
+  Vendor?: any;
 }
 
 export interface LoginResponse {

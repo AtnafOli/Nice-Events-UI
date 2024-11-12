@@ -1,8 +1,12 @@
-"use client";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { plansService } from "@/services/plan.service";
-import type { Plan, PlanCreateData, PlanUpdateData } from "@/types/plan/plan";
+import type {
+  AddNewFeatureToPlanData,
+  AddPriceToPlanData,
+  Plan,
+  PlanCreateData,
+  PlanUpdateData,
+} from "@/types/plan/plan";
 import { ApiError } from "@/lib/api-client";
 
 export function usePlans() {
@@ -14,9 +18,62 @@ export function usePlans() {
     error,
   } = useQuery({
     queryKey: ["plans"],
-    queryFn: async () => {
-      const response = await plansService.getPlans();
+    queryFn: async (params?: any) => {
+      const response = await plansService.getPlans(params);
       return response.data;
+    },
+  });
+
+  const fetchPlanByIdMutation = useMutation<any, ApiError, number>({
+    mutationFn: async (id) => {
+      const response = await plansService.getPlanById(id);
+
+      console.log(response);
+      return response.data;
+    },
+    onSuccess: (data, id) => {
+      queryClient.invalidateQueries({ queryKey: ["plans"] });
+      queryClient.setQueryData(["plan", id], data);
+    },
+  });
+
+  const fetchPriceByIdMutation = useMutation<any, ApiError, number>({
+    mutationFn: async (id) => {
+      const response = await plansService.getPrice(`?id=${id}`);
+      return response.data;
+    },
+    onSuccess: (data, id) => {
+      queryClient.setQueryData(["price", id], data);
+    },
+  });
+
+  const addFeatureToPlanMutation = useMutation<
+    any,
+    ApiError,
+    { id: number; data: AddNewFeatureToPlanData }
+  >({
+    mutationFn: async ({ id, data }) => {
+      const response = await plansService.addFeatureToPlan(id, data);
+      return response.data;
+    },
+    onSuccess: (data, { id }) => {
+      queryClient.invalidateQueries({ queryKey: ["plans"] });
+      queryClient.invalidateQueries({ queryKey: ["plan", id] });
+    },
+  });
+
+  const addPriceToPlanMutation = useMutation<
+    any,
+    ApiError,
+    { id: number; data: AddPriceToPlanData }
+  >({
+    mutationFn: async ({ id, data }) => {
+      const response = await plansService.addPriceToPlan(data);
+      return response.data;
+    },
+    onSuccess: (data, { id }) => {
+      queryClient.invalidateQueries({ queryKey: ["plans"] });
+      queryClient.invalidateQueries({ queryKey: ["price", id] });
     },
   });
 
@@ -39,8 +96,9 @@ export function usePlans() {
       const response = await plansService.updatePlan(id, data);
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (data, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["plans"] });
+      queryClient.invalidateQueries({ queryKey: ["plan", id] });
     },
   });
 
@@ -48,18 +106,10 @@ export function usePlans() {
     mutationFn: async (id) => {
       await plansService.deletePlan(id);
     },
-    onSuccess: () => {
+    onSuccess: (data, id) => {
       queryClient.invalidateQueries({ queryKey: ["plans"] });
-    },
-  });
-
-  const togglePlanActiveMutation = useMutation<Plan, ApiError, number>({
-    mutationFn: async (id) => {
-      const response = await plansService.togglePlanActive(id);
-      return response.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["plans"] });
+      queryClient.invalidateQueries({ queryKey: ["plan", id] });
+      queryClient.invalidateQueries({ queryKey: ["price", id] });
     },
   });
 
@@ -67,17 +117,20 @@ export function usePlans() {
     plans,
     isLoading,
     error,
+    fetchPlanById: fetchPlanByIdMutation.mutate,
+    fetchPriceById: fetchPriceByIdMutation.mutate,
     createPlan: createPlanMutation.mutate,
+    addFeatureToPlan: addFeatureToPlanMutation.mutate,
     updatePlan: updatePlanMutation.mutate,
     deletePlan: deletePlanMutation.mutate,
-    togglePlanActive: togglePlanActiveMutation.mutate,
+    addPriceToPlan: addPriceToPlanMutation.mutate,
     isCreating: createPlanMutation.isPending,
     isUpdating: updatePlanMutation.isPending,
     isDeleting: deletePlanMutation.isPending,
-    isTogglingActive: togglePlanActiveMutation.isPending,
     createError: createPlanMutation.error,
     updateError: updatePlanMutation.error,
     deleteError: deletePlanMutation.error,
-    toggleError: togglePlanActiveMutation.error,
+    isFetchingPlan: fetchPlanByIdMutation.isPending,
+    isFetchingPrice: fetchPriceByIdMutation.isPending,
   };
 }

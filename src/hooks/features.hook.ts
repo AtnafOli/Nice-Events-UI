@@ -19,7 +19,9 @@ export function useFeatures() {
   } = useQuery({
     queryKey: ["features"],
     queryFn: async () => {
-      const response = await featuresService.getFeatures();
+      const response = await featuresService.getFeatures("");
+      console.log("response is");
+      console.log(response.data);
       return response.data;
     },
   });

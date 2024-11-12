@@ -19,13 +19,8 @@ export type FeatureResponse = {
 };
 
 export const featuresService = {
-  getFeatures: async (params?: {
-    page?: number;
-    limit?: number;
-    search?: string;
-    status?: string;
-  }): Promise<FeaturesResponse> => {
-    const { data } = await api.get<FeaturesResponse>("/features", { params });
+  getFeatures: async (params: any): Promise<FeaturesResponse> => {
+    const { data } = await api.get<FeaturesResponse>("/features", params);
     return data;
   },
 

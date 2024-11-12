@@ -9,8 +9,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { EditFeatureDialog } from "../dialoags/edit-feature-dialog";
-import { DeleteFeatureDialog } from "../dialoags/delete-feature-dialog";
+import { EditFeatureDialog } from "../../features/platform-feature/edit-feature-dialog";
+import { DeleteFeatureDialog } from "../../features/platform-feature/delete-feature-dialog";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useFeatures } from "@/hooks/features.hook";

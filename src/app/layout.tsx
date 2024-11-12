@@ -3,16 +3,61 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { AuthProvider } from "./providers/providers";
 import { UserProvider } from "@/context/userContext";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
+// Primary Font - GeistSans
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: [
+    {
+      path: "./fonts/GeistVF.woff",
+      weight: "100 900",
+      style: "normal",
+    },
+    {
+      path: "./fonts/GeistVF.woff",
+      weight: "100 900",
+      style: "normal",
+    },
+  ],
   variable: "--font-geist-sans",
-  weight: "100 900",
+  display: "swap",
+  preload: true,
 });
+
+// Monospace Font - GeistMono
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+  src: [
+    {
+      path: "./fonts/GeistMonoVF.woff",
+      weight: "100 900",
+      style: "normal",
+    },
+    {
+      path: "./fonts/GeistMonoVF.woff",
+      weight: "100 900",
+      style: "normal",
+    },
+  ],
   variable: "--font-geist-mono",
-  weight: "100 900",
+  display: "swap",
+  preload: true,
+});
+
+const displayFont = localFont({
+  src: [
+    {
+      path: "./fonts/webfonts/CalSans-SemiBold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/webfonts/CalSans-SemiBold.woff",
+      weight: "600",
+      style: "normal",
+    },
+  ],
+  variable: "--font-display",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -22,17 +67,37 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} ${displayFont.variable}`}
+    >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`
+          antialiased
+          min-h-screen
+          selection:bg-primary/10
+          selection:text-primary
+          bg-background
+          text-foreground
+        `}
       >
-        <UserProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </UserProvider>
+        <div className="">
+          <main className="">
+            <UserProvider>
+              <AuthProvider>
+                <TooltipProvider>
+                  <div className="mx-auto w-full max-w-[1480px] sm:px-1 lg:px-8">
+                    {children}
+                  </div>
+                </TooltipProvider>
+              </AuthProvider>
+            </UserProvider>
+          </main>
+        </div>
       </body>
     </html>
   );

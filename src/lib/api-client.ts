@@ -23,6 +23,7 @@ api.interceptors.response.use(
       message:
         error.response?.data?.message ||
         error.response?.data?.error ||
+        error.message ||
         "An error occurred",
       status: error.response?.status || 500,
     };

@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FeatureTable } from "@/components/tables/features-table";
-import { CreateFeatureDialog } from "@/components/dialoags/create-feature-dialog";
+import { CreateFeatureDialog } from "@/features/platform-feature/create-feature-dialog";
 
 export default function FeaturesPage() {
   return (

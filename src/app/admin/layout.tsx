@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UserProvider, useUser } from "@/context/userContext";
+import { useUser } from "@/context/userContext";
 import Sidebar from "@/components/SideBar";
 import {
   HomeIcon,
@@ -64,11 +64,6 @@ const links = [
     icon: <CurrencyDollarIcon className="w-5 h-5" />,
     subLinks: [
       {
-        label: "Add Price",
-        href: "/admin/prices/add",
-        icon: <CurrencyDollarIcon className="w-4 h-4" />,
-      },
-      {
         label: "Manage Prices",
         href: "/admin/prices/manage",
         icon: <ClipboardDocumentListIcon className="w-4 h-4" />,
@@ -123,25 +118,12 @@ const links = [
   },
 ];
 
-interface SidebarLinkItem {
-  label: string;
-  href: string;
-  icon?: React.ReactNode;
-  subLinks?: {
-    label: string;
-    href: string;
-    icon?: React.ReactNode;
-  }[];
-}
-
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const { user, loading } = useUser();
   const router = useRouter();
 
   useEffect(() => {
     if (!loading && (!user || user.role !== "admin")) {
-      console.log(user);
-      console.log("this is doing it ");
       router.push("/");
     }
   }, [loading, user, router]);
@@ -155,7 +137,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   }
 
   if (!user || user.role !== "admin") {
-    return null;
+    router.push("/");
+    return;
   }
 
   return (

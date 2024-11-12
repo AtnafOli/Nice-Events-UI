@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   Dialog,
@@ -22,33 +22,50 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { usePlans } from "@/hooks/plan.hook";
-import type { PlanCreateData } from "@/types/plan/plan";
+import type { PlanUpdateData } from "@/types/plan/plan";
 
 interface PlanFormData {
   name: string;
   description?: string;
+  basePrice: number;
   isActive: boolean;
 }
 
-interface CreatePlanDialogProps {
+interface EditPlanDialogProps {
+  planId: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function CreatePlanDialog({
+export function EditPlanDialog({
+  planId,
   open,
   onOpenChange,
-}: CreatePlanDialogProps) {
-  const { createPlan, isCreating } = usePlans();
+}: EditPlanDialogProps) {
+  const { plans, updatePlan, isUpdating } = usePlans();
   const [error, setError] = useState<string | null>(null);
+
+  const plan = plans?.find((p) => p.id === planId);
 
   const form = useForm<PlanFormData>({
     defaultValues: {
-      name: "",
-      description: "",
-      isActive: true,
+      name: plan?.name ?? "",
+      description: plan?.description ?? "",
+      basePrice: plan?.basePrice,
+      isActive: plan?.isActive ?? true,
     },
   });
+
+  useEffect(() => {
+    if (plan) {
+      form.reset({
+        name: plan.name,
+        description: plan.description ?? "",
+        basePrice: plan.basePrice,
+        isActive: plan.isActive,
+      });
+    }
+  }, [plan, form]);
 
   const onSubmit = async (data: PlanFormData) => {
     try {
@@ -57,11 +74,10 @@ export function CreatePlanDialog({
         return;
       }
 
-      await createPlan(data as PlanCreateData);
-      form.reset();
+      updatePlan({ id: planId, data: data as PlanUpdateData });
       onOpenChange(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create plan");
+      setError(err instanceof Error ? err.message : "Failed to update plan");
     }
   };
 
@@ -69,7 +85,7 @@ export function CreatePlanDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create New Plan</DialogTitle>
+          <DialogTitle>Edit Plan</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -104,6 +120,27 @@ export function CreatePlanDialog({
 
             <FormField
               control={form.control}
+              name="basePrice"
+              render={({ field: { value, onChange, ...field } }) => (
+                <FormItem>
+                  <FormLabel>Base Price</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min={0}
+                      value={value}
+                      onChange={(e) => onChange(Number(e.target.value))}
+                      {...field}
+                      required
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="isActive"
               render={({ field }) => (
                 <FormItem className="flex items-center justify-between">
@@ -128,8 +165,8 @@ export function CreatePlanDialog({
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isCreating}>
-                {isCreating ? "Creating..." : "Create Plan"}
+              <Button type="submit" disabled={isUpdating}>
+                {isUpdating ? "Saving..." : "Save Changes"}
               </Button>
             </DialogFooter>
           </form>
