@@ -1,33 +1,29 @@
-import { Plan, Price } from "@/types/plan/plan";
+import { BillingCycle, Plan, Price } from "@/types/plan/plan";
 import React, { useState, useMemo } from "react";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Select from "react-select";
 import { useUser } from "@/context/userContext";
 import { useRouter } from "next/navigation";
 
 interface PlanProps {
   plan: Plan;
   isHighlighted?: boolean;
+  selectedCycle?: BillingCycle;
+  selectedPrice?: Price;
   onPlanSelect?: (planId: number, priceId: number) => void;
 }
 
 const PlanComponent: React.FC<PlanProps> = ({
   plan,
   isHighlighted = false,
+  selectedPrice,
   onPlanSelect,
 }) => {
-  const [selectedPriceIndex, setSelectedPriceIndex] = useState<number>(0);
   const [showAllFeatures, setShowAllFeatures] = useState(false);
   const { user } = useUser();
   const router = useRouter();
-
-  const currentPrice = useMemo(
-    () => plan.Prices?.[selectedPriceIndex],
-    [plan.Prices, selectedPriceIndex]
-  );
 
   const formatBillingCycle = (cycle: string): string => {
     const [_, months] = cycle.split("_");
@@ -42,13 +38,13 @@ const PlanComponent: React.FC<PlanProps> = ({
   };
 
   const handlePlanSelection = () => {
-    if (onPlanSelect && currentPrice) {
-      onPlanSelect(plan.id, currentPrice.id);
+    if (onPlanSelect && selectedPrice) {
+      onPlanSelect(plan.id, selectedPrice.id);
     }
 
     const route = user
-      ? `/plandetail?planId=${plan.id}&priceId=${currentPrice?.id}`
-      : "/auth/signin";
+      ? `/plandetail?planId=${plan.id}&priceId=${selectedPrice?.id}`
+      : "/sign-in";
     router.push(route);
   };
 
@@ -74,42 +70,29 @@ const PlanComponent: React.FC<PlanProps> = ({
       </div>
 
       <div className="lg:space-y-4 space-y-2">
-        <Select
-          options={plan.Prices?.map((_, index) => ({
-            value: index,
-            label: formatBillingCycle(plan.Prices[index].billingCycle),
-          }))}
-          value={{
-            value: selectedPriceIndex,
-            label: formatBillingCycle(currentPrice?.billingCycle || ""),
-          }}
-          onChange={(option: any) => setSelectedPriceIndex(option.value)}
-          className="lg:text-sm text-xs"
-        />
-
-        {currentPrice && (
+        {selectedPrice && (
           <div className="text-center">
             <div className="flex items-center justify-center lg:gap-2 gap-1.5">
               <span className="lg:text-3xl text-2xl font-bold text-gray-900 dark:text-white">
-                {currentPrice.currency} {currentPrice.amount}
+                {selectedPrice.currency} {selectedPrice.amount}
               </span>
-              {currentPrice.discountPercentage > 0 && (
+              {selectedPrice.discountPercentage > 0 && (
                 <div className="flex flex-col items-start">
                   <span className="lg:text-sm text-xs text-gray-400 line-through">
-                    {currentPrice.currency}
-                    {currentPrice.amount + currentPrice.discountedPrice}
+                    {selectedPrice.currency}
+                    {selectedPrice.amount + selectedPrice.discountedPrice}
                   </span>
                   <span className="lg:text-sm text-xs font-medium text-green-500 bg-green-50 px-2 py-0.5 rounded">
-                    -{currentPrice.discountPercentage}%
+                    -{selectedPrice.discountPercentage}%
                   </span>
                 </div>
               )}
             </div>
             <p className="lg:text-sm text-xs text-gray-500 mt-1">
-              per {formatBillingCycle(currentPrice.billingCycle)}
+              per {formatBillingCycle(selectedPrice.billingCycle)}
               <span className="block text-xs">
-                ({currentPrice.currency}
-                {calculateMonthlyPrice(currentPrice)}/mo)
+                ({selectedPrice.currency}
+                {calculateMonthlyPrice(selectedPrice)}/mo)
               </span>
             </p>
           </div>

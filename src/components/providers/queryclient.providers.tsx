@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, ReactNode } from "react";
+import { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient({
@@ -12,7 +12,11 @@ const queryClient = new QueryClient({
   },
 });
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function CustomQueryClientProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );

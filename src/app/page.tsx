@@ -1,10 +1,13 @@
+import Navbar from "@/components/common/navbar/navbar";
 import PlanList from "@/components/home_page/plan_list";
 
 export default function Home() {
   return (
-    <div>
-      <h1>Hello</h1>
-      <PlanList />
+    <div className="">
+      <Navbar></Navbar>
+      <div className=" grid grid-cols-1 gap-6 lg:px-8 px-4 lg:mt-16 mt-8">
+        <PlanList />
+      </div>
     </div>
   );
 }

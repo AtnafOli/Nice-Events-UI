@@ -1,9 +1,22 @@
 import type { Metadata } from "next";
+
 import localFont from "next/font/local";
 import "./globals.css";
-import { AuthProvider } from "./providers/providers";
 import { UserProvider } from "@/context/userContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { CustomQueryClientProvider } from "@/components/providers/queryclient.providers";
+import Navbar from "@/components/common/navbar/navbar";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 // Primary Font - GeistSans
 const geistSans = localFont({
@@ -88,13 +101,13 @@ export default function RootLayout({
         <div className="">
           <main className="">
             <UserProvider>
-              <AuthProvider>
-                <TooltipProvider>
-                  <div className="mx-auto w-full max-w-[1480px] sm:px-1 lg:px-8">
+              <TooltipProvider>
+                <div className="mx-auto w-full max-w-[1580px]">
+                  <CustomQueryClientProvider>
                     {children}
-                  </div>
-                </TooltipProvider>
-              </AuthProvider>
+                  </CustomQueryClientProvider>
+                </div>
+              </TooltipProvider>
             </UserProvider>
           </main>
         </div>

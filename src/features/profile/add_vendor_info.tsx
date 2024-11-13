@@ -37,7 +37,14 @@ const formSchema = z.object({
   country: z.literal("Ethiopia"),
 });
 
-export function VendorForm({ onSuccess }: { onSuccess: ({}) => void }) {
+export function VendorForm({
+  onSuccess,
+}: {
+  onSuccess: (data: {
+    profileData: ProfileData;
+    vendorData: VendorData;
+  }) => void;
+}) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,35 +88,38 @@ export function VendorForm({ onSuccess }: { onSuccess: ({}) => void }) {
     };
 
     onSuccess({ ...data });
-    // router.push("/checkout");
   }
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-screen md:p-12 p-4">
       <div className="transition-all duration-300 ease-in-out">
         <Card className="max-w-4xl mx-auto bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl border-0">
           <CardHeader className="space-y-6 pb-8">
-            <div className="space-y-3">
-              <h1 className="text-3xl md:text-4xl font-semibold text-center tracking-tight text-[#1d1d1f]">
+            <div className="lg:space-y-3 space-y-1">
+              <h1 className="text-xl md:text-4xl font-semibold text-center tracking-tight text-[#1d1d1f]">
                 Vendor Registration
               </h1>
-              <p className="text-center text-[#86868b] text-base max-w-2xl mx-auto leading-relaxed">
-                Join NiceEvents as a service provider and showcase your
-                exceptional services.
+              <p className="text-center lg:text-lg text-sm text-[#86868b] max-w-2xl mx-auto leading-relaxed">
+                Please enter your business and personal information detial and
+                join NiceEvents as a service provider and showcase your
+                services.
               </p>
             </div>
           </CardHeader>
-          <CardContent className="pb-12">
+          <CardContent className="lg:pb-12 pb-6">
             <Form {...form}>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="lg:space-y-10 space-y-6"
+              >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-10">
                   {/* Personal Information Section */}
                   <section className="space-y-6">
                     <div className="flex items-center space-x-3">
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <FaUser className="h-5 w-5 text-primary" />
+                      <div className="lg:h-10 h-6 lg:w-10 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                        <FaUser className="lg:h-5 h-3.5 lg:w-5 w-3.5 text-primary" />
                       </div>
-                      <h3 className="text-xl font-semibold text-[#1d1d1f]">
+                      <h3 className="lg:text-xl text-base font-semibold text-[#1d1d1f]">
                         Personal Details
                       </h3>
                     </div>
@@ -188,10 +198,10 @@ export function VendorForm({ onSuccess }: { onSuccess: ({}) => void }) {
                   {/* Business Information Section */}
                   <section className="space-y-6">
                     <div className="flex items-center space-x-3">
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <FaBriefcase className="h-5 w-5 text-primary" />
+                      <div className="lg:h-10 h-6 lg:w-10 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                        <FaBriefcase className="lg:h-5 h-3.5 lg:w-5 w-3.5 text-primary" />
                       </div>
-                      <h3 className="text-xl font-semibold text-[#1d1d1f]">
+                      <h3 className="lg:text-xl text-lg font-semibold text-[#1d1d1f]">
                         Business Details
                       </h3>
                     </div>
@@ -329,9 +339,9 @@ export function VendorForm({ onSuccess }: { onSuccess: ({}) => void }) {
                         <span>Processing...</span>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-center space-x-2">
+                      <div className="flex items-center justify-center space-x-1.5">
                         <span>Complete Registration</span>
-                        <FaChevronRight className="h-4 w-4" />
+                        <FaChevronRight className="h-3 w-3" />
                       </div>
                     )}
                   </Button>
