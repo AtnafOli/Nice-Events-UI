@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CustomQueryClientProvider } from "@/components/providers/queryclient.providers";
 import Navbar from "@/components/common/navbar/navbar";
+import { Suspense } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -100,15 +101,17 @@ export default function RootLayout({
       >
         <div className="">
           <main className="">
-            <UserProvider>
-              <TooltipProvider>
-                <div className="mx-auto w-full max-w-[1580px]">
-                  <CustomQueryClientProvider>
-                    {children}
-                  </CustomQueryClientProvider>
-                </div>
-              </TooltipProvider>
-            </UserProvider>
+            <Suspense fallback={<div>Loading...</div>}>
+              <UserProvider>
+                <TooltipProvider>
+                  <div className="mx-auto w-full max-w-[1580px]">
+                    <CustomQueryClientProvider>
+                      {children}
+                    </CustomQueryClientProvider>
+                  </div>
+                </TooltipProvider>
+              </UserProvider>
+            </Suspense>
           </main>
         </div>
       </body>
