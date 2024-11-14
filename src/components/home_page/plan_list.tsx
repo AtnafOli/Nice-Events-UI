@@ -116,7 +116,7 @@ function PlanList() {
   if (!plans || plans.length === 0) return <EmptyState />;
 
   return (
-    <div className="w-full max-w-screen-xl mx-auto px-4 py-14 md:py-24 z-30">
+    <div className="w-full mx-auto py-14 md:py-24 z-30 max-w-7xl">
       <div className="flex flex-col items-center space-y-4 md:space-y-8 mb-6 md:mb-12">
         <div className="flex flex-col items-center space-y-4 text-center px-4">
           <h2 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent tracking-tight px-2 md:px-4">
@@ -131,9 +131,9 @@ function PlanList() {
           defaultValue="MONTH_3"
           value={selectedCycle}
           onValueChange={(value) => handleCycleChange(value as BillingCycle)}
-          className="w-full max-w-xl md:max-w-2xl px-2 py-2"
+          className="w-full max-w-xl md:max-w-2xl py-2"
         >
-          <TabsList className="flex w-full bg-muted/20 rounded-full border border-primary/20 lg:p-1 p-0.5">
+          <TabsList className="flex w-full bg-muted/40 rounded-full border border-secondary/30 lg:p-1 p-0.5">
             {CYCLE_OPTIONS.map((option) => (
               <TabsTrigger
                 key={option.value}
@@ -142,7 +142,7 @@ function PlanList() {
                   "flex-1 text-center lg:px-4 px-2 py-2 text-sm md:text-base lg:font-medium font-light rounded-full",
                   "transition-all duration-300 ease-in-out",
                   "data-[state=active]:text-white data-[state=active]:bg-primary data-[state=active]:shadow-lg",
-                  "hover:bg-primary/10 hover:shadow-md"
+                  "hover:bg-primary/5 hover:shadow-md"
                 )}
               >
                 {option.label}
@@ -157,7 +157,7 @@ function PlanList() {
           <div
             key={plan.id}
             className={cn(
-              "w-full transition-transform duration-300 hover:translate-y-[-6px] hover:shadow-lg"
+              "w-full transition-transform duration-300 hover:translate-y-[-6px]"
             )}
           >
             <PlanComponent

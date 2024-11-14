@@ -90,28 +90,28 @@ export default function EnhancedHeroSection() {
         </svg>
       </div>
       <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-16 gap-4 items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="space-y-10"
           >
-            <div className="space-y-6">
+            <div className="lg:space-y-6 space-y-4">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2, duration: 0.8 }}
-                className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-2 text-sm font-medium text-primary"
+                className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-2 lg:text-sm text-xs font-medium text-primary"
               >
-                <Sparkles className="h-4 w-4" />
-                <span>Discover Extraordinary Events</span>
+                <Sparkles className="lg:h-4 h-3 lg:w-4 w-3" />
+                <span>Find event vendors</span>{" "}
               </motion.div>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.8 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
+                className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
               >
                 Find <span className="text-primary">Elite Vendors</span> for
                 every vibe
@@ -120,7 +120,7 @@ export default function EnhancedHeroSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.8 }}
-                className="text-xl text-muted-foreground max-w-2xl"
+                className="lg:text-xl text-base text-muted-foreground max-w-2xl"
               >
                 Curate unforgettable experiences with our handpicked selection
                 of top-tier vendors for weddings, graduations, seminars, and
@@ -161,7 +161,7 @@ export default function EnhancedHeroSection() {
                     <SelectItem value="addis-ababa">Addis Ababa</SelectItem>
                     <SelectItem value="bahirdar">Bahirdar</SelectItem>
                     <SelectItem value="adama">Adama</SelectItem>
-                    <SelectItem value="adama">Hawasa</SelectItem>
+                    <SelectItem value="hawasa">Hawasa</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -220,13 +220,13 @@ export default function EnhancedHeroSection() {
           </motion.div>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 lg:h-32 h-12 bg-gradient-to-t from-background to-transparent" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.6, duration: 0.8 }}
-        className="absolute bottom-8 right-8 flex items-center space-x-2 text-sm font-medium text-primary cursor-pointer hover:underline group"
+        className="absolute lg:bottom-8 bottom-1 z-40 right-8 flex items-center space-x-2 text-sm font-medium text-primary cursor-pointer hover:underline group"
       >
         <span>Explore our exclusive services</span>
         <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />

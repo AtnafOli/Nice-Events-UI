@@ -239,10 +239,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => (
     <DropdownMenuTrigger asChild>
       <Button variant="ghost" className="relative h-10 w-10 rounded-full">
         <Avatar className="h-10 w-10">
-          <AvatarImage
-            src={user.Profile.avatarUrl || "/placeholder-user.jpg"}
-            alt={user.name}
-          />
+          {user.Profile && (
+            <AvatarImage
+              src={user?.Profile?.avatarUrl || "/placeholder-user.jpg"}
+              alt={user?.name}
+            />
+          )}
           <AvatarFallback>{"UN"}</AvatarFallback>
         </Avatar>
       </Button>

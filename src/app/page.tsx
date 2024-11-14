@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="">
       <Navbar></Navbar>
-      <div className=" grid grid-cols-1 gap-6 lg:px-8 px-4 lg:mt-16 mt-8">
+      <div className=" grid grid-cols-1 gap-6 lg:px-4 px-2 lg:mt-16 mt-8">
         <HeroSection />
         <PlanList />
       </div>

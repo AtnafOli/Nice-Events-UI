@@ -55,7 +55,7 @@ const PlanComponent: React.FC<PlanProps> = ({
   return (
     <Card
       className={cn(
-        "w-full max-w-[450px] p-6",
+        "w-full bg-white/50  max-w-[450px] p-6",
         "border border-gray-200 dark:border-gray-800",
         isHighlighted && "border-primary shadow-lg"
       )}
