@@ -7,7 +7,16 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { Search, Menu, X, User, Heart, Bell, ChevronDown } from "lucide-react";
+import {
+  Search,
+  Menu,
+  X,
+  User,
+  Heart,
+  Bell,
+  ChevronDown,
+  LogOut,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -25,6 +34,7 @@ import {
   NavLinkProps,
   UserMenuProps,
 } from "@/types/navbar";
+import { authService } from "@/services/auth.service";
 
 const links = [
   { name: "Vendors", href: "/vendors" },
@@ -51,6 +61,11 @@ export default function Navbar() {
   const handleNavigate = (path: string) => {
     router.push(path);
   };
+
+  async function handleLogout() {
+    await authService.signOut();
+    window.location.href = "/";
+  }
 
   return (
     <motion.header
@@ -120,7 +135,11 @@ export default function Navbar() {
             </motion.div>
             {user ? (
               <div className="hidden lg:block">
-                <UserMenu user={user} />
+                <UserMenu
+                  user={user}
+                  handleNavigate={handleNavigate}
+                  handleLogout={handleLogout}
+                />
               </div>
             ) : (
               <>
@@ -234,37 +253,85 @@ const NavButton: React.FC<NavButtonProps> = ({ children, variant }) => (
   </motion.div>
 );
 
-const UserMenu: React.FC<UserMenuProps> = ({ user }) => (
-  <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-        <Avatar className="h-10 w-10">
-          {user.Profile && (
-            <AvatarImage
-              src={user?.Profile?.avatarUrl || "/placeholder-user.jpg"}
-              alt={user?.name}
-            />
-          )}
-          <AvatarFallback>{"UN"}</AvatarFallback>
-        </Avatar>
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent className="w-56" align="end" forceMount>
-      <DropdownMenuItem>
-        <User className="mr-2 h-4 w-4" />
-        <span>Profile</span>
-      </DropdownMenuItem>
-      <DropdownMenuItem>
-        <Heart className="mr-2 h-4 w-4" />
-        <span>Favorites</span>
-      </DropdownMenuItem>
-      <DropdownMenuItem>
-        <Bell className="mr-2 h-4 w-4" />
-        <span>Notifications</span>
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-);
+const UserMenu: React.FC<UserMenuProps> = ({
+  user,
+  handleNavigate,
+  handleLogout,
+}) => {
+  const menuItems = [
+    { icon: User, label: "Profile", path: "/profile" },
+    { icon: Heart, label: "Favorites", path: "/favorites" },
+    { icon: Bell, label: "Notifications", path: "/notifications" },
+  ];
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="relative h-14 w-14 rounded-full overflow-hidden transition-transform hover:scale-105 focus:ring-0 border border-primary/30"
+        >
+          <Avatar className="h-14 w-14">
+            {user.Profile && (
+              <AvatarImage
+                src={user?.Profile?.avatarUrl || "/placeholder-user.jpg"}
+                alt={user?.name}
+                className="object-cover"
+              />
+            )}
+            <AvatarFallback className="bg-gradient-to-br from-primary-400 to-primary-600 w-full h-full text-primary font-medium">
+              {user?.name
+                ?.split(" ")
+                .map((n) => n[0])
+                .join("") || "UN"}
+            </AvatarFallback>
+          </Avatar>
+        </Button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent
+        className="w-64 p-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700"
+        align="end"
+        forceMount
+      >
+        <div className="px-2 py-3 border-b border-gray-100 dark:border-gray-700">
+          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+            {user?.name}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            {user?.email}
+          </p>
+        </div>
+
+        <div className="py-2">
+          {menuItems.map(({ icon: Icon, label, path }) => (
+            <DropdownMenuItem key={path} className="px-1 py-0.5">
+              <button
+                onClick={() => handleNavigate(path)}
+                className="w-full flex items-center gap-3 px-2 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-150"
+              >
+                <Icon className="h-4 w-4" />
+                <span className="font-medium">{label}</span>
+              </button>
+            </DropdownMenuItem>
+          ))}
+        </div>
+
+        <div className="pt-2 mt-2 border-t border-gray-100 dark:border-gray-700">
+          <DropdownMenuItem className="px-1 py-0.5">
+            <button
+              onClick={() => handleLogout()}
+              className="w-full flex items-center gap-3 px-2 py-2 rounded-lg text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-150"
+            >
+              <LogOut className="h-4 w-4" />
+              <span className="font-medium">Log out</span>
+            </button>
+          </DropdownMenuItem>
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 const MobileMenu: React.FC<MobileMenuProps> = ({
   links,

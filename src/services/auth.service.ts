@@ -15,7 +15,7 @@ export const authService = {
   },
 
   signOut: async (): Promise<void> => {
-    await api.post("/auth/logout");
+    await api.get("/auth/sign-out");
   },
 
   checkAuth: async () => {

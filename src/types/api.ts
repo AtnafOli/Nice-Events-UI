@@ -19,6 +19,8 @@ export interface User {
   Subscriptions?: any[];
   PaymentMethod?: any[];
   Vendor?: any;
+  status?: any;
+  createdAt?: any;
 }
 
 export interface LoginResponse {

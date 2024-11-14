@@ -26,6 +26,8 @@ export interface NavButtonProps {
 
 export interface UserMenuProps {
   user: User;
+  handleNavigate: (path: string) => void;
+  handleLogout: () => void;
 }
 
 export interface MobileMenuProps {

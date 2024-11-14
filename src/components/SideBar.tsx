@@ -92,24 +92,21 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
           <CollapsibleTrigger className="w-full">
             <div
               className={cn(
-                "flex items-center justify-between w-full p-3 rounded-xl",
-                "transition-all duration-300 ease-out",
-                "hover:bg-accent/50 hover:text-accent-foreground",
-                "active:scale-[0.98]",
+                "flex items-center justify-between w-full p-2 rounded-lg",
+                "transition-all duration-200 ease-out",
+                "hover:bg-accent/30 hover:text-accent-foreground",
                 isLinkActive(link.href)
-                  ? "bg-gradient-to-r from-primary/20 via-primary/15 to-transparent text-primary font-medium shadow-sm"
+                  ? "bg-accent/40 text-accent-foreground font-medium"
                   : "text-muted-foreground"
               )}
             >
               <div className="flex items-center gap-3">
                 {link.icon && <span className="text-lg">{link.icon}</span>}
-                <span className="text-sm font-medium tracking-wide">
-                  {link.label}
-                </span>
+                <span className="text-sm font-medium">{link.label}</span>
                 {link.badge && (
                   <Badge
                     variant="secondary"
-                    className="ml-auto text-xs bg-primary/10 text-primary font-semibold px-2.5"
+                    className="ml-auto text-xs bg-primary/10 text-primary font-semibold px-2"
                   >
                     {link.badge}
                   </Badge>
@@ -117,7 +114,7 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
               </div>
               <FiChevronDown
                 className={cn(
-                  "h-4 w-4 transition-transform duration-300",
+                  "h-4 w-4 transition-transform duration-200",
                   openSubMenus.includes(link.href) && "rotate-180"
                 )}
               />
@@ -130,23 +127,22 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
                 href={subLink.href}
                 onClick={() => mobile && setIsOpen(false)}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm",
-                  "transition-all duration-300 ease-out",
-                  "hover:bg-accent/50 hover:text-accent-foreground",
-                  "active:scale-[0.98]",
+                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm",
+                  "transition-all duration-200 ease-out",
+                  "hover:bg-accent/30 hover:text-accent-foreground",
                   isLinkActive(subLink.href)
-                    ? "bg-gradient-to-r from-primary/20 via-primary/15 to-transparent text-primary font-medium shadow-sm"
+                    ? "bg-accent/40 text-accent-foreground font-medium"
                     : "text-muted-foreground"
                 )}
               >
                 {subLink.icon && (
                   <span className="text-lg">{subLink.icon}</span>
                 )}
-                <span className="tracking-wide">{subLink.label}</span>
+                <span>{subLink.label}</span>
                 {subLink.badge && (
                   <Badge
                     variant="secondary"
-                    className="ml-auto text-xs bg-primary/10 text-primary font-semibold px-2.5"
+                    className="ml-auto text-xs bg-primary/10 text-primary font-semibold px-2"
                   >
                     {subLink.badge}
                   </Badge>
@@ -163,28 +159,27 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
         href={link.href}
         onClick={() => mobile && setIsOpen(false)}
         className={cn(
-          "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm",
-          "transition-all duration-300 ease-out",
-          "hover:bg-accent/50 hover:text-accent-foreground",
-          "active:scale-[0.98]",
+          "flex items-center gap-3 px-3 py-2 rounded-lg text-sm",
+          "transition-all duration-200 ease-out",
+          "hover:bg-accent/30 hover:text-accent-foreground",
           isLinkActive(link.href)
-            ? "bg-gradient-to-r from-primary/20 via-primary/15 to-transparent text-primary font-medium shadow-sm"
+            ? "bg-accent/40 text-accent-foreground font-medium"
             : "text-muted-foreground",
           "group relative"
         )}
       >
         {link.icon && <span className="text-lg">{link.icon}</span>}
-        <span className="tracking-wide">{link.label}</span>
+        <span>{link.label}</span>
         {link.badge && (
           <Badge
             variant="secondary"
-            className="ml-auto text-xs bg-primary/10 text-primary font-semibold px-2.5"
+            className="ml-auto text-xs bg-primary/10 text-primary font-semibold px-2"
           >
             {link.badge}
           </Badge>
         )}
         {isLinkActive(link.href) && (
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-primary via-primary to-primary/50 rounded-r-full" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
         )}
       </Link>
     );
@@ -196,21 +191,19 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
     <>
       {/* Mobile Navigation */}
       <div className="fixed top-0 left-0 right-0 z-50 lg:hidden">
-        <div className="flex items-center justify-between px-4 h-16 bg-background/80 backdrop-blur-xl border-b">
+        <div className="flex items-center justify-between px-4 h-16 bg-background/80 backdrop-blur-2xl border-b">
           <div className="flex items-center gap-3">
             {logo}
-            <span className="font-semibold text-base tracking-wide">
-              {brandName}
-            </span>
+            <span className="font-semibold text-base">{brandName}</span>
           </div>
 
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-xl hover:bg-accent/50"
+              className="rounded-full hover:bg-accent/30"
             >
-              <FiBell className="h-4 w-4" />
+              <FiBell className="h-5 w-5" />
             </Button>
 
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -218,21 +211,19 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="rounded-xl hover:bg-accent/50"
+                  className="rounded-full hover:bg-accent/30"
                 >
-                  <FiMenu className="h-4 w-4" />
+                  <FiMenu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent
                 side="left"
-                className="w-80 p-0 bg-background/80 backdrop-blur-xl"
+                className="w-80 p-0 bg-background/80 backdrop-blur-2xl"
               >
                 <SheetHeader className="p-4 border-b">
                   <SheetTitle className="flex items-center gap-3 text-base">
                     {logo}
-                    <span className="font-semibold tracking-wide">
-                      {brandName}
-                    </span>
+                    <span className="font-semibold">{brandName}</span>
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col h-[calc(100vh-4rem)]">
@@ -256,7 +247,7 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
                           </AvatarFallback>
                         </Avatar>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold tracking-wide truncate">
+                          <p className="text-sm font-semibold truncate">
                             {user.name}
                           </p>
                           <p className="text-xs text-muted-foreground truncate">
@@ -274,13 +265,11 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
       </div>
 
       {/* Desktop Sidebar */}
-      <div className="hidden lg:flex flex-col fixed h-screen w-80 border-r bg-background/80 backdrop-blur-xl">
+      <div className="hidden lg:flex flex-col fixed h-screen w-72 border-r bg-background/80 backdrop-blur-2xl">
         <div className="p-4 border-b">
           <div className="flex items-center gap-3">
             {logo}
-            <span className="text-lg font-semibold tracking-wide">
-              {brandName}
-            </span>
+            <span className="text-lg font-semibold">{brandName}</span>
           </div>
         </div>
 
@@ -297,7 +286,7 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="w-full justify-start px-2 hover:bg-accent/50 rounded-xl h-auto py-2"
+                    className="w-full justify-start px-2 hover:bg-accent/30 rounded-lg h-auto py-2"
                   >
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10 ring-2 ring-border">
@@ -310,7 +299,7 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold tracking-wide truncate">
+                        <p className="text-sm font-semibold truncate">
                           {user.name}
                         </p>
                         <p className="text-xs text-muted-foreground truncate">
@@ -322,15 +311,15 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
-                  className="w-56 rounded-xl"
+                  className="w-56 rounded-lg"
                   sideOffset={8}
                 >
-                  <DropdownMenuItem className="gap-3 rounded-lg">
+                  <DropdownMenuItem className="gap-3 rounded-md">
                     <FiSettings className="h-4 w-4" />
                     <span className="text-sm font-medium">Settings</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="gap-3 text-destructive focus:text-destructive rounded-lg">
+                  <DropdownMenuItem className="gap-3 text-destructive focus:text-destructive rounded-md">
                     <FiLogOut className="h-4 w-4" />
                     <span className="text-sm font-medium">Log out</span>
                   </DropdownMenuItem>
@@ -341,7 +330,7 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
         </div>
       </div>
 
-      <div className="lg:pl-80">
+      <div className="lg:pl-72">
         <div className="h-16 lg:h-0" />
       </div>
 
@@ -351,14 +340,14 @@ const Sidebar = ({ links, logo, brandName, user }: SidebarProps) => {
           scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
         }
         .custom-scrollbar::-webkit-scrollbar {
-          width: 5px;
+          width: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
           background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
           background-color: rgba(0, 0, 0, 0.2);
-          border-radius: 20px;
+          border-radius: 10px;
         }
 
         @supports (backdrop-filter: blur(0px)) {
