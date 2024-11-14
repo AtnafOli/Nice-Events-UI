@@ -137,7 +137,7 @@ function VendorSignIn() {
         Join our platform and start showcasing your events to thousands of
         potential customers.
       </p>
-      <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
+      <Button className="w-full bg-primary text-white">
         Apply as a Vendor
       </Button>
       <p className="text-xs text-muted-foreground text-center mt-4">
