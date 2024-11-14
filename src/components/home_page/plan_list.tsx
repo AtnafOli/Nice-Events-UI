@@ -116,7 +116,7 @@ function PlanList() {
   if (!plans || plans.length === 0) return <EmptyState />;
 
   return (
-    <div className="w-full max-w-screen-xl mx-auto px-4 py-14 md:py-24">
+    <div className="w-full max-w-screen-xl mx-auto px-4 py-14 md:py-24 z-30">
       <div className="flex flex-col items-center space-y-4 md:space-y-8 mb-6 md:mb-12">
         <div className="flex flex-col items-center space-y-4 text-center px-4">
           <h2 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent tracking-tight px-2 md:px-4">

@@ -1,18 +1,30 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { Search, Menu, X, User, Heart, Bell } from "lucide-react";
+import { Search, Menu, X, User, Heart, Bell, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useUser } from "@/context/userContext";
 import { DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import {
+  MobileMenuProps,
+  NavButtonProps,
+  NavLinkProps,
+  UserMenuProps,
+} from "@/types/navbar";
 
 const links = [
   { name: "Vendors", href: "/vendors" },
@@ -24,6 +36,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeLink, setActiveLink] = useState("Home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const { user } = useUser();
   const router = useRouter();
 
@@ -38,20 +51,21 @@ export default function Navbar() {
   const handleNavigate = (path: string) => {
     router.push(path);
   };
+
   return (
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out
+      className={`fixed top-0 left-0 right-0 transition-all duration-500 ease-in-out z-50
         ${
           isScrolled
-            ? "bg-background/90 backdrop-blur-xl shadow-sm"
+            ? "bg-background/95 backdrop-blur-xl shadow-sm"
             : "bg-transparent"
         }`}
     >
       <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-2.5 md:py-4">
+        <div className="flex justify-between items-center py-3 md:py-5">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 mr-8 group">
               <motion.div
@@ -62,13 +76,13 @@ export default function Navbar() {
                 <Image
                   src="/logo.webp"
                   alt="Luxe Event Connections Logo"
-                  width={140}
-                  height={28}
-                  className="h-11 lg:h-16 w-auto transition-opacity duration-300 group-hover:opacity-80"
+                  width={160}
+                  height={32}
+                  className="h-12 lg:h-16 w-auto transition-opacity duration-300 group-hover:opacity-80"
                 />
               </motion.div>
             </Link>
-            <nav className="hidden md:flex space-x-1">
+            <nav className="hidden lg:flex space-x-1">
               <AnimatePresence>
                 {links.map((link) => (
                   <NavLink
@@ -89,52 +103,32 @@ export default function Navbar() {
             <motion.div
               initial={false}
               animate={{
-                width: isScrolled ? "auto" : "auto",
-                opacity: isScrolled ? 1 : 1,
+                width: isSearchFocused ? "350px" : "290px",
+                opacity: 1,
               }}
               transition={{ duration: 0.3 }}
-              className="hidden md:flex items-center bg-muted/80 rounded-full shadow-sm"
+              className="hidden md:flex items-center bg-muted/80 rounded-full border-none p-0.5  transition-all duration-300"
             >
-              <Search className="h-4 w-4 text-muted-foreground ml-3" />
+              <Search className="h-5 w-5 text-muted-foreground ml-3" />
               <Input
                 type="text"
                 placeholder="Search vendors, planners..."
-                className="bg-transparent border-none text-sm placeholder-muted-foreground w-full py-1.5 px-3 focus-visible:ring-0"
+                className="bg-transparent border-none text-sm placeholder:text-muted-foreground w-full py-1.5 px-3 focus:ring-transparent focus-visible:ring-transparent"
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setIsSearchFocused(false)}
               />
             </motion.div>
             {user ? (
-              <>
-                <NavIconButton icon={Heart} label="Favorites" />
-                <NavIconButton icon={Bell} label="Notifications" />
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Avatar className="h-8 w-8 hidden md:flex cursor-pointer">
-                    <AvatarImage src="/placeholder-user.jpg" alt="User" />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
-                </motion.div>
-              </>
+              <div className="hidden lg:block">
+                <UserMenu user={user} />
+              </div>
             ) : (
               <>
-                <div
-                  onClick={() => {
-                    handleNavigate("/sign-in");
-                  }}
-                >
-                  <NavButton variant="ghost">
-                    <span className="text-base">Sign In</span>
-                  </NavButton>
+                <div onClick={() => handleNavigate("/sign-in")}>
+                  <NavButton variant="ghost">Sign In</NavButton>
                 </div>
-                <div
-                  onClick={() => {
-                    handleNavigate("/sign-up");
-                  }}
-                >
-                  <NavButton variant="default">
-                    <span className="text-base">Register</span>
-                  </NavButton>
+                <div onClick={() => handleNavigate("/sign-up")}>
+                  <NavButton variant="default">Register</NavButton>
                 </div>
               </>
             )}
@@ -144,7 +138,7 @@ export default function Navbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="md:hidden hover:bg-primary/10 transition-colors duration-200 rounded-full"
+                  className="lg:hidden hover:bg-primary/10 transition-colors duration-200 rounded-full"
                   aria-label="Toggle navigation menu"
                 >
                   <AnimatePresence mode="wait" initial={false}>
@@ -156,15 +150,9 @@ export default function Navbar() {
                       transition={{ duration: 0.2 }}
                     >
                       {isMenuOpen ? (
-                        <X
-                          style={{ width: "12px", height: "12px" }}
-                          className="text-foreground"
-                        />
+                        <X className="h-5 w-5 text-foreground" />
                       ) : (
-                        <Menu
-                          style={{ width: "20px", height: "20px" }}
-                          className="text-foreground"
-                        />
+                        <Menu className="h-6 w-6 text-foreground" />
                       )}
                     </motion.div>
                   </AnimatePresence>
@@ -172,7 +160,7 @@ export default function Navbar() {
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-[300px] bg-background text-foreground rounded-tl-xl"
+                className="w-[335px] bg-background text-foreground rounded-l-2xl"
               >
                 <VisuallyHidden>
                   <DialogTitle>Navigation Menu</DialogTitle>
@@ -183,6 +171,7 @@ export default function Navbar() {
                   setActiveLink={setActiveLink}
                   setIsMenuOpen={setIsMenuOpen}
                   user={user}
+                  handleNavigate={handleNavigate}
                 />
               </SheetContent>
             </Sheet>
@@ -193,7 +182,13 @@ export default function Navbar() {
   );
 }
 
-const NavLink = ({ href, children, active, onClick, isScrolled }) => (
+const NavLink: React.FC<NavLinkProps> = ({
+  href,
+  children,
+  active,
+  onClick,
+  isScrolled,
+}) => (
   <motion.div
     initial={{ opacity: 0, y: -20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -204,7 +199,7 @@ const NavLink = ({ href, children, active, onClick, isScrolled }) => (
       href={href}
       className={`relative text-md font-medium ${
         isScrolled ? "text-foreground" : "text-primary"
-      } transition-all duration-300 hover:text-primary focus:text-primary focus:outline-none rounded-full px-3 py-1.5 overflow-hidden`}
+      } transition-all duration-300 hover:text-primary focus:text-primary focus:outline-none rounded-full px-4 py-2 overflow-hidden`}
       onClick={onClick}
     >
       <span className="relative z-10">{children}</span>
@@ -224,24 +219,11 @@ const NavLink = ({ href, children, active, onClick, isScrolled }) => (
   </motion.div>
 );
 
-const NavIconButton = ({ icon: Icon, label }) => (
-  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-    <Button
-      variant="ghost"
-      size="icon"
-      className="hidden md:flex hover:bg-primary/10 transition-colors duration-200 rounded-full"
-      aria-label={label}
-    >
-      <Icon className="h-5 w-5 text-primary" />
-    </Button>
-  </motion.div>
-);
-
-const NavButton = ({ children, variant }) => (
+const NavButton: React.FC<NavButtonProps> = ({ children, variant }) => (
   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
     <Button
       variant={variant}
-      className={`hidden md:inline-flex rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300 ${
+      className={`hidden md:inline-flex rounded-full px-6 py-2 text-sm font-medium transition-all duration-300 ${
         variant === "default"
           ? "shadow-sm hover:shadow-md bg-primary text-primary-foreground"
           : "hover:bg-primary/10"
@@ -252,25 +234,56 @@ const NavButton = ({ children, variant }) => (
   </motion.div>
 );
 
-const MobileMenu = ({
+const UserMenu: React.FC<UserMenuProps> = ({ user }) => (
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+        <Avatar className="h-10 w-10">
+          <AvatarImage
+            src={user.Profile.avatarUrl || "/placeholder-user.jpg"}
+            alt={user.name}
+          />
+          <AvatarFallback>{"UN"}</AvatarFallback>
+        </Avatar>
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuItem>
+        <User className="mr-2 h-4 w-4" />
+        <span>Profile</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Heart className="mr-2 h-4 w-4" />
+        <span>Favorites</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Bell className="mr-2 h-4 w-4" />
+        <span>Notifications</span>
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+);
+
+const MobileMenu: React.FC<MobileMenuProps> = ({
   links,
   activeLink,
   setActiveLink,
   setIsMenuOpen,
   user,
+  handleNavigate,
 }) => (
   <div className="flex flex-col h-full">
-    <div className="flex items-center justify-between py-4 px-2 border-b border-border">
+    <div className="flex items-center justify-between py-4 px-1 border-b border-border">
       <Image
         src="/logo.webp"
         alt="Luxe Event Connections Logo"
-        width={120}
-        height={24}
-        className="h-11 w-auto"
+        width={140}
+        height={28}
+        className="h-12 w-auto"
       />
     </div>
-    <div className="p-4">
-      <div className="flex items-center bg-muted/80 rounded-full px-3 py-1.5 mb-4">
+    <div className="py-4">
+      <div className="flex items-center bg-muted/80 rounded-full px-3 py-1.5 mb-6">
         <Search className="h-4 w-4 text-muted-foreground mr-2" />
         <Input
           type="text"
@@ -298,20 +311,38 @@ const MobileMenu = ({
         ))}
       </nav>
     </div>
-    <div className="flex flex-col gap-2 p-4 mt-auto">
+    <div className="flex flex-col gap-2 py-4 mt-auto">
       {user ? (
         <>
-          <NavIconButton icon={Heart} label="Favorites" />
-          <NavIconButton icon={Bell} label="Notifications" />
-          <Avatar className="w-10 h-10">
-            <AvatarImage src="/placeholder-user.jpg" alt="User" />
-            <AvatarFallback>JD</AvatarFallback>
-          </Avatar>
+          <Button variant="outline" className="w-full justify-start">
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+          </Button>
+          <Button variant="outline" className="w-full justify-start">
+            <Heart className="mr-2 h-4 w-4" />
+            <span>Favorites</span>
+          </Button>
+          <Button variant="outline" className="w-full justify-start">
+            <Bell className="mr-2 h-4 w-4" />
+            <span>Notifications</span>
+          </Button>
         </>
       ) : (
         <>
-          <NavButton variant="ghost">Sign In</NavButton>
-          <NavButton variant="default">Register</NavButton>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => handleNavigate("/sign-in")}
+          >
+            Sign In
+          </Button>
+          <Button
+            variant="default"
+            className="w-full"
+            onClick={() => handleNavigate("/sign-up")}
+          >
+            Register
+          </Button>
         </>
       )}
     </div>
