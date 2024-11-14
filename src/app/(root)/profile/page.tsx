@@ -54,7 +54,7 @@ export default function DesignAgencyProfile() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-8 lg:mt-16 mt-8">
+    <div className="min-h-screen bg-background text-foreground p-8 lg:mt-24 mt-8">
       <div className="max-w-6xl mx-auto">
         <header className="mb-16">
           <div className="flex items-center justify-between">
