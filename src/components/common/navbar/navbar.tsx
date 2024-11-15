@@ -7,16 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import {
-  Search,
-  Menu,
-  X,
-  User,
-  Heart,
-  Bell,
-  ChevronDown,
-  LogOut,
-} from "lucide-react";
+import { Search, Menu, X, User, Heart, Bell, LogOut } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -91,9 +82,9 @@ export default function Navbar() {
                 <Image
                   src="/logo.webp"
                   alt="Luxe Event Connections Logo"
-                  width={160}
+                  width={180}
                   height={32}
-                  className="h-12 lg:h-16 w-auto transition-opacity duration-300 group-hover:opacity-80"
+                  className="h-12 lg:h-[74px] w-auto transition-opacity duration-300 group-hover:opacity-80"
                 />
               </motion.div>
             </Link>
@@ -169,9 +160,9 @@ export default function Navbar() {
                       transition={{ duration: 0.2 }}
                     >
                       {isMenuOpen ? (
-                        <X className="h-5 w-5 text-foreground" />
+                        <X className="h-16 w-16 text-foreground" />
                       ) : (
-                        <Menu className="h-6 w-6 text-foreground" />
+                        <Menu className="h-16 w-auto text-foreground " />
                       )}
                     </motion.div>
                   </AnimatePresence>

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion, useAnimation } from "framer-motion";
 import { AuthGuard } from "@/components/auth/authGuard";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
   CardContent,
@@ -12,140 +12,183 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { ArrowLeft, ChevronRight, Sparkles } from "lucide-react";
 import SignInForm from "@/components/forms/sign-in-form";
-import { CalendarIcon, UserIcon } from "lucide-react";
+
+const FloatingSparkle = ({ delay }: { delay: number }) => {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.start({
+      y: [0, -20, 0],
+      opacity: [0, 1, 0],
+      transition: { duration: 2, delay, repeat: Infinity, ease: "easeInOut" },
+    });
+  }, [controls, delay]);
+
+  return (
+    <motion.div
+      className="absolute text-accent"
+      initial={{ opacity: 0 }}
+      animate={controls}
+    >
+      <Sparkles size={16} />
+    </motion.div>
+  );
+};
 
 export default function EventSignInPage() {
-  const [activeTab, setActiveTab] = useState("customer");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <AuthGuard>
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold">
-              Welcome to NiceEvents
-            </CardTitle>
-            <CardDescription>
-              Sign in or create an account to get started
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="w-full"
-            >
-              <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted/20 p-1 rounded-full">
-                <TabsTrigger
-                  value="customer"
-                  className="rounded-full data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all duration-300 ease-in-out"
+      <div className="min-h-screen bg-gradient-to-br from-[hsl(150,8%,90.5%)] to-[hsl(20,55%,95%)] flex items-center justify-center p-4 relative overflow-hidden">
+        <Link
+          href="/"
+          className="absolute top-4 left-4 text-foreground hover:text-primary transition-colors flex items-center gap-2 z-10"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back to Home</span>
+        </Link>
+
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            className="absolute top-0 left-0 w-full h-full"
+            animate={{
+              backgroundPosition: ["0% 0%", "100% 100%"],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "linear",
+            }}
+            style={{
+              backgroundImage:
+                "radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+            }}
+          />
+          <motion.div
+            className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full bg-primary/5"
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 90, 0],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div
+            className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 rounded-full bg-secondary/5"
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, -90, 0],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="z-10 w-full max-w-md relative"
+        >
+          <Card className="backdrop-blur-md bg-card/90 border-none shadow-2xl overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none" />
+            <CardHeader className="space-y-1 relative">
+              <CardTitle className="text-xl sm:text-3xl font-bold tracking-tight text-primary">
+                Welcome to NiceEvents
+              </CardTitle>
+              <CardDescription className="text-muted-foreground text-sm sm:text-base">
+                Sign in to your account or explore options below
+              </CardDescription>
+              <FloatingSparkle delay={0} />
+              <FloatingSparkle delay={1} />
+              <FloatingSparkle delay={2} />
+            </CardHeader>
+            <CardContent className="space-y-4 relative">
+              <SignInForm />
+
+              <div className="flex justify-between text-sm sm:text-base">
+                <Link
+                  href="/forgot-password"
+                  className="text-accent hover:text-accent/80 transition-colors"
                 >
-                  <UserIcon className="w-4 h-4 mr-2" />
-                  Customer
-                </TabsTrigger>
-                <TabsTrigger
-                  value="vendor"
-                  className="rounded-full data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all duration-300 ease-in-out"
+                  Forgot password?
+                </Link>
+                <Link
+                  href="/signup"
+                  className="text-accent hover:text-accent/80 transition-colors"
                 >
-                  <CalendarIcon className="w-4 h-4 mr-2" />
-                  Vendor
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="customer">
-                <CustomerSignIn />
-              </TabsContent>
-              <TabsContent value="vendor">
-                <VendorSignIn />
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+                  Sign up
+                </Link>
+              </div>
+
+              <Separator className="bg-border" />
+
+              <div className="grid grid-cols-1">
+                <Button
+                  variant="outline"
+                  className="bg-card/50 hover:bg-muted border-border text-card-foreground transition-all duration-300 ease-in-out rounded-xl h-12 relative overflow-hidden group"
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity"
+                    initial={false}
+                    animate={{ scale: [0.9, 1], opacity: [0, 1] }}
+                    transition={{ duration: 0.3 }}
+                  />
+                  <svg
+                    className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      fill="#4285F4"
+                    />
+                    <path
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                      fill="#34A853"
+                    />
+                    <path
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                      fill="#FBBC05"
+                    />
+                    <path
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                      fill="#EA4335"
+                    />
+                  </svg>
+                  <span className="relative z-10">Sign in with Google</span>
+                </Button>
+              </div>
+
+              <Separator className="bg-border" />
+
+              <div className="text-center">
+                <Link
+                  href="/become-vendor"
+                  className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors text-sm font-medium group"
+                >
+                  <span className="relative">Become a Vendor</span>
+                  <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </AuthGuard>
-  );
-}
-
-function CustomerSignIn() {
-  return (
-    <div className="space-y-4">
-      <Button variant="outline" className="w-full bg-white hover:bg-accent/10">
-        <svg
-          className="w-5 h-5 mr-2"
-          viewBox="0 0 21 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g clipPath="url(#clip0_13183_10121)">
-            <path
-              d="M20.3081 10.2303C20.3081 9.55056 20.253 8.86711 20.1354 8.19836H10.7031V12.0492H16.1046C15.8804 13.2911 15.1602 14.3898 14.1057 15.0879V17.5866H17.3282C19.2205 15.8449 20.3081 13.2728 20.3081 10.2303Z"
-              fill="#3F83F8"
-            ></path>
-            <path
-              d="M10.7019 20.0006C13.3989 20.0006 15.6734 19.1151 17.3306 17.5865L14.1081 15.0879C13.2115 15.6979 12.0541 16.0433 10.7056 16.0433C8.09669 16.0433 5.88468 14.2832 5.091 11.9169H1.76562V14.4927C3.46322 17.8695 6.92087 20.0006 10.7019 20.0006V20.0006Z"
-              fill="#34A853"
-            ></path>
-            <path
-              d="M5.08857 11.9169C4.66969 10.6749 4.66969 9.33008 5.08857 8.08811V5.51233H1.76688C0.348541 8.33798 0.348541 11.667 1.76688 14.4927L5.08857 11.9169V11.9169Z"
-              fill="#FBBC04"
-            ></path>
-            <path
-              d="M10.7019 3.95805C12.1276 3.936 13.5055 4.47247 14.538 5.45722L17.393 2.60218C15.5852 0.904587 13.1858 -0.0287217 10.7019 0.000673888C6.92087 0.000673888 3.46322 2.13185 1.76562 5.51234L5.08732 8.08813C5.87733 5.71811 8.09302 3.95805 10.7019 3.95805V3.95805Z"
-              fill="#EA4335"
-            ></path>
-          </g>
-          <defs>
-            <clipPath id="clip0_13183_10121">
-              <rect
-                width="20"
-                height="20"
-                fill="white"
-                transform="translate(0.5)"
-              ></rect>
-            </clipPath>
-          </defs>
-        </svg>
-        Sign in with Google
-      </Button>
-      <Separator className="my-4" />
-      <SignInForm />
-      <div className="mt-6 space-y-2 text-center">
-        <p className="text-sm text-muted-foreground">
-          Don't have an account?{" "}
-          <a href="/signup" className="text-primary hover:underline">
-            Sign Up
-          </a>
-        </p>
-        <a
-          href="/forgot-password"
-          className="text-sm text-accent hover:underline"
-        >
-          Forgot your password?
-        </a>
-      </div>
-    </div>
-  );
-}
-
-function VendorSignIn() {
-  return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-center mb-4">
-        Become a Vendor
-      </h3>
-      <p className="text-sm text-muted-foreground text-center mb-6">
-        Join our platform and start showcasing your events to thousands of
-        potential customers.
-      </p>
-      <Button className="w-full bg-primary text-white">
-        Apply as a Vendor
-      </Button>
-      <p className="text-xs text-muted-foreground text-center mt-4">
-        Already a vendor?{" "}
-        <a href="/vendor-login" className="text-primary hover:underline">
-          Sign in here
-        </a>
-      </p>
-    </div>
   );
 }

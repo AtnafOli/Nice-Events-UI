@@ -91,15 +91,15 @@ export function VendorForm({
   }
 
   return (
-    <div className="min-h-screen md:p-12 p-4">
+    <div className="min-h-screen md:p-16 p-4">
       <div className="transition-all duration-300 ease-in-out">
-        <Card className="max-w-4xl mx-auto bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl border-0">
+        <Card className="max-w-4xl mx-auto bg-white/50 lg:p-8 backdrop-blur-xl rounded-3xl shadow-xl border-0">
           <CardHeader className="space-y-6 pb-8">
-            <div className="lg:space-y-3 space-y-1">
+            <div className="lg:space-y-3 space-y-1.5">
               <h1 className="text-xl md:text-4xl font-semibold text-center tracking-tight text-[#1d1d1f]">
                 Vendor Registration
               </h1>
-              <p className="text-center lg:text-lg text-sm text-[#86868b] max-w-2xl mx-auto leading-relaxed">
+              <p className="text-center lg:text-lg text-xs text-[#86868b] max-w-2xl mx-auto leading-relaxed">
                 Please enter your business and personal information detial and
                 join NiceEvents as a service provider and showcase your
                 services.

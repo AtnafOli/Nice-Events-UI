@@ -202,14 +202,14 @@ export default function EnhancedHeroSection() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.2, duration: 0.8 }}
-                className="absolute right-4 top-4 bg-background/80 backdrop-blur-md rounded-lg p-4 shadow-lg"
+                className="absolute right-4 top-4 bg-background backdrop-blur-md rounded-lg p-4 shadow-lg"
               >
                 <div className="flex items-center space-x-3">
                   <div className="bg-primary/20 rounded-full p-2">
                     <Camera className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <p className="font-semibold">Elite Photography</p>
+                    <p className="font-semibold">Photography</p>
                     <p className="text-sm text-muted-foreground">
                       Capture timeless moments
                     </p>

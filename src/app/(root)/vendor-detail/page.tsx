@@ -150,7 +150,7 @@ export default function Page() {
   }
 
   return (
-    <div className="mx-auto lg:px-4 py-8">
+    <div className="mx-auto lg:px-4">
       <VendorForm onSuccess={handleSuccess} />
       {/* Error Modal */}
       <ShowModalError
