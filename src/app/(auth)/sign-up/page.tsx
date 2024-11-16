@@ -14,7 +14,7 @@ import {
 
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, ChevronRight } from "lucide-react";
-import SignInForm from "@/components/forms/sign-in-form";
+import SignUpForm from "@/components/forms/sign-up-form";
 import { GoogleSignInButton } from "@/components/common/google.sigin.button";
 
 export default function page() {
@@ -82,31 +82,24 @@ export default function page() {
           <Card className="backdrop-blur-lg bg-card/90 border-none shadow-2xl overflow-hidden lg:p-2">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none" />
             <CardHeader className="lg:space-y-2 space-y-1.5 relative">
-              <CardTitle className="text-2xl md:text-4xl font-bold tracking-tight text-primary">
+              <CardTitle className="text-2xl md:text-5xl font-bold tracking-tight text-primary">
                 Welcome to NiceEvents
               </CardTitle>
               <CardDescription className="text-muted-foreground text-sm lg:text-base">
-                Sign in to your account.
+                Create an account.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 relative">
-              <SignInForm />
+              <SignUpForm />
 
-              <div className="flex justify-between text-sm sm:text-base">
+              <div className="flex justify-end text-sm sm:text-base">
                 <Link
-                  href="/forgot-password"
+                  href="/sign-in"
                   className="text-accent hover:text-accent/80 transition-colors"
                 >
-                  Forgot password?
-                </Link>
-                <Link
-                  href="/sign-up"
-                  className="text-accent hover:text-accent/80 transition-colors"
-                >
-                  Sign up
+                  Already have an account? Sign In
                 </Link>
               </div>
-
               <Separator className="bg-border" />
 
               <div className="grid grid-cols-1">

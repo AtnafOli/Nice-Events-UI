@@ -65,7 +65,7 @@ export default function EnhancedHeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-screen text-foreground overflow-visible lg:px-8 py-8">
+    <section className="relative min-h-screen text-foreground overflow-visible lg:py-8 py-4 w-full px-4">
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/10" />
       <div className="absolute inset-0">
         <svg
@@ -89,7 +89,7 @@ export default function EnhancedHeroSection() {
           <rect width="100%" height="100%" fill="url(#hero-pattern)"></rect>
         </svg>
       </div>
-      <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
+      <div className="mx-auto py-16 md:py-24 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-16 gap-4 items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -102,7 +102,7 @@ export default function EnhancedHeroSection() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2, duration: 0.8 }}
-                className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-2 lg:text-sm text-xs font-medium text-primary"
+                className="inline-flex items-center space-x-2 bg-primary/10 rounded-full lg:px-4 py-2 lg:text-sm text-xs font-medium text-primary"
               >
                 <Sparkles className="lg:h-4 h-3 lg:w-4 w-3" />
                 <span>Find event vendors</span>{" "}

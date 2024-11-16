@@ -28,3 +28,9 @@ export interface LoginResponse {
     user: User;
   };
 }
+
+export interface SignUpResponse {
+  data: {
+    user: User;
+  };
+}

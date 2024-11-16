@@ -2,12 +2,13 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { authService } from "@/services/auth.service";
-import { LoginResponse, User } from "@/types/api";
+import { LoginResponse, SignUpResponse, User } from "@/types/api";
 import { useRouter } from "next/navigation";
 import { ApiError } from "@/lib/api-client";
 import { getRouteByRole } from "@/lib/routes";
 import { SignInCredentials } from "@/types/auth/sign-in";
 import { useUser } from "@/context/userContext";
+import { useGoogleLogin } from "@react-oauth/google";
 
 export function useAuth() {
   const router = useRouter();
@@ -31,6 +32,19 @@ export function useAuth() {
     },
   });
 
+  const signUpMutation = useMutation<
+    SignUpResponse["data"],
+    ApiError,
+    SignInCredentials
+  >({
+    mutationFn: (credentials) => authService.signUp(credentials),
+    onSuccess: (data) => {
+      setUser(data.user);
+      const redirectPath = getRouteByRole(data.user.role);
+      router.push(redirectPath);
+    },
+  });
+
   const signOutMutation = useMutation({
     mutationFn: authService.signOut,
     onSuccess: () => {
@@ -38,10 +52,38 @@ export function useAuth() {
     },
   });
 
+  const googleSignInMutation = useMutation<
+    LoginResponse["data"],
+    ApiError,
+    string
+  >({
+    mutationFn: (token) => authService.googleSignIn(token),
+    onSuccess: (data) => {
+      setUser(data.user);
+      const redirectPath = getRouteByRole(data.user.role);
+      router.push(redirectPath);
+    },
+  });
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        await googleSignInMutation.mutateAsync(tokenResponse.access_token);
+      } catch (error) {
+        console.error("Google login failed here:", error);
+      }
+    },
+    onError: (error) => {
+      console.error("Google login error:", error);
+    },
+  });
+
   return {
+    signUp: signUpMutation.mutate,
     signIn: signInMutation.mutate,
     signOut: signOutMutation.mutate,
-    isLoading: signInMutation.isPending,
+    googleSignIn: googleLogin,
+    isLoading: signInMutation.isPending || googleSignInMutation.isPending,
     isSessionLoading,
     error: signInMutation.error,
     session,

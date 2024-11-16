@@ -116,7 +116,7 @@ function PlanList() {
   if (!plans || plans.length === 0) return <EmptyState />;
 
   return (
-    <div className="w-full mx-auto py-14 md:py-24 z-30 max-w-7xl">
+    <div className="w-full mx-auto z-30 lg:px-12">
       <div className="flex flex-col items-center space-y-4 md:space-y-8 mb-6 md:mb-12">
         <div className="flex flex-col items-center space-y-4 text-center px-4">
           <h2 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent tracking-tight px-2 md:px-4">
@@ -131,9 +131,9 @@ function PlanList() {
           defaultValue="MONTH_3"
           value={selectedCycle}
           onValueChange={(value) => handleCycleChange(value as BillingCycle)}
-          className="w-full max-w-xl md:max-w-2xl py-2"
+          className="w-full max-w-2xl"
         >
-          <TabsList className="flex w-full bg-muted/40 rounded-full border border-secondary/30 lg:p-1 p-0.5">
+          <TabsList className="flex w-full bg-muted/40 rounded-full border border-secondary/30 lg:p-1.5 p-0.5">
             {CYCLE_OPTIONS.map((option) => (
               <TabsTrigger
                 key={option.value}

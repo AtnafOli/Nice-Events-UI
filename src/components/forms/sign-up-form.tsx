@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/auth.hooks";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { SignInCredentials } from "@/types/auth/sign-in";
+import { SignInCredentials, SignUpCredentials } from "@/types/auth/sign-in";
 import { useForm } from "react-hook-form";
 
 function SignInForm() {
-  const { signIn, isLoading, error } = useAuth();
+  const { signUp, isLoading, error } = useAuth();
   const {
     register,
     getValues,
@@ -19,11 +19,12 @@ function SignInForm() {
     setError,
     reset,
     formState: { errors },
-  } = useForm<SignInCredentials>();
+  } = useForm<SignUpCredentials>();
 
-  const onSubmit = async (data: SignInCredentials) => {
+  const onSubmit = async (data: SignUpCredentials) => {
     let email = getValues("email");
     let password = getValues("password");
+    let repassword = getValues("rePassword");
 
     if (email.trim().length == 0) {
       setError("email", {
@@ -35,7 +36,15 @@ function SignInForm() {
         message: "This field is required",
       });
     }
-    signIn(data);
+    if (password !== repassword) {
+      setError("rePassword", {
+        message: "The password does't match",
+        type: "validate",
+      });
+
+      return;
+    }
+    signUp(data);
     reset();
   };
 
@@ -93,6 +102,27 @@ function SignInForm() {
           )}
         </div>
 
+        <div className="space-y-2">
+          <Label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Re Enter Password
+          </Label>
+          <Input
+            id="re-password"
+            type="re-password"
+            placeholder="Enter your password"
+            {...register("rePassword")}
+            className={`w-full mt-1 bg-transparent border-gray-300 rounded-md focus:ring-2 focus:ring-primary ${
+              errors.rePassword ? "border-red-500" : ""
+            }`}
+          />
+          {errors.rePassword && (
+            <p className="text-sm text-red-500">{errors.rePassword.message}</p>
+          )}
+        </div>
+
         <Button
           type="submit"
           className="w-full bg-primary text-white hover:bg-primary-600"
@@ -101,10 +131,10 @@ function SignInForm() {
           {isLoading ? (
             <div className="flex items-center justify-center">
               <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2" />
-              Signing in...
+              Creating account...
             </div>
           ) : (
-            "Sign In"
+            "Sign Up"
           )}
         </Button>
       </form>

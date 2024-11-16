@@ -1,5 +1,5 @@
 import api from "@/lib/api-client";
-import { LoginResponse } from "@/types/api";
+import { LoginResponse, SignUpResponse } from "@/types/api";
 import { SignInCredentials } from "@/types/auth/sign-in";
 
 export const authService = {
@@ -14,6 +14,26 @@ export const authService = {
     return data.data;
   },
 
+  signUp: async (
+    credentials: SignInCredentials
+  ): Promise<SignUpResponse["data"]> => {
+    const { data } = await api.post<SignUpResponse>(
+      "/auth/sign-up",
+      credentials
+    );
+
+    return data.data;
+  },
+
+  googleSignIn: async (token: string): Promise<LoginResponse["data"]> => {
+    console.log(token);
+
+    const { data } = await api.post<LoginResponse>("/auth/google/signin", {
+      token,
+    });
+
+    return data.data;
+  },
   signOut: async (): Promise<void> => {
     await api.get("/auth/sign-out");
   },
