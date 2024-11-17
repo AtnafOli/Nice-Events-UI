@@ -47,6 +47,22 @@ export const authService = {
     await api.put("/auth/verify", { email, code });
   },
 
+  resetPassword: async ({
+    email,
+    code,
+    newPassword,
+  }: {
+    email: string;
+    code: string;
+    newPassword: string;
+  }): Promise<void> => {
+    await api.put("/auth/reset-password", { email, code, newPassword });
+  },
+
+  requestPasswordReset: async ({ email }: { email: string }): Promise<void> => {
+    await api.post("/auth/request-reset-password", { email });
+  },
+
   checkAuth: async () => {
     try {
       const { data } = await api.get<{ data: LoginResponse["data"] }>(
