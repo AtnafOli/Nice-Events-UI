@@ -2,7 +2,7 @@ const { execSync } = require("child_process");
 const readline = require("readline");
 
 const REPO_URL = "https://github.com/AtnafOli/Nice-Events-Ui";
-const BRANCH = "master";
+const BRANCH = "main";
 
 const rl = readline.createInterface({
   input: process.stdin,
