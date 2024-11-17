@@ -9,4 +9,5 @@ export interface SignUpCredentials {
   email: string;
   password: string;
   rePassword: string;
+  role?: string;
 }

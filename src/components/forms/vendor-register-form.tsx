@@ -1,28 +1,26 @@
 "use client";
 
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff, Mail, Lock, UserCheck } from "lucide-react";
+import { useAuth } from "@/hooks/auth.hooks";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/auth.hooks";
-import {
-  AlertCircle,
-  Eye,
-  EyeOff,
-  CheckCircle2,
-  XCircle,
-  Mail,
-  Lock,
-} from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { SignUpCredentials } from "@/types/auth/sign-in";
-import { useForm } from "react-hook-form";
-import { motion, AnimatePresence } from "framer-motion";
 
-export default function SignInForm() {
+type SignUpCredentials = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  role: string;
+};
+
+export default function VendorRegistrationForm() {
   const { signUp, isLoading, error } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [showRePassword, setShowRePassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -34,7 +32,8 @@ export default function SignInForm() {
     defaultValues: {
       email: "",
       password: "",
-      rePassword: "",
+      confirmPassword: "",
+      role: "vendor",
     },
   });
 
@@ -45,6 +44,7 @@ export default function SignInForm() {
       { regex: /.{8,}/, description: "At least 8 characters" },
       { regex: /[A-Z]/, description: "At least one uppercase letter" },
       { regex: /[a-z]/, description: "At least one lowercase letter" },
+      { regex: /[0-9]/, description: "At least one number" },
     ];
 
     return criteria.map(({ regex, description }) => ({
@@ -56,7 +56,9 @@ export default function SignInForm() {
   const onSubmit = async (data: SignUpCredentials) => {
     try {
       signUp(data);
-    } catch (error) {}
+    } catch (error) {
+      console.error("Sign up error:", error);
+    }
   };
 
   const passwordCriteria = validatePassword(watchPassword);
@@ -64,48 +66,42 @@ export default function SignInForm() {
   const getPasswordStrengthColor = () => {
     if (passwordStrength <= 1) return "bg-red-500";
     if (passwordStrength <= 2) return "bg-yellow-500";
-    return "bg-green-500";
+    if (passwordStrength <= 3) return "bg-green-500";
+    return "bg-green-600";
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full max-w-md mx-auto space-y-6 md:p-2 bg-transparent rounded-lg"
+      className="w-full mx-auto space-y-6  rounded-lg py-4 "
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
-          <Label
-            htmlFor="email"
-            className="flex items-center space-x-2 text-sm sm:text-base"
-          >
+          <Label htmlFor="email" className="flex items-center space-x-2">
             <Mail className="h-4 w-4" />
             <span>Email</span>
           </Label>
-          <div className="relative">
-            <Input
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
-                },
-              })}
-              className={`w-full mt-1 bg-transparent border-gray-300 rounded-md focus:ring-2 focus:ring-primary text-sm sm:text-base ${
-                errors.email && "border-red-500 focus:ring-red-500"
-              }`}
-            />
-          </div>
+          <Input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Invalid email address",
+              },
+            })}
+            className={errors.email ? "border-destructive" : ""}
+          />
           <AnimatePresence>
             {errors.email && (
               <motion.p
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                className="text-xs sm:text-sm text-red-500"
+                className="text-sm text-destructive"
               >
                 {errors.email.message}
               </motion.p>
@@ -113,12 +109,8 @@ export default function SignInForm() {
           </AnimatePresence>
         </div>
 
-        {/* Password Field */}
         <div className="space-y-2">
-          <Label
-            htmlFor="password"
-            className="flex items-center space-x-2 text-sm sm:text-base"
-          >
+          <Label htmlFor="password" className="flex items-center space-x-2">
             <Lock className="h-4 w-4" />
             <span>Password</span>
           </Label>
@@ -134,20 +126,32 @@ export default function SignInForm() {
                   message: "Password must be at least 8 characters",
                 },
               })}
-              className="w-full mt-1 bg-transparent border-gray-300 rounded-md focus:ring-2 focus:ring-primary text-sm sm:text-base"
+              className={errors.password ? "border-destructive" : ""}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
             >
               {showPassword ? (
-                <EyeOff className="h-4 w-4 sm:h-5 sm:w-5" />
+                <EyeOff className="h-4 w-4" />
               ) : (
-                <Eye className="h-4 w-4 sm:h-5 sm:w-5" />
+                <Eye className="h-4 w-4" />
               )}
             </button>
           </div>
+          <AnimatePresence>
+            {errors.password && (
+              <motion.p
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="text-sm text-destructive"
+              >
+                {errors.password.message}
+              </motion.p>
+            )}
+          </AnimatePresence>
 
           {watchPassword && (
             <motion.div
@@ -159,7 +163,7 @@ export default function SignInForm() {
                 <motion.div
                   className={`h-full ${getPasswordStrengthColor()}`}
                   initial={{ width: 0 }}
-                  animate={{ width: `${(passwordStrength / 3) * 100}%` }}
+                  animate={{ width: `${(passwordStrength / 4) * 100}%` }}
                   transition={{ duration: 0.3 }}
                 />
               </div>
@@ -193,50 +197,64 @@ export default function SignInForm() {
           )}
         </div>
 
-        {/* Confirm Password Field */}
         <div className="space-y-2">
           <Label
-            htmlFor="rePassword"
-            className="flex items-center space-x-2 text-sm sm:text-base"
+            htmlFor="confirmPassword"
+            className="flex items-center space-x-2"
           >
             <Lock className="h-4 w-4" />
             <span>Confirm Password</span>
           </Label>
           <div className="relative">
             <Input
-              id="rePassword"
-              type={showRePassword ? "text" : "password"}
+              id="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm your password"
-              {...register("rePassword", {
+              {...register("confirmPassword", {
+                required: "Please confirm your password",
                 validate: (value) =>
-                  value === watchPassword || "Passwords don't match",
+                  value === watchPassword || "Passwords do not match",
               })}
-              className="w-full mt-1 bg-transparent border-gray-300 rounded-md focus:ring-2 focus:ring-primary text-sm sm:text-base"
+              className={errors.confirmPassword ? "border-destructive" : ""}
             />
             <button
               type="button"
-              onClick={() => setShowRePassword(!showRePassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
             >
-              {showRePassword ? (
-                <EyeOff className="h-4 w-4 sm:h-5 sm:w-5" />
+              {showConfirmPassword ? (
+                <EyeOff className="h-4 w-4" />
               ) : (
-                <Eye className="h-4 w-4 sm:h-5 sm:w-5" />
+                <Eye className="h-4 w-4" />
               )}
             </button>
           </div>
           <AnimatePresence>
-            {errors.rePassword && (
+            {errors.confirmPassword && (
               <motion.p
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                className="text-xs sm:text-sm text-red-500"
+                className="text-sm text-destructive"
               >
-                {errors.rePassword.message}
+                {errors.confirmPassword.message}
               </motion.p>
             )}
           </AnimatePresence>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="role" className="flex items-center space-x-2">
+            <UserCheck className="h-4 w-4" />
+            <span>Role</span>
+          </Label>
+          <Input
+            id="role"
+            type="text"
+            value="Vendor"
+            readOnly
+            className="bg-muted cursor-not-allowed"
+          />
         </div>
 
         <AnimatePresence>
@@ -246,31 +264,29 @@ export default function SignInForm() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
             >
-              <Alert variant="destructive" className="animate-shake">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription className="text-xs sm:text-sm">
-                  {error.message?.message || "An error occurred during sign up"}
+              <Alert variant="destructive">
+                <AlertDescription>
+                  {error.message.message || "An error occurred during sign up"}
                 </AlertDescription>
               </Alert>
             </motion.div>
           )}
         </AnimatePresence>
-        <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
-          <Button
-            type="submit"
-            className="w-full bg-primary text-white hover:bg-primary-600 transition-all duration-200 text-sm sm:text-base py-2 sm:py-3"
-            disabled={isLoading || !isValid}
-          >
-            {isLoading ? (
-              <div className="flex items-center justify-center space-x-2">
-                <div className="w-4 h-4 sm:w-5 sm:h-5 border-t-2 border-b-2 border-white rounded-full animate-spin" />
-                <span>Creating account...</span>
-              </div>
-            ) : (
-              "Sign Up"
-            )}
-          </Button>
-        </motion.div>
+
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isLoading || !isValid}
+        >
+          {isLoading ? (
+            <div className="flex items-center justify-center space-x-2">
+              <div className="w-4 h-4 border-t-2 border-b-2 border-current rounded-full animate-spin" />
+              <span>Creating account...</span>
+            </div>
+          ) : (
+            "Sign Up"
+          )}
+        </Button>
       </form>
     </motion.div>
   );
