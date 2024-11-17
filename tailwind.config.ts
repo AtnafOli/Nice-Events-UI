@@ -13,7 +13,7 @@ const config = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "1rem",
       screens: {
         sm: "640px", // Small screens (phones)
         md: "768px", // Medium screens (tablets)

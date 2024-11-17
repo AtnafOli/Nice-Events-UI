@@ -30,7 +30,5 @@ export interface LoginResponse {
 }
 
 export interface SignUpResponse {
-  data: {
-    user: User;
-  };
+  data: User;
 }

@@ -92,13 +92,16 @@ export default function page() {
             <CardContent className="space-y-4 relative">
               <SignUpForm />
 
-              <div className="flex justify-end text-sm sm:text-base">
-                <Link
-                  href="/sign-in"
-                  className="text-accent hover:text-accent/80 transition-colors"
-                >
-                  Already have an account? Sign In
-                </Link>
+              <div className="flex justify-center text-sm sm:text-base">
+                <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+                  Already have an account?{" "}
+                  <Link
+                    href="/sign-in"
+                    className="font-medium text-primary hover:underline"
+                  >
+                    Sign in
+                  </Link>
+                </p>
               </div>
               <Separator className="bg-border" />
 

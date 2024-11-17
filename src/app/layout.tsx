@@ -5,20 +5,10 @@ import "./globals.css";
 import { UserProvider } from "@/context/userContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CustomQueryClientProvider } from "@/components/providers/queryclient.providers";
-import Navbar from "@/components/common/navbar/navbar";
 import { Suspense } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+import { Toaster } from "@/components/ui/toaster";
 
 // Primary Font - GeistSans
 const geistSans = localFont({
@@ -111,6 +101,7 @@ export default function RootLayout({
                     <div className="mx-auto w-full max-w-[1580px]">
                       <CustomQueryClientProvider>
                         {children}
+                        <Toaster />
                       </CustomQueryClientProvider>
                     </div>
                   </TooltipProvider>

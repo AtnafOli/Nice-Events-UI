@@ -32,16 +32,15 @@ export function useAuth() {
     },
   });
 
+  // Fixed SignUpMutation type
   const signUpMutation = useMutation<
-    SignUpResponse["data"],
+    SignUpResponse,
     ApiError,
     SignInCredentials
   >({
     mutationFn: (credentials) => authService.signUp(credentials),
     onSuccess: (data) => {
-      setUser(data.user);
-      const redirectPath = getRouteByRole(data.user.role);
-      router.push(redirectPath);
+      router.push(`/verify-email?email=${encodeURIComponent(data.data.email)}`);
     },
   });
 
@@ -85,7 +84,8 @@ export function useAuth() {
     googleSignIn: googleLogin,
     isLoading: signInMutation.isPending || googleSignInMutation.isPending,
     isSessionLoading,
-    error: signInMutation.error,
+    error:
+      signUpMutation.error || signInMutation.error || signOutMutation.error,
     session,
     user: session?.user,
   };

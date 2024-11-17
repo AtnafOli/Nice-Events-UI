@@ -80,7 +80,7 @@ export function usePlans() {
   const createPlanMutation = useMutation<Plan, ApiError, PlanCreateData>({
     mutationFn: async (data) => {
       const response = await plansService.createPlan(data);
-      return response.data;
+      return response[0];
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["plans"] });
@@ -94,7 +94,7 @@ export function usePlans() {
   >({
     mutationFn: async ({ id, data }) => {
       const response = await plansService.updatePlan(id, data);
-      return response.data;
+      return response[0];
     },
     onSuccess: (data, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["plans"] });

@@ -14,15 +14,13 @@ export const authService = {
     return data.data;
   },
 
-  signUp: async (
-    credentials: SignInCredentials
-  ): Promise<SignUpResponse["data"]> => {
+  signUp: async (credentials: SignInCredentials): Promise<SignUpResponse> => {
     const { data } = await api.post<SignUpResponse>(
       "/auth/sign-up",
       credentials
     );
 
-    return data.data;
+    return data;
   },
 
   googleSignIn: async (token: string): Promise<LoginResponse["data"]> => {
@@ -34,8 +32,19 @@ export const authService = {
 
     return data.data;
   },
+
   signOut: async (): Promise<void> => {
     await api.get("/auth/sign-out");
+  },
+
+  verifyEmail: async ({
+    email,
+    code,
+  }: {
+    email: string;
+    code: string;
+  }): Promise<void> => {
+    await api.put("/auth/verify", { email, code });
   },
 
   checkAuth: async () => {
@@ -48,5 +57,11 @@ export const authService = {
     } catch (error) {
       return null;
     }
+  },
+
+  resendVerificationCode: async (email: string): Promise<any> => {
+    const res = await api.post("/auth/resend-verification-code", { email });
+    console.log(res);
+    return res;
   },
 };

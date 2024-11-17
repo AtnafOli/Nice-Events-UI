@@ -26,8 +26,10 @@ export const plansService = {
     return data;
   },
 
-  createPlan: async (planData: PlanCreateData): Promise<PlanResponse> => {
-    const { data } = await api.post<PlanResponse>("/plan", planData);
+  createPlan: async (
+    planData: PlanCreateData
+  ): Promise<PlanResponse["data"]> => {
+    const { data } = await api.post<PlanResponse["data"]>("/plan", planData);
     return data;
   },
 
@@ -50,8 +52,11 @@ export const plansService = {
   updatePlan: async (
     id: number,
     planData: PlanUpdateData
-  ): Promise<PlanResponse> => {
-    const { data } = await api.put<PlanResponse>(`/plan/${id}`, planData);
+  ): Promise<PlanResponse["data"]> => {
+    const { data } = await api.put<PlanResponse["data"]>(
+      `/plan/${id}`,
+      planData
+    );
     return data;
   },
 
