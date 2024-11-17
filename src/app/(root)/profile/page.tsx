@@ -104,12 +104,14 @@ const DesignAgencyProfile = () => {
               Profile
             </TabsTrigger>
 
-            <TabsTrigger
-              value="subscription"
-              className="text-lg pb-4 px-1 text-muted-foreground data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary transition-all duration-300"
-            >
-              Subscription
-            </TabsTrigger>
+            {role === "vendor" && (
+              <TabsTrigger
+                value="subscription"
+                className="text-lg pb-4 px-1 text-muted-foreground data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary transition-all duration-300"
+              >
+                Subscription
+              </TabsTrigger>
+            )}
             {role === "vendor" && (
               <TabsTrigger
                 value="business"
