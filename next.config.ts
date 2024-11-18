@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ["encrypted-tbn0.gstatic.com"],
+    domains: ["encrypted-tbn0.gstatic.com", "res.cloudinary.com"],
   },
 };
 

@@ -39,7 +39,12 @@ export const categoryService = {
   ): Promise<CategoryResponse> => {
     const { data } = await api.post<CategoryResponse>(
       "/category",
-      categoryData
+      categoryData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
     return data;
   },
