@@ -116,7 +116,7 @@ export default function PlanComponent({
               <span className="text-4xl font-extrabold mr-2 text-primary">
                 {selectedPrice.currency}
               </span>
-              <span className="text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
+              <span className="text-6xl font-extrabold tracking-tight text-primary">
                 {selectedPrice.amount}
               </span>
               <span className="text-2xl font-medium text-muted-foreground ml-2">

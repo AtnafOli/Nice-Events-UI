@@ -14,6 +14,7 @@ import {
   ClipboardDocumentListIcon,
   SparklesIcon,
 } from "@heroicons/react/24/outline";
+import { FaProductHunt } from "react-icons/fa";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -59,18 +60,6 @@ const links = [
     ],
   },
   {
-    label: "Price Management",
-    href: "/admin/prices",
-    icon: <CurrencyDollarIcon className="w-5 h-5" />,
-    subLinks: [
-      {
-        label: "Manage Prices",
-        href: "/admin/prices/manage",
-        icon: <ClipboardDocumentListIcon className="w-4 h-4" />,
-      },
-    ],
-  },
-  {
     label: "Feature Management",
     href: "/admin/features",
     icon: <SparklesIcon className="w-5 h-5" />,
@@ -82,37 +71,48 @@ const links = [
       },
     ],
   },
+  // {
+  //   label: "Invoice Management",
+  //   href: "/admin/invoices",
+  //   icon: <DocumentChartBarIcon className="w-5 h-5" />,
+  //   subLinks: [
+  //     {
+  //       label: "Create Invoice",
+  //       href: "/admin/invoices/create",
+  //       icon: <CurrencyDollarIcon className="w-4 h-4" />,
+  //     },
+  //     {
+  //       label: "Manage Invoices",
+  //       href: "/admin/invoices/manage",
+  //       icon: <ClipboardDocumentListIcon className="w-4 h-4" />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   label: "Payment Methods",
+  //   href: "/admin/payment-methods",
+  //   icon: <CurrencyDollarIcon className="w-5 h-5" />,
+  //   subLinks: [
+  //     {
+  //       label: "Add Payment Method",
+  //       href: "/admin/payment-methods/add",
+  //       icon: <CurrencyDollarIcon className="w-4 h-4" />,
+  //     },
+  //     {
+  //       label: "Manage Payment Methods",
+  //       href: "/admin/payment-methods/manage",
+  //       icon: <ClipboardDocumentListIcon className="w-4 h-4" />,
+  //     },
+  //   ],
+  // },
   {
-    label: "Invoice Management",
-    href: "/admin/invoices",
-    icon: <DocumentChartBarIcon className="w-5 h-5" />,
+    label: "Category",
+    href: "/admin/category",
+    icon: <FaProductHunt className="w-5 h-5" />,
     subLinks: [
       {
-        label: "Create Invoice",
-        href: "/admin/invoices/create",
-        icon: <CurrencyDollarIcon className="w-4 h-4" />,
-      },
-      {
-        label: "Manage Invoices",
-        href: "/admin/invoices/manage",
-        icon: <ClipboardDocumentListIcon className="w-4 h-4" />,
-      },
-    ],
-  },
-  {
-    label: "Payment Methods",
-    href: "/admin/payment-methods",
-    icon: <CurrencyDollarIcon className="w-5 h-5" />,
-    subLinks: [
-      {
-        label: "Add Payment Method",
-        href: "/admin/payment-methods/add",
-        icon: <CurrencyDollarIcon className="w-4 h-4" />,
-      },
-      {
-        label: "Manage Payment Methods",
-        href: "/admin/payment-methods/manage",
-        icon: <ClipboardDocumentListIcon className="w-4 h-4" />,
+        label: "Categories",
+        href: "/admin/category/manage",
       },
     ],
   },
@@ -142,10 +142,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <Sidebar
         links={links}
-        brandName="EthioEvents Admin"
+        brandName="NiceEvents Admin"
         logo={
           <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
             <span className="text-primary-foreground font-bold text-lg">
