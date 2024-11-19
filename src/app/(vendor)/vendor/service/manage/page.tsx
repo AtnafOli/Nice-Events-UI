@@ -1,6 +1,7 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CreateServiceDialog } from "@/features/services/create-service-dialog";
+import CreateServiceDialog from "@/features/services/create-service-dialog";
+import VendorServicesList from "@/components/services/vendor/service_list";
 
 export default function ServicesPage() {
   return (
@@ -28,7 +29,9 @@ export default function ServicesPage() {
         </div>
 
         <div className=" rounded-2xl animate-slideInUp">
-          <div className="p-1 sm:p-2">{/* <ServiceTable /> */}</div>
+          <div className="p-1 sm:p-2">
+            <VendorServicesList />
+          </div>
         </div>
       </div>
     </div>

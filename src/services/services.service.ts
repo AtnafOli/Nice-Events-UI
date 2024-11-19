@@ -28,7 +28,11 @@ export const servicesService = {
   createService: async (
     serviceData: ServiceCreateData
   ): Promise<ServiceResponse> => {
-    const { data } = await api.post<ServiceResponse>("/services", serviceData);
+    const { data } = await api.post<ServiceResponse>("/services", serviceData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return data;
   },
 

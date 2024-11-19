@@ -36,7 +36,7 @@ const formSchema = z.object({
   description: z.string().min(2, {
     message: "Description must be at least 2 characters.",
   }),
-  image: z.instanceof(File).optional(), // Expecting File object
+  image: z.instanceof(File).optional(),
 });
 
 export function CreateCategoryDialog({
@@ -61,14 +61,13 @@ export function CreateCategoryDialog({
     (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
       if (file) {
-        // For preview purposes, use FileReader to create a URL
         const reader = new FileReader();
         reader.onload = (e) => {
           const result = e.target?.result as string;
-          setPreviewImage(result); // Set preview image for display
-          form.setValue("image", file); // Store the actual file for submission
+          setPreviewImage(result);
+          form.setValue("image", file);
         };
-        reader.readAsDataURL(file); // For preview
+        reader.readAsDataURL(file);
       }
     },
     [form]
@@ -88,13 +87,11 @@ export function CreateCategoryDialog({
       formData.append("name", values.name);
       formData.append("description", values.description);
 
-      // Ensure that we append the file correctly
       if (values.image) {
         formData.append("image", values.image); // Append file directly to FormData
       }
 
-      // Send the form data including the file
-      await createCategory(formData as unknown as CategoryCreateData);
+      createCategory(formData as unknown as CategoryCreateData);
       setOpen(false);
       form.reset();
       setPreviewImage(null);
