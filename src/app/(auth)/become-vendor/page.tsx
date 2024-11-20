@@ -104,11 +104,6 @@ export default function page() {
                   </Link>
                 </p>
               </div>
-              <Separator className="bg-border" />
-
-              <div className="grid grid-cols-1">
-                <GoogleSignInButton />
-              </div>
 
               <Separator className="bg-border" />
 

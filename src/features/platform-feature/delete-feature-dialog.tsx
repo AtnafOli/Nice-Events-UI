@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useFeatures } from "@/hooks/features.hook";
+import { deleteFeatureAction } from "@/actions/feature.actions";
 
 type Feature = {
   id: number;
@@ -29,13 +29,10 @@ export function DeleteFeatureDialog({
   children: React.ReactNode;
   feature: Feature;
 }) {
-  const { deleteFeature, isDeleting, deleteError } = useFeatures();
-
   async function handleDelete() {
     try {
-      await deleteFeature(feature.id);
+      await deleteFeatureAction(feature.id);
     } catch (error) {
-      // Error will be handled by the mutation
       console.error(error);
     }
   }
@@ -51,17 +48,13 @@ export function DeleteFeatureDialog({
             action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        {deleteError && (
-          <div className="text-red-500 text-sm">{deleteError.message}</div>
-        )}
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
             className="bg-red-500 hover:bg-red-600"
-            disabled={isDeleting}
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

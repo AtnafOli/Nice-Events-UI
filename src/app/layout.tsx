@@ -83,7 +83,6 @@ export default function RootLayout({
       <body
         className={`
           antialiased
-          min-h-screen
           selection:bg-primary/10
           selection:text-primary
           bg-background

@@ -1,36 +1,11 @@
-"use client";
-
 import React from "react";
 import CategoryCard from "./category.card";
-import { useCategorys } from "@/hooks/category.hooks";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+
 import { AlertCircle } from "lucide-react";
+import { categoryService } from "@/services/category.service";
 
-function CategoryList() {
-  const { categorys, isLoading, error } = useCategorys();
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-        {[...Array(6)].map((_, index) => (
-          <Skeleton key={index} className="h-[200px] rounded-xl" />
-        ))}
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <Alert variant="destructive" className="mx-4">
-        <AlertCircle className="h-4 w-4" />
-        <AlertDescription>
-          Error loading categories. Please try again later.
-        </AlertDescription>
-      </Alert>
-    );
-  }
-
+async function CategoryList() {
+  const { data: categorys } = await categoryService.getCategorys("");
   return (
     <div className="space-y-12 px-4">
       <h3 className="my-4 text-4xl font-bold">Categories</h3>

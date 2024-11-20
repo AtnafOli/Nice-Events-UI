@@ -93,7 +93,11 @@ export default function VendorRegistrationForm() {
                 message: "Invalid email address",
               },
             })}
-            className={errors.email ? "border-destructive" : ""}
+            className={
+              errors.email
+                ? "border-destructive"
+                : "bg-transparent  border-gray-300"
+            }
           />
           <AnimatePresence>
             {errors.email && (
@@ -126,7 +130,11 @@ export default function VendorRegistrationForm() {
                   message: "Password must be at least 8 characters",
                 },
               })}
-              className={errors.password ? "border-destructive" : ""}
+              className={
+                errors.password
+                  ? "border-destructive"
+                  : "bg-transparent  border-gray-300"
+              }
             />
             <button
               type="button"
@@ -215,7 +223,11 @@ export default function VendorRegistrationForm() {
                 validate: (value) =>
                   value === watchPassword || "Passwords do not match",
               })}
-              className={errors.confirmPassword ? "border-destructive" : ""}
+              className={
+                errors.confirmPassword
+                  ? "border-destructive"
+                  : "bg-transparent  border-gray-300"
+              }
             />
             <button
               type="button"

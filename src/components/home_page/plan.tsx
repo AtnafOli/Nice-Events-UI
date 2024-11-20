@@ -88,7 +88,7 @@ export default function PlanComponent({
 
     const route = user
       ? `/plandetail?planId=${plan.id}&priceId=${selectedPrice?.id}`
-      : "/sign-in";
+      : "/become-vendor";
     router.push(route);
   };
 
@@ -139,7 +139,7 @@ export default function PlanComponent({
         )}
 
         <div className="space-y-4">
-          <h4 className="text-sm font-medium text-center text-secondary">
+          <h4 className="text-sm font-medium text-center text-foreground">
             Features included
           </h4>
           <ul className="space-y-3">
@@ -214,8 +214,8 @@ export default function PlanComponent({
           className={cn(
             "w-full transition-all duration-300 ease-in-out text-lg font-semibold py-6 rounded-full",
             isHighlighted
-              ? "bg-primary hover:from-primary/90 hover:via-accent/90 hover:to-secondary/90 text-primary-foreground"
-              : "bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+              ? "bg-primary hover:from-primary/90 hover:via-accent/90 hover:to-primary/90 text-primary-foreground"
+              : "bg-primary hover:bg-primary/90 text-primary-foreground"
           )}
         >
           Get started

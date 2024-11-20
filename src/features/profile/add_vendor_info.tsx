@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { SubscriptionCreateData } from "@/types/subscription";
 import { VendorData } from "@/types/vendor";
 import { ProfileData } from "@/types/profile";
+import { useUser } from "@/context/userContext";
 
 const formSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -45,6 +46,8 @@ export function VendorForm({
     vendorData: VendorData;
   }) => void;
 }) {
+  const { user } = useUser();
+  console.log(user);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,7 +62,6 @@ export function VendorForm({
     },
   });
 
-  const router = useRouter();
   const {
     handleSubmit,
     formState: { isSubmitting },

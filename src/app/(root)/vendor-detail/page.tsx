@@ -114,12 +114,14 @@ export default function Page() {
       console.log("response is");
       console.log(response.subscription.id);
 
+      const price = plan.Prices.find((price) => price.id == parseInt(priceId));
+
       if (response && response.subscription) {
         const newPaymentData = {
           subscriptionId: response.subscription.id,
           phoneNumber: data.profileData.phoneNumber,
           email: user?.email,
-          amount: plan.Prices[0].amount,
+          amount: price?.amount,
           currency: plan.Prices[0].currency,
           first_name: data.profileData.firstName,
           last_name: data.profileData.lastName,

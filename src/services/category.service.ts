@@ -25,7 +25,7 @@ export type SubCategoryResponse = {
 };
 export const categoryService = {
   getCategorys: async (params: any): Promise<CategorysResponse> => {
-    const { data } = await api.get<CategorysResponse>("/category", params);
+    const { data } = await api.get<CategorysResponse>(`/category${params}`);
     return data;
   },
 

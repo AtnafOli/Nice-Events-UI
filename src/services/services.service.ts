@@ -16,7 +16,7 @@ export type ServiceResponse = {
 
 export const servicesService = {
   getServices: async (params: any): Promise<ServicesResponse> => {
-    const { data } = await api.get<ServicesResponse>("/services", params);
+    const { data } = await api.get<ServicesResponse>(`/services${params}`);
     return data;
   },
 
