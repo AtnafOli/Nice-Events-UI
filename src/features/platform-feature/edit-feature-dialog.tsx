@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { updateFeatureAction } from "@/actions/feature.actions";
+import { useFeatures } from "@/hooks/features.hook";
 
 interface FeatureFormValues {
   name: string;
@@ -51,6 +51,7 @@ export function EditFeatureDialog({
   children: React.ReactNode;
   feature: Feature;
 }) {
+  const { updateFeature, isUpdating, updateError } = useFeatures();
   const [open, setOpen] = useState(false);
   const form = useForm<FeatureFormValues>({
     defaultValues: {
@@ -62,7 +63,7 @@ export function EditFeatureDialog({
 
   async function onSubmit(values: FeatureFormValues) {
     try {
-      await updateFeatureAction(feature.id, values);
+      updateFeature({ id: feature.id, data: values });
       setOpen(false);
     } catch (error) {
       console.error(error);
@@ -143,8 +144,13 @@ export function EditFeatureDialog({
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
-              Save Changes
+            {updateError && (
+              <div className="text-red-500 text-sm">
+                {updateError.message?.message}
+              </div>
+            )}
+            <Button type="submit" className="w-full" disabled={isUpdating}>
+              {isUpdating ? "Saving..." : "Save Changes"}
             </Button>
           </form>
         </Form>
