@@ -6,6 +6,7 @@ import { categoryService } from "@/services/category.service";
 
 async function CategoryList() {
   const { data: categorys } = await categoryService.getCategorys("");
+
   return (
     <div className="space-y-12 px-4">
       <h3 className="my-4 text-4xl font-bold">Categories</h3>

@@ -8,7 +8,8 @@ import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { Badge } from "../ui/badge";
 import { Check, Sparkles, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { BillingCycle, Plan, Price } from "@/types/plan/plan";
+import { BillingCycle, Plan, PlanResponse, Price } from "@/types/plan/plan";
+import { plansService } from "@/services/plan.service";
 
 interface CycleOption {
   value: BillingCycle;
@@ -40,40 +41,9 @@ const EmptyState = () => (
   </div>
 );
 
-const LoadingSkeleton = () => (
-  <div className="container mx-auto px-4 md:px-6">
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-      {[...Array(3)].map((_, index) => (
-        <div
-          key={index}
-          className={cn(
-            "w-full h-[600px] md:h-[650px] rounded-3xl border border-primary/20",
-            "bg-gradient-to-br from-primary/5 via-primary/10 to-transparent",
-            "transition-all duration-500 hover:shadow-lg",
-            "animate-pulse"
-          )}
-        >
-          <div className="p-6 md:p-10 space-y-8 md:space-y-10">
-            <Skeleton className="h-10 md:h-12 w-2/3 mx-auto rounded-full bg-primary/10" />
-            <Skeleton className="h-8 md:h-10 w-1/2 mx-auto rounded-full bg-primary/10" />
-            <Skeleton className="h-24 md:h-28 w-full rounded-2xl bg-primary/10" />
-            <div className="space-y-4 md:space-y-6 mt-8 md:mt-10">
-              {[...Array(4)].map((_, i) => (
-                <Skeleton
-                  key={i}
-                  className="h-14 md:h-16 w-full rounded-2xl bg-primary/10"
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+function PlanList({ plans }: { plans: PlanResponse["data"] }) {
+  const { isLoading } = usePlans();
 
-function PlanList() {
-  const { plans, isLoading } = usePlans();
   const [reversePlans, setReversePlans] = useState<Plan[] | undefined>([]);
   const [selectedCycle, setSelectedCycle] = useState<BillingCycle>(
     BillingCycle.MONTH_3
@@ -112,7 +82,6 @@ function PlanList() {
     }
   };
 
-  if (isLoading) return <LoadingSkeleton />;
   if (!plans || plans.length === 0) return <EmptyState />;
 
   return (

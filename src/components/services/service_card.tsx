@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -15,27 +16,19 @@ import {
 import { ArrowRight, Edit, Trash2, MoreVertical, Star } from "lucide-react";
 import { Service } from "@/types/service";
 import { useUser } from "@/context/userContext";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { EditServiceDialog } from "@/features/services/edit-service.dialog";
+import { useServices } from "@/hooks/services.hooks";
+import DeleteServiceDialog from "@/features/services/delete-service.dialog";
 
-export default function ServiceCard({
-  service,
-  onEdit,
-  onDelete,
-}: {
-  service: Service;
-  onEdit: (id: number) => void;
-  onDelete: (id: number) => void;
-}) {
+export default function ServiceCard({ service }: { service: Service }) {
   const { user } = useUser();
   const primaryImage = service.images[service.primaryImageIndex || 0];
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const { deleteService, deleteError } = useServices();
 
-  const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete this service?")) {
-      onDelete(service.id);
-    }
+  const handleDelete = (serviceId: number) => {
+    deleteService(serviceId);
   };
 
   const rating = 4.5;
@@ -46,23 +39,27 @@ export default function ServiceCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       layout
     >
-      <Card className="group relative overflow-hidden rounded-2xl bg-white/50 shadow-sm transition-all duration-300 hover:shadow-xl focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2">
+      <Card
+        className="group relative overflow-hidden bg-white shadow-md transition-all duration-300 hover:shadow-xl focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-4"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <Link href={`/service/detail/${service.id}`} className="block">
-          <div className="relative aspect-[16/10] w-full overflow-hidden">
+          <div className="relative aspect-[4/3] w-full overflow-hidden">
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isImageLoaded ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: isImageLoaded ? 1 : 0, scale: 1 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               <Image
                 src={primaryImage.imageUrl}
                 alt={service.name}
                 layout="fill"
                 objectFit="cover"
-                className="transform transition-transform duration-700 will-change-transform group-hover:scale-110"
+                className="transition-transform duration-700 will-change-transform group-hover:scale-105"
                 priority
                 onLoadingComplete={() => setIsImageLoaded(true)}
               />
@@ -70,15 +67,15 @@ export default function ServiceCard({
             {!isImageLoaded && (
               <div className="absolute inset-0 animate-pulse bg-gray-200" />
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="absolute left-4 top-4 z-10"
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="absolute bottom-4 left-4 z-10"
             >
-              <Badge className="bg-white/90 px-4 py-1.5 text-xs font-medium text-gray-900 backdrop-blur-md hover:bg-white/95">
+              <Badge className="bg-white/90 px-2 py-1 text-xs font-medium text-primary backdrop-blur-md">
                 {service.subCategory.name}
               </Badge>
             </motion.div>
@@ -90,7 +87,7 @@ export default function ServiceCard({
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-9 w-9 rounded-full bg-white/80 backdrop-blur-md transition-colors hover:bg-white focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                      className="h-8 w-8 rounded-full bg-white/80 backdrop-blur-md transition-colors hover:bg-white"
                     >
                       <MoreVertical className="h-4 w-4 text-gray-700" />
                     </Button>
@@ -100,24 +97,38 @@ export default function ServiceCard({
                     className="w-48 animate-in fade-in-0 zoom-in-95"
                   >
                     <DropdownMenuItem
-                      onClick={(e) => {
-                        e.preventDefault();
-                        onEdit(service.id);
-                      }}
-                      className="gap-2 py-2.5 transition-colors hover:bg-gray-100"
+                      onClick={(e) => e.preventDefault()}
+                      className="gap-2 py-2 transition-colors hover:bg-gray-100"
                     >
-                      <Edit className="h-4 w-4" />
-                      Edit Service
+                      <EditServiceDialog service={service}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Edit className="h-4 w-4" />
+                          Edit Service
+                        </Button>
+                      </EditServiceDialog>
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={(e) => {
                         e.preventDefault();
-                        handleDelete();
                       }}
-                      className="gap-2 py-2.5 text-red-600 transition-colors hover:bg-red-50 hover:text-red-700"
+                      className="gap-2 py-2 text-red-600 transition-colors hover:bg-red-50 hover:text-red-700"
                     >
-                      <Trash2 className="h-4 w-4" />
-                      Delete Service
+                      <DeleteServiceDialog
+                        service={service}
+                        onDelete={handleDelete}
+                      >
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Trash2 className="h-4 w-4" /> Delete Service
+                        </Button>
+                      </DeleteServiceDialog>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -125,13 +136,17 @@ export default function ServiceCard({
             )}
           </div>
 
-          <div className="space-y-5 p-6">
-            <div>
-              <h3 className="text-xl font-semibold tracking-tight text-gray-900 transition-colors duration-200 hover:text-primary">
+          <div className="p-6">
+            <motion.div
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+            >
+              <h3 className="text-xl font-semibold tracking-tight text-gray-900 line-clamp-1">
                 {service.name}
               </h3>
-              <div className="mt-2 flex items-center gap-2">
-                <div className="flex items-center gap-1">
+              <div className="mt-1 flex items-center gap-2">
+                <div className="flex items-center">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
@@ -144,56 +159,52 @@ export default function ServiceCard({
                   ))}
                 </div>
                 <span className="text-sm font-medium text-gray-600">
-                  {rating}
-                </span>
-                <span className="text-sm text-gray-500">
-                  ({reviewCount} reviews)
+                  {rating} ({reviewCount})
                 </span>
               </div>
-              <div className="relative">
-                <p
-                  className={`mt-2.5 text-sm leading-relaxed text-gray-600 ${
-                    !showFullDescription && "line-clamp-2"
-                  }`}
-                >
-                  {service.description}
-                </p>
-                {service.description.length > 100 && (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setShowFullDescription(!showFullDescription);
-                    }}
-                    className="mt-1 text-sm font-medium text-primary hover:text-primary/80"
-                  >
-                    {showFullDescription ? "Show less" : "Read more"}
-                  </button>
-                )}
-              </div>
-            </div>
+            </motion.div>
 
-            <div className="flex items-center justify-between">
+            <motion.p
+              className="mt-3 text-sm text-gray-600 line-clamp-2"
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              {service.description}
+            </motion.p>
+
+            <motion.div
+              className="mt-4 flex items-center justify-between"
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
               <div>
                 <p className="text-xs font-medium text-gray-500">
                   Starting from
                 </p>
-                <p className="mt-1 text-xl font-semibold text-gray-900">
+                <p className="text-lg font-bold text-primary">
                   ETB {service.basicPrice.toLocaleString()}
                 </p>
               </div>
               <Button
                 variant="ghost"
-                className="group/button -mr-2 flex items-center gap-1 font-medium text-primary hover:bg-primary/10"
+                size="sm"
+                className="group/button flex items-center gap-1 font-medium text-primary hover:bg-primary/10"
               >
-                View Details
-                <ArrowRight className="h-4 w-4 transition-transform group-hover/button:translate-x-1" />
+                Details
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/button:translate-x-1" />
               </Button>
-            </div>
+            </motion.div>
           </div>
         </Link>
 
-        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
-        <div className="absolute bottom-0 left-1/2 h-0.5 w-24 -translate-x-1/2 transform bg-primary opacity-0 transition-all duration-300 group-hover:opacity-100" />
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+        />
       </Card>
     </motion.div>
   );

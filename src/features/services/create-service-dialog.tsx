@@ -32,7 +32,6 @@ import {
 } from "@/components/ui/select";
 import { useServices } from "@/hooks/services.hooks";
 import { useCategorys } from "@/hooks/category.hooks";
-import { Category } from "@/types/category";
 import {
   Loader2,
   CheckCircle,
@@ -40,11 +39,6 @@ import {
   X,
   Star,
   Upload,
-  DollarSign,
-  Camera,
-  FileText,
-  Tag,
-  Image as ImageIcon,
 } from "lucide-react";
 import {
   Tooltip,
@@ -55,6 +49,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { FaMoneyBill } from "react-icons/fa";
 import { ServiceCreateData } from "@/types/service";
+import { useRouter } from "next/navigation";
 
 interface ImagePreview {
   file: File;
@@ -74,6 +69,7 @@ export default function CreateServiceDialog({
   const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>([]);
   const [primaryImageIndex, setPrimaryImageIndex] = useState<number>(0);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const router = useRouter();
 
   const form = useForm<ServiceCreateData>({
     defaultValues: {
@@ -176,27 +172,15 @@ export default function CreateServiceDialog({
               setImagePreviews([]);
               setPrimaryImageIndex(0);
               setUploadProgress(0);
+              router.refresh();
             }
-          }, 3000);
+          }, 2000);
         }
       }
     } catch (error) {
       console.error(error);
     }
   }
-
-  const simulateUploadProgress = () => {
-    setUploadProgress(0);
-    const interval = setInterval(() => {
-      setUploadProgress((prevProgress) => {
-        if (prevProgress >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prevProgress + 10;
-      });
-    }, 500);
-  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen} modal={true}>
@@ -530,11 +514,7 @@ export default function CreateServiceDialog({
                     type="submit"
                     className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:from-primary/90 hover:to-secondary/90 text-lg py-6 rounded-md transition-all duration-300 transform hover:scale-[1.02]"
                     disabled={isCreating}
-                    onClick={() => {
-                      if (!isCreating) {
-                        simulateUploadProgress();
-                      }
-                    }}
+                    onClick={() => {}}
                   >
                     {isCreating ? (
                       <>

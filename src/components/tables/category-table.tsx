@@ -168,7 +168,7 @@ export default function CategoryTable() {
       </div>
 
       {/* Desktop View */}
-      <Card className="hidden sm:block">
+      <Card className="hidden sm:block bg-white/60">
         <Table>
           <TableHeader>
             <TableRow>

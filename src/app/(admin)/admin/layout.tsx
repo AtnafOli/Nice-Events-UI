@@ -15,6 +15,9 @@ import {
   SparklesIcon,
 } from "@heroicons/react/24/outline";
 import { FaProductHunt } from "react-icons/fa";
+import UserMenu from "@/components/common/usermenu";
+import { authService } from "@/services/auth.service";
+import { Bell, Heart, User } from "lucide-react";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -122,6 +125,15 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const { user, loading } = useUser();
   const router = useRouter();
 
+  const handleNavigate = (path: string) => {
+    router.push(path);
+  };
+
+  async function handleLogout() {
+    await authService.signOut();
+    window.location.href = "/";
+  }
+
   useEffect(() => {
     if (!loading && (!user || user.role !== "admin")) {
       router.push("/");
@@ -141,6 +153,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     return;
   }
 
+  const menuItems = [{ icon: User, label: "Profile", path: "/profile" }];
+
   return (
     <div className="min-h-screen">
       <Sidebar
@@ -157,7 +171,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       <div className="lg:pl-80">
         <main className="">
           <div className="rounded-lg border bg-card text-card-foreground shadow">
-            <div className="flex flex-col space-y-1.5 p-7"></div>
+            <div className="flex justify-end px-8">
+              <UserMenu
+                menuItems={menuItems}
+                user={user}
+                handleNavigate={handleNavigate}
+                handleLogout={handleLogout}
+              />
+            </div>
           </div>
           <div className="lg:px-6 lg:py-8">{children}</div>
         </main>

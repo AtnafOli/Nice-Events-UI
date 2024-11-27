@@ -11,8 +11,8 @@ import type {
 } from "@/types/plan/plan";
 
 export const plansService = {
-  getPlans: async (params?: any): Promise<PlansResponse> => {
-    const { data } = await api.get<PlansResponse>("/plan", params);
+  getPlans: async (params: any): Promise<PlansResponse> => {
+    const { data } = await api.get<PlansResponse>(`/plan${params}`);
     return data;
   },
 

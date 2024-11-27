@@ -9,7 +9,7 @@ import type {
 } from "@/types/service";
 import { ApiError } from "@/lib/api-client";
 
-export function useServices() {
+export function useServices(params?: any) {
   const queryClient = useQueryClient();
 
   const {
@@ -17,13 +17,14 @@ export function useServices() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["services"],
+    queryKey: ["services", params],
     queryFn: async () => {
-      const response = await servicesService.getServices("");
+      const response = await servicesService.getServices(params);
       console.log("response is");
       console.log(response.data);
       return response.data;
     },
+    enabled: params !== undefined,
   });
 
   const createServiceMutation = useMutation<

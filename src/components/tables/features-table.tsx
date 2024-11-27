@@ -93,7 +93,7 @@ export function FeatureTable() {
       </div>
 
       {/* Desktop View */}
-      <div className="hidden sm:block rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden bg-white dark:bg-gray-800 shadow-sm">
+      <div className="hidden sm:block rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden bg-white/60 dark:bg-gray-800 shadow-sm">
         <div className="overflow-x-auto">
           <Table className="w-full">
             <TableHeader>

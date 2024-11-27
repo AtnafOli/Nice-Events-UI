@@ -5,7 +5,7 @@ import { CreateFeatureDialog } from "@/features/platform-feature/create-feature-
 
 export default function FeaturesPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 animate-fadeIn">
+    <div className="min-h-screen animate-fadeIn">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-8 mb-8">
           <div className="space-y-2 animate-slideInLeft">
@@ -28,7 +28,7 @@ export default function FeaturesPage() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800/50 rounded-2xl shadow-xl backdrop-blur-lg border border-gray-100 dark:border-gray-700 animate-slideInUp">
+        <div className=" animate-slideInUp">
           <div className="p-1 sm:p-2">
             <FeatureTable />
           </div>

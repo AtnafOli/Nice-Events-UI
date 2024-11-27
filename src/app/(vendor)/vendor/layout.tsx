@@ -13,7 +13,7 @@ interface AdminLayoutProps {
 const links = [
   {
     label: "Dashboard",
-    href: "/admin/dashboard",
+    href: "/vendor/dashboard",
     icon: <HomeIcon className="w-5 h-5" />,
   },
   {

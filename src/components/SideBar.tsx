@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
@@ -12,6 +12,7 @@ import {
   Settings,
   LogOut,
   ChevronRight,
+  User,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -28,14 +29,8 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { authService } from "@/services/auth.service";
 
 interface SidebarLinkItem {
   label: string;
@@ -71,6 +66,7 @@ export default function Sidebar({
   const [isOpen, setIsOpen] = useState(false);
   const [openSubMenus, setOpenSubMenus] = useState<string[]>([]);
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
@@ -86,6 +82,11 @@ export default function Sidebar({
 
   const isLinkActive = (href: string) => {
     return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  const handleLogout = async () => {
+    await authService.signOut();
+    window.location.href = "/";
   };
 
   const renderNavLink = (link: SidebarLinkItem, mobile: boolean = false) => {
@@ -218,6 +219,53 @@ export default function Sidebar({
     );
   };
 
+  const renderUserSection = (mobile: boolean = false) => (
+    <div
+      className={cn(
+        "flex flex-col gap-2 p-3",
+        mobile
+          ? "border-t border-border/50 bg-muted/30 backdrop-blur-lg"
+          : "mt-auto pt-3 border-t border-border/50"
+      )}
+    >
+      <Button
+        variant="ghost"
+        className="w-full justify-start gap-3 px-2 hover:bg-accent/10 rounded-lg h-auto py-2"
+        onClick={() => {}}
+      >
+        <User className="h-4 w-4" />
+        <span className="text-sm font-medium">Profile</span>
+      </Button>
+      <Button
+        variant="ghost"
+        className="w-full justify-start gap-3 px-2 hover:bg-accent/10 rounded-lg h-auto py-2 text-destructive hover:text-destructive"
+        onClick={handleLogout}
+      >
+        <LogOut className="h-4 w-4" />
+        <span className="text-sm font-medium">Log out</span>
+      </Button>
+      {user && (
+        <div className="flex items-center gap-3 px-2 mt-2">
+          <Avatar className="h-10 w-10 ring-2 ring-border">
+            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarFallback className="text-sm bg-primary/10 text-primary font-medium">
+              {user.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold truncate">{user.name}</p>
+            <p className="text-xs text-muted-foreground truncate">
+              {user.email}
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   if (!isMounted) return null;
 
   return (
@@ -271,29 +319,7 @@ export default function Sidebar({
                       ))}
                     </nav>
                   </div>
-                  {user && (
-                    <div className="p-3 border-t border-border/50 bg-muted/30 backdrop-blur-lg">
-                      <div className="flex items-center gap-3 px-2">
-                        <Avatar className="h-10 w-10 ring-2 ring-border">
-                          <AvatarImage src={user.avatar} alt={user.name} />
-                          <AvatarFallback className="text-sm bg-primary/10 text-primary font-medium">
-                            {user.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold truncate">
-                            {user.name}
-                          </p>
-                          <p className="text-xs text-muted-foreground truncate">
-                            {user.email}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  {renderUserSection(true)}
                 </div>
               </SheetContent>
             </Sheet>
@@ -317,54 +343,7 @@ export default function Sidebar({
               <div key={link.href}>{renderNavLink(link)}</div>
             ))}
           </nav>
-
-          {user && (
-            <div className="mt-auto pt-3 border-t border-border/50">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start px-2 hover:bg-accent/10 rounded-lg h-auto py-2"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10 ring-2 ring-border">
-                        <AvatarImage src={user.avatar} alt={user.name} />
-                        <AvatarFallback className="text-sm bg-primary/10 text-primary font-medium">
-                          {user.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold truncate">
-                          {user.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {user.email}
-                        </p>
-                      </div>
-                    </div>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="w-56 rounded-lg"
-                  sideOffset={8}
-                >
-                  <DropdownMenuItem className="gap-3 rounded-md">
-                    <Settings className="h-4 w-4" />
-                    <span className="text-sm font-medium">Settings</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="gap-3 text-destructive focus:text-destructive rounded-md">
-                    <LogOut className="h-4 w-4" />
-                    <span className="text-sm font-medium">Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          )}
+          {renderUserSection()}
         </div>
       </div>
 

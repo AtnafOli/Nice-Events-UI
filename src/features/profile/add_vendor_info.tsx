@@ -47,7 +47,6 @@ export function VendorForm({
   }) => void;
 }) {
   const { user } = useUser();
-  console.log(user);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
