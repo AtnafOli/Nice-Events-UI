@@ -1,7 +1,10 @@
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import React from "react";
 
-function loading() {
-  return <div>loading</div>;
+export default function Loading() {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center">
+      <LoadingSpinner />
+    </div>
+  );
 }
-
-export default loading;

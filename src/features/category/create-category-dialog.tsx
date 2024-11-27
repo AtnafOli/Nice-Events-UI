@@ -36,7 +36,8 @@ const formSchema = z.object({
   description: z.string().min(2, {
     message: "Description must be at least 2 characters.",
   }),
-  image: z.instanceof(File).optional(),
+  image:
+    typeof window !== "undefined" ? z.instanceof(File).optional() : z.any(),
 });
 
 export function CreateCategoryDialog({
