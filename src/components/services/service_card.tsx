@@ -48,7 +48,7 @@ export default function ServiceCard({ service }: { service: Service }) {
         onMouseLeave={() => setIsHovered(false)}
       >
         <Link href={`/service/detail/${service.id}`} className="block">
-          <div className="relative aspect-[4/3] w-full overflow-hidden">
+          <div className="relative aspect-[4/3] sm:aspect-[3/2] w-full overflow-hidden">
             <motion.div
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: isImageLoaded ? 1 : 0, scale: 1 }}
@@ -57,10 +57,9 @@ export default function ServiceCard({ service }: { service: Service }) {
               <Image
                 src={primaryImage.imageUrl}
                 alt={service.name}
-                layout="fill"
+                fill
                 objectFit="cover"
                 className="transition-transform duration-700 will-change-transform group-hover:scale-105"
-                priority
                 onLoad={() => setIsImageLoaded(true)}
               />
             </motion.div>
@@ -73,99 +72,92 @@ export default function ServiceCard({ service }: { service: Service }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="absolute bottom-4 left-4 z-10"
+              className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 z-10"
             >
-              <Badge className="bg-white/90 px-2 py-1 text-xs font-medium text-primary backdrop-blur-md">
+              <Badge
+                className="rounded-full bg-white/90 px-3 py-1.5 text-xs sm:text-sm font-medium text-primary shadow-md backdrop-blur-md"
+                variant="outline"
+              >
                 {service.subCategory.name}
               </Badge>
             </motion.div>
 
             {user?.role === "vendor" && (
-              <div className="absolute right-3 top-3 z-10">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="h-8 w-8 rounded-full bg-white/80 backdrop-blur-md transition-colors hover:bg-white"
-                    >
-                      <MoreVertical className="h-4 w-4 text-gray-700" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="end"
-                    className="w-48 animate-in fade-in-0 zoom-in-95"
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="absolute right-2 top-2 sm:right-4 sm:top-4 z-10 h-9 w-9 rounded-full bg-white/80 backdrop-blur-md transition-colors hover:bg-white"
                   >
-                    <DropdownMenuItem
-                      onClick={(e) => e.preventDefault()}
-                      className="gap-2 py-2 transition-colors hover:bg-gray-100"
-                    >
-                      <EditServiceDialog service={service}>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Edit className="h-4 w-4" />
-                          Edit Service
-                        </Button>
-                      </EditServiceDialog>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={(e) => {
-                        e.preventDefault();
-                      }}
-                      className="gap-2 py-2 text-red-600 transition-colors hover:bg-red-50 hover:text-red-700"
-                    >
-                      <DeleteServiceDialog
-                        service={service}
-                        onDelete={handleDelete}
+                    <MoreVertical className="h-5 w-5 text-gray-700" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  sideOffset={16}
+                  className="w-60 animate-in fade-in-0 zoom-in-95"
+                >
+                  <DropdownMenuItem>
+                    <EditServiceDialog service={service}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full justify-start"
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Trash2 className="h-4 w-4" /> Delete Service
-                        </Button>
-                      </DeleteServiceDialog>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+                        <Edit className="h-4 w-4 mr-2" /> Edit Service
+                      </Button>
+                    </EditServiceDialog>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <DeleteServiceDialog
+                      service={service}
+                      onDelete={handleDelete}
+                    >
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full justify-start text-red-600"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" /> Delete Service
+                      </Button>
+                    </DeleteServiceDialog>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
 
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             <motion.div
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.1, duration: 0.5 }}
             >
-              <h3 className="text-xl font-semibold tracking-tight text-gray-900 line-clamp-1">
+              <h3 className="text-sm sm:text-lg font-semibold tracking-tight text-gray-900 line-clamp-2">
                 {service.name}
               </h3>
               <div className="mt-1 flex items-center gap-2">
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-4 w-4 ${
-                        i < Math.floor(rating)
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "fill-gray-200 text-gray-200"
-                      }`}
-                    />
-                  ))}
-                </div>
-                <span className="text-sm font-medium text-gray-600">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`h-3 w-3 sm:h-4 sm:w-4 ${
+                      i < Math.floor(rating)
+                        ? "fill-yellow-400"
+                        : "fill-gray-200"
+                    }`}
+                  />
+                ))}
+                <span className="text-xs sm:text-sm font-medium text-gray-600">
                   {rating} ({reviewCount})
                 </span>
               </div>
             </motion.div>
 
             <motion.p
-              className="mt-3 text-sm text-gray-600 line-clamp-2"
+              className="mt-3 text-xs sm:text-sm text-gray-600 line-clamp-3"
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
@@ -174,23 +166,23 @@ export default function ServiceCard({ service }: { service: Service }) {
             </motion.p>
 
             <motion.div
-              className="mt-4 flex items-center justify-between"
+              className="mt-4 flex items-center justify-between flex-wrap"
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
               <div>
-                <p className="text-xs font-medium text-gray-500">
+                <p className="text-xs sm:text-sm font-medium text-gray-500">
                   Starting from
                 </p>
-                <p className="text-lg font-bold text-primary">
+                <p className="text-sm sm:text-lg font-bold text-primary">
                   ETB {service.basicPrice.toLocaleString()}
                 </p>
               </div>
               <Button
                 variant="ghost"
                 size="sm"
-                className="group/button flex items-center gap-1 font-medium text-primary hover:bg-primary/10"
+                className="group/button flex items-center gap-1 font-medium text-primary hover:bg-primary/10 w-full sm:w-auto"
               >
                 Details
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/button:translate-x-1" />
@@ -200,7 +192,7 @@ export default function ServiceCard({ service }: { service: Service }) {
         </Link>
 
         <motion.div
-          className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+          className="absolute bottom-0 left-0 right-0 h-1 sm:h-0.5 bg-primary"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: isHovered ? 1 : 0 }}
           transition={{ duration: 0.3 }}

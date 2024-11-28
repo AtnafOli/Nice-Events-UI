@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ChevronDown, ChevronUp, Star, Zap } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -73,7 +73,7 @@ export default function PricingPlan({
         className={cn(
           "relative overflow-hidden transition-all duration-500 ease-in-out border-2",
           isHighlighted
-            ? "bg-gradient-to-br from-primary/5 via-background to-primary/5 border-primary shadow-lg"
+            ? "bg-gradient-to-br from-primary/5 via-background to-primary/5 border-primary shadow-md md:shadow-lg"
             : "bg-white/50 hover:shadow-md border-border"
         )}
       >
@@ -84,7 +84,9 @@ export default function PricingPlan({
             transition={{ delay: 0.2 }}
             className="flex items-center justify-center space-x-2"
           >
-            <h3 className="text-3xl font-bold tracking-tight">{plan.name}</h3>
+            <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+              {plan.name}
+            </h3>
           </motion.div>
           <motion.p
             className="text-sm text-muted-foreground"
@@ -95,7 +97,7 @@ export default function PricingPlan({
             {plan.description}
           </motion.p>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-6 p-4 md:p-6">
           {selectedPrice && (
             <motion.div
               className="text-center space-y-2"
@@ -104,13 +106,13 @@ export default function PricingPlan({
               transition={{ delay: 0.4 }}
             >
               <div className="flex items-baseline justify-center">
-                <span className="text-4xl font-extrabold mr-2 text-primary">
+                <span className="text-lg md:text-2xl font-extrabold mr-2 text-primary">
                   {selectedPrice.currency}
                 </span>
-                <span className="text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+                <span className="text-3xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
                   {selectedPrice.amount}
                 </span>
-                <span className="text-2xl font-medium text-muted-foreground ml-2">
+                <span className="text-sm md:text-lg font-medium text-muted-foreground ml-2">
                   /{formatBillingCycle(selectedPrice.billingCycle)}
                 </span>
               </div>
@@ -134,7 +136,7 @@ export default function PricingPlan({
             <h4 className="text-sm font-medium text-center text-foreground">
               Features included
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-3 overflow-auto max-h-[200px] md:max-h-full">
               <AnimatePresence initial={false}>
                 {displayedFeatures?.map((feature, index) => (
                   <motion.li
@@ -145,21 +147,21 @@ export default function PricingPlan({
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                     className="flex items-center gap-3"
                   >
-                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-primary" />
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Check className="w-4 h-4 text-primary" />
                     </div>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <span className="text-sm truncate text-card-foreground">
+                          <span className="text-sm truncate text-card-foreground hover:text-primary">
                             {feature.feature.name}
                           </span>
                         </TooltipTrigger>
                         <TooltipContent
-                          side="right"
-                          className="bg-popover text-popover-foreground"
+                          side="bottom"
+                          className="bg-popover text-popover-foreground p-2"
                         >
-                          <p>{feature.feature.name}</p>
+                          <p className="font-medium">{feature.feature.name}</p>
                           {feature.value && (
                             <p className="text-xs text-muted-foreground mt-1">
                               {typeof feature.value === "boolean"
@@ -182,7 +184,7 @@ export default function PricingPlan({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full mt-2 text-primary hover:text-primary-foreground hover:bg-primary/20 transition-colors duration-300"
+                  className="w-full mt-2 text-primary hover:text-primary-foreground hover:bg-primary/20 transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
                   onClick={() => setShowAllFeatures(!showAllFeatures)}
                 >
                   {showAllFeatures ? (
@@ -200,12 +202,12 @@ export default function PricingPlan({
               )}
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="p-4 md:p-6">
           <Button
             onClick={handlePlanSelection}
             className={cn(
-              "w-full transition-all duration-300 ease-in-out text-lg font-semibold py-6 rounded-full shadow-lg",
-              "bg-primary hover:bg-primary/90 text-primary-foreground"
+              "w-full transition-all duration-300 ease-in-out text-lg font-semibold py-3 md:py-4 rounded-full shadow-lg",
+              "bg-gradient-to-r from-primary to-accent text-primary-foreground hover:from-primary/90 hover:to-accent/90"
             )}
           >
             Get started

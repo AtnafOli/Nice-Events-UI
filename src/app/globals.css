@@ -243,3 +243,10 @@ body {
 .animate-orbit {
   animation: orbit 3s linear infinite;
 }
+
+@media (max-width: 640px) {
+  .pricing-plan {
+    padding: 2rem;
+  }
+}
+

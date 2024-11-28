@@ -11,17 +11,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Search,
-  Sparkles,
-  Music,
-  Utensils,
-  Camera,
-  MapPin,
+  Heart,
   GraduationCap,
   Users,
-  Heart,
+  Music,
+  Search,
+  Sparkles,
   ChevronRight,
   ArrowRight,
+  Camera,
 } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -105,7 +103,7 @@ export default function EnhancedHeroSection() {
                 className="inline-flex items-center space-x-2 bg-primary/10 rounded-full lg:px-4 py-2 lg:text-sm text-xs font-medium text-primary"
               >
                 <Sparkles className="lg:h-4 h-3 lg:w-4 w-3" />
-                <span>Find event vendors</span>{" "}
+                <span>Find event vendors</span>
               </motion.div>
               <motion.h1
                 initial={{ y: 0 }}
@@ -152,7 +150,7 @@ export default function EnhancedHeroSection() {
                     ))}
                   </SelectContent>
                 </Select>
-                <Select onValueChange={setCity} value={city}>
+                <Select onValueChange={setCity} value={city} placeholder="City">
                   <SelectTrigger className="bg-background/50 backdrop-blur-sm border-primary/20">
                     <SelectValue placeholder="City" />
                   </SelectTrigger>
@@ -164,8 +162,7 @@ export default function EnhancedHeroSection() {
                   </SelectContent>
                 </Select>
               </div>
-
-              <Button className="w-full bg-primary lg:text-md text-sm  text-primary-foreground hover:bg-primary/90 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+              <Button className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:bg-gradient-to-l hover:shadow-lg transition-all duration-300 ease-in-out">
                 <Sparkles className="mr-2 h-4 w-4" /> Discover Vendors
               </Button>
             </motion.div>
@@ -196,7 +193,6 @@ export default function EnhancedHeroSection() {
                   />
                 </motion.div>
               </AnimatePresence>
-
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -220,7 +216,6 @@ export default function EnhancedHeroSection() {
         </div>
       </div>
       <div className="absolute bottom-0 left-0 right-0 lg:h-32 h-12 bg-gradient-to-t from-background to-transparent" />
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
