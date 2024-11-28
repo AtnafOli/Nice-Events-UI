@@ -10,7 +10,6 @@ import { Service } from "@/types/service";
 
 function VendorServicesList() {
   const { user } = useUser();
-  console.log(user);
 
   const { services } = useServices(`?vendorId=${user?.Vendor.id}`);
 
