@@ -61,7 +61,7 @@ export default function ServiceCard({ service }: { service: Service }) {
                 objectFit="cover"
                 className="transition-transform duration-700 will-change-transform group-hover:scale-105"
                 priority
-                onLoadingComplete={() => setIsImageLoaded(true)}
+                onLoad={() => setIsImageLoaded(true)}
               />
             </motion.div>
             {!isImageLoaded && (

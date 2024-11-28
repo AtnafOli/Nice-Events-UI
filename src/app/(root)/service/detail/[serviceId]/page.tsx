@@ -13,7 +13,7 @@ export async function generateMetadata({
   const service = response?.data?.[0];
 
   return {
-    title: `${service?.name || "Services"} | Your App Name`,
+    title: `${service?.name || "Services"}`,
     description: `Browse our ${service?.name || "various"} services.`,
   };
 }
