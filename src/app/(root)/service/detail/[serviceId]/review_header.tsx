@@ -43,9 +43,9 @@ export default function ReviewHeaderSection({ stats }: ReviewSectionProps) {
       <h2 className="text-3xl font-bold tracking-tight text-gray-900">
         Reviews
       </h2>
-      <Card className="bg-white/40 p-0">
+      <Card className="bg-secondary/30 shadow-none p-0">
         <CardContent className="p-6">
-          <div className="flex items-center gap-3 text-gray-600 bg-primaryp-4 rounded-lg">
+          <div className="flex items-center gap-3 text-secondary-foreground bg-primaryp-4 rounded-lg">
             <Info className="h-5 w-5 text-primary" />
             <p className="text-sm">
               Your trust matters to us. Our review system ensures authentic
@@ -56,7 +56,7 @@ export default function ReviewHeaderSection({ stats }: ReviewSectionProps) {
       </Card>
 
       <div className="grid md:grid-cols-3 gap-4 items-start">
-        <div className="flex flex-col items-center p-8 bg-white/50 rounded-xl shadow-md">
+        <div className="flex flex-col items-center p-8 bg-white/10 rounded-xl shadow-sm">
           <div className="text-6xl font-bold text-gray-900 mb-4">
             {stats.rating.toFixed(1)}
           </div>
@@ -81,7 +81,7 @@ export default function ReviewHeaderSection({ stats }: ReviewSectionProps) {
           </Button>
         </div>
 
-        <div className="space-y-4 bg-white/50 p-8 col-span-2 rounded-xl shadow-md">
+        <div className="space-y-4 bg-white/10 p-8 col-span-2 rounded-xl shadow-sm">
           {[5, 4, 3, 2, 1].map((rating) => (
             <div key={rating} className="flex items-center gap-4">
               <div className="w-20 text-sm font-medium text-gray-700">
