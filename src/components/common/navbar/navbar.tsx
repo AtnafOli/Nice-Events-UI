@@ -24,7 +24,7 @@ import { authService } from "@/services/auth.service";
 import UserMenu from "../usermenu";
 
 const links = [
-  { name: "Vendors", href: "/vendors" },
+  { name: "Services", href: "/services" },
   { name: "Event Planners", href: "/planners" },
   { name: "Venues", href: "/venues" },
 ];

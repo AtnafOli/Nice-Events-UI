@@ -1,4 +1,5 @@
 import { ImageInterace } from "../image";
+import { VendorData } from "../vendor";
 
 export interface Service {
   id: number;
@@ -7,6 +8,7 @@ export interface Service {
   basicPrice: number;
   vendorId?: number;
   primaryImageIndex?: number;
+  vendor?: VendorData;
   images: ImageInterace[];
   subCategory: SubCategory;
   createdAt: string;

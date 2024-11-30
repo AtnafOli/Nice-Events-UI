@@ -16,7 +16,7 @@ export default function CategoryCard({ category }: { category: Category }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link href={`/service/${category.id}`}>
+      <Link href={`/category/${category.id}`}>
         <motion.div
           className="absolute inset-0"
           animate={{ scale: isHovered ? 1.05 : 1 }}

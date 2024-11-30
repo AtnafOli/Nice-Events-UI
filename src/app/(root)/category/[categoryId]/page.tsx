@@ -4,24 +4,28 @@ import { servicesService } from "@/services/services.service";
 import ServicesClient from "./serviceClient";
 import LoadingServices from "./loading";
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const { id } = await params;
+export async function generateMetadata({
+  params,
+}: {
+  params: { categoryId: string };
+}) {
+  const { categoryId } = await params;
   const {
     data: [category],
-  } = await categoryService.getCategorys(`?id=${id}`);
+  } = await categoryService.getCategorys(`?id=${categoryId}`);
 
   return {
-    title: `${category?.name || "Services"} | Your App Name`,
+    title: { default: `${category?.name || "Services"}` },
     description: `Browse our ${category?.name} services`,
   };
 }
 
-async function ServicesPage({ params }: { params: { id: string } }) {
-  const { id } = await params;
+async function ServicesPage({ params }: { params: { categoryId: string } }) {
+  const { categoryId } = await params;
 
   const [categoryResponse, servicesResponse] = await Promise.all([
-    categoryService.getCategorys(`?id=${id}`),
-    servicesService.getServices(`?categoryId=${id}`),
+    categoryService.getCategorys(`?id=${categoryId}`),
+    servicesService.getServices(`?categoryId=${categoryId}`),
   ]);
 
   const category = categoryResponse.data[0];
