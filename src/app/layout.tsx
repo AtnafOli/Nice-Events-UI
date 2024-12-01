@@ -104,6 +104,7 @@ export default function RootLayout({
                     <div className="mx-auto w-full max-w-[1580px]">
                       <CustomQueryClientProvider>
                         {children}
+                        <Analytics />
                         <Toaster />
                       </CustomQueryClientProvider>
                     </div>
