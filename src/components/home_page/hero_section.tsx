@@ -63,7 +63,7 @@ export default function EnhancedHeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-screen text-foreground overflow-visible lg:py-8 py-4 w-full px-4">
+    <section className="relative min-h-screen text-foreground overflow-visible lg:py-8 py-4 w-full px-6">
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/10" />
       <div className="absolute inset-0">
         <svg

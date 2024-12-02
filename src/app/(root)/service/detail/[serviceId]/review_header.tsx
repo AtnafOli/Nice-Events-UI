@@ -40,10 +40,10 @@ export default function ReviewHeaderSection({ stats }: ReviewSectionProps) {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
-      <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+      <h2 className="lg:text-xl text-lg font-bold tracking-tight text-gray-900">
         Reviews
       </h2>
-      <Card className="bg-secondary/30 shadow-none p-0">
+      <Card className="bg-secondary/15 shadow-none p-0">
         <CardContent className="p-6">
           <div className="flex items-center gap-3 text-secondary-foreground bg-primaryp-4 rounded-lg">
             <Info className="h-5 w-5 text-primary" />
@@ -56,7 +56,7 @@ export default function ReviewHeaderSection({ stats }: ReviewSectionProps) {
       </Card>
 
       <div className="grid md:grid-cols-3 gap-4 items-start">
-        <div className="flex flex-col items-center p-8 bg-white/10 rounded-xl shadow-sm">
+        <div className="flex flex-col items-center p-8 bg-transparent rounded-xl shadow-none">
           <div className="text-6xl font-bold text-gray-900 mb-4">
             {stats.rating.toFixed(1)}
           </div>
@@ -81,7 +81,7 @@ export default function ReviewHeaderSection({ stats }: ReviewSectionProps) {
           </Button>
         </div>
 
-        <div className="space-y-4 bg-white/10 p-8 col-span-2 rounded-xl shadow-sm">
+        <div className="space-y-4 bg-transparent p-8 col-span-2 rounded-xl shadow-none">
           {[5, 4, 3, 2, 1].map((rating) => (
             <div key={rating} className="flex items-center gap-4">
               <div className="w-20 text-sm font-medium text-gray-700">
@@ -111,7 +111,7 @@ export default function ReviewHeaderSection({ stats }: ReviewSectionProps) {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="text-sm text-gray-600 bg-white bg-opacity-50 p-4 rounded-lg">
+          <div className="text-sm text-gray-600 bg-white bg-opacity-20 p-4 rounded-lg">
             This AI-generated summary provides key insights from customer
             feedback and ratings.
           </div>

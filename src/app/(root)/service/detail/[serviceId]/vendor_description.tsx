@@ -18,12 +18,12 @@ export default function VendorDescription({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <Card className="max-w-4xl mx-auto bg-transparent shadow-none">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">{title}</CardTitle>
-        <h2 className="text-lg font-semibold text-muted-foreground">
-          {subtitle}
-        </h2>
+    <Card className="max-w-6xl mx-auto bg-transparent shadow-none ">
+      <CardHeader className="px-4">
+        <CardTitle className="md:text-xl text-base font-bold text-black">
+          {title}
+        </CardTitle>
+        <h2 className="text-sm font-mono text-muted-foreground">{subtitle}</h2>
       </CardHeader>
       <CardContent className="space-y-4">
         <div

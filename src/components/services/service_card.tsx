@@ -43,7 +43,7 @@ export default function ServiceCard({ service }: { service: Service }) {
       layout
     >
       <Card
-        className="group relative overflow-hidden bg-white shadow-md transition-all duration-300 hover:shadow-xl focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-4"
+        className="group relative overflow-hidden bg-white/30 shadow-sm transition-all duration-300 hover:shadow-xl focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-4"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -136,34 +136,25 @@ export default function ServiceCard({ service }: { service: Service }) {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.1, duration: 0.5 }}
             >
-              <h3 className="text-sm sm:text-lg font-semibold tracking-tight text-gray-900 line-clamp-2">
+              <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 mb-2">
                 {service.name}
               </h3>
-              <div className="mt-1 flex items-center gap-2">
+              <div className="flex items-center gap-2 mb-3">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`h-3 w-3 sm:h-4 sm:w-4 ${
-                      i < Math.floor(rating)
-                        ? "fill-yellow-400"
-                        : "fill-gray-200"
+                    className={`h-4 w-4 sm:h-5 sm:w-5 ${
+                      i < Math.floor(service.rating || 2)
+                        ? "fill-yellow-400 text-yellow-400"
+                        : "fill-gray-200 text-gray-200"
                     }`}
                   />
                 ))}
-                <span className="text-xs sm:text-sm font-medium text-gray-600">
-                  {rating} ({reviewCount})
+                <span className="text-sm sm:text-base font-medium text-gray-600">
+                  {service.rating || 2.0} ({service.reviews?.length || 19})
                 </span>
               </div>
             </motion.div>
-
-            <motion.p
-              className="mt-3 text-xs sm:text-sm text-gray-600 line-clamp-3"
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-            >
-              {service.description}
-            </motion.p>
 
             <motion.div
               className="mt-4 flex items-center justify-between flex-wrap"
@@ -190,13 +181,6 @@ export default function ServiceCard({ service }: { service: Service }) {
             </motion.div>
           </div>
         </Link>
-
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-1 sm:h-0.5 bg-primary"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-        />
       </Card>
     </motion.div>
   );

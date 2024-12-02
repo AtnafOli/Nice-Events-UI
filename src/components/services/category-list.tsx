@@ -8,8 +8,8 @@ async function CategoryList() {
   const { data: categorys } = await categoryService.getCategorys("");
 
   return (
-    <div className="space-y-12 px-4">
-      <h3 className="my-4 text-4xl font-bold">Categories</h3>
+    <div className="lg:space-y-12 space-y-6 px-2">
+      <h3 className="lg:my-4 my-2 lg:text-3xl text-xl font-bold">Categories</h3>
 
       {categorys && categorys.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

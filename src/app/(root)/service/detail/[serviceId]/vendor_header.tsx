@@ -10,7 +10,6 @@ import {
   Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
 export default function VendorHeader({
@@ -24,10 +23,10 @@ export default function VendorHeader({
   };
 }) {
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 space-y-6 bg-background/60 backdrop-blur-lg">
+    <div className="w-full max-w-4xl mx-auto p-4 space-y-6 bg-background/60 backdrop-blur-lg">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-bold text-black">
+          <h1 className="md:text-4xl text-xl font-bold text-black">
             {serviceName}
           </h1>
           <div className="flex items-center text-muted-foreground">
