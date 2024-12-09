@@ -150,7 +150,7 @@ export default function EnhancedHeroSection() {
                     ))}
                   </SelectContent>
                 </Select>
-                <Select onValueChange={setCity} value={city} placeholder="City">
+                <Select onValueChange={setCity} value={city}>
                   <SelectTrigger className="bg-background/50 backdrop-blur-sm border-primary/20">
                     <SelectValue placeholder="City" />
                   </SelectTrigger>
@@ -162,7 +162,7 @@ export default function EnhancedHeroSection() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:bg-gradient-to-l hover:shadow-lg transition-all duration-300 ease-in-out">
+              <Button className="w-full bg-primary text-primary-foreground">
                 <Sparkles className="mr-2 h-4 w-4" /> Discover Vendors
               </Button>
             </motion.div>

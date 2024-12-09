@@ -43,7 +43,7 @@ export default function ReviewHeaderSection({ stats }: ReviewSectionProps) {
       <h2 className="lg:text-xl text-lg font-bold tracking-tight text-gray-900">
         Reviews
       </h2>
-      <Card className="bg-secondary/15 shadow-none p-0">
+      <Card className="bg-secondary/10 shadow-none p-0">
         <CardContent className="p-6">
           <div className="flex items-center gap-3 text-secondary-foreground bg-primaryp-4 rounded-lg">
             <Info className="h-5 w-5 text-primary" />
@@ -55,7 +55,7 @@ export default function ReviewHeaderSection({ stats }: ReviewSectionProps) {
         </CardContent>
       </Card>
 
-      <div className="grid md:grid-cols-3 gap-4 items-start">
+      <div className="grid md:grid-cols-3 gap-6 items-stretch">
         <div className="flex flex-col items-center p-8 bg-transparent rounded-xl shadow-none">
           <div className="text-6xl font-bold text-gray-900 mb-4">
             {stats.rating.toFixed(1)}
@@ -76,9 +76,6 @@ export default function ReviewHeaderSection({ stats }: ReviewSectionProps) {
           <div className="text-lg font-semibold text-gray-900 mb-6">
             {stats.totalReviews.toLocaleString()} verified reviews
           </div>
-          <Button className="bg-primary hover:bg-primary text-white px-8 py-2 rounded-full transition-all transform hover:scale-105">
-            Write a Review
-          </Button>
         </div>
 
         <div className="space-y-4 bg-transparent p-8 col-span-2 rounded-xl shadow-none">
@@ -103,7 +100,7 @@ export default function ReviewHeaderSection({ stats }: ReviewSectionProps) {
         </div>
       </div>
 
-      <Card className="bg-gradient-to-br from-amber-50 to-orange-50 border-none shadow-lg">
+      <Card className="bg-gradient-to-br from-accent/20 to-orange-50/90 border-none shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-xl text-gray-900">
             <MessageSquare className="h-6 w-6 text-orange-600" />

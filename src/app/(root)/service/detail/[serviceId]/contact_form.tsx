@@ -25,14 +25,10 @@ const contactFormSchema = z.object({
     .string()
     .min(2, "Last name must be at least 2 characters")
     .max(50, "Last name must be less than 50 characters"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Invalid email address").optional(),
   phone: z
     .string()
-    .regex(
-      /^(\+?\d{1,4}[-.\s]?)?\(?\d{1,3}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
-      "Invalid phone number"
-    )
-    .optional()
+    .regex(/^\d{9}$/, "Please enter 9 digits")
     .or(z.literal("")),
   message: z
     .string()
@@ -135,7 +131,7 @@ export default function ContactForm({
   return (
     <>
       <style>{customDatePickerStyles}</style>
-      <Card className="w-full max-w-2xl mx-auto bg-white/95 shadow-lg rounded-lg transition-all duration-300 hover:shadow-xl">
+      <Card className="w-full max-w-2xl mx-auto bg-white/75 shadow-md rounded-lg transition-all duration-300 hover:shadow-xl">
         <CardHeader className="p-6 border-b">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-gray-800">
@@ -208,26 +204,6 @@ export default function ContactForm({
             </div>
 
             <div>
-              <Label htmlFor="email" className="text-gray-700 font-medium">
-                Email *
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                {...register("email")}
-                className={cn(
-                  "mt-1 p-2 border border-gray-300 bg-transparent  transition-all duration-200",
-                  errors.email && "border-red-500"
-                )}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.email.message}
-                </p>
-              )}
-            </div>
-
-            <div>
               <Label htmlFor="eventDate" className="text-gray-700 font-medium">
                 Event date *
               </Label>
@@ -294,21 +270,45 @@ export default function ContactForm({
 
             <div>
               <Label htmlFor="phone" className="text-gray-700 font-medium">
-                Phone number (optional)
+                Phone number *
               </Label>
-              <Input
-                id="phone"
-                type="tel"
-                {...register("phone")}
-                className={cn(
-                  "mt-1 p-2 border border-gray-300 bg-transparent  transition-all duration-200",
-                  errors.phone && "border-red-500"
-                )}
-                placeholder="Enter your phone number"
-              />
+              <div className="relative flex items-center mt-1">
+                <div className="absolute left-0 flex items-center pl-3 pointer-events-none">
+                  <span className="text-gray-500 select-none">+251</span>
+                </div>
+                <Input
+                  id="phone"
+                  type="tel"
+                  {...register("phone")}
+                  className={cn(
+                    "pl-16 w-full border border-gray-300 bg-transparent transition-all duration-200",
+                    errors.phone && "border-red-500"
+                  )}
+                  placeholder="9xxxxxxxx"
+                />
+              </div>
               {errors.phone && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.phone.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="email" className="text-gray-700 font-medium">
+                Email (optional)
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                {...register("email")}
+                className={cn(
+                  "mt-1 p-2 border border-gray-300 bg-transparent  transition-all duration-200",
+                  errors.email && "border-red-500"
+                )}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
                 </p>
               )}
             </div>

@@ -31,10 +31,6 @@ async function ServicesPage({ params }: { params: { categoryId: string } }) {
   const category = categoryResponse.data[0];
   const services = servicesResponse.data;
 
-  if (!category) {
-    throw new Error("Category not found");
-  }
-
   return (
     <Suspense fallback={<LoadingServices />}>
       <ServicesClient initialServices={services} category={category} />

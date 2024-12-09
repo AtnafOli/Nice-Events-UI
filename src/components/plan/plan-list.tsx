@@ -52,7 +52,7 @@ export function PlansList() {
   }
 
   if (error) {
-    return <ErrorState message={error.message} />;
+    return <ErrorState message={error.message.m} />;
   }
 
   return (

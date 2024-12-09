@@ -25,6 +25,13 @@ export const servicesService = {
     return data;
   },
 
+  getServicesByCity: async (cityName: string): Promise<ServicesResponse> => {
+    const { data } = await api.get<ServicesResponse>(
+      `/services/city/${cityName}`
+    );
+    return data;
+  },
+
   createService: async (
     serviceData: ServiceCreateData
   ): Promise<ServiceResponse> => {

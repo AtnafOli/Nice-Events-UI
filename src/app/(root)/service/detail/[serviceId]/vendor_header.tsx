@@ -45,14 +45,6 @@ export default function VendorHeader({
             <Heart className="h-5 w-5" />
             <span className="sr-only">Save to favorites</span>
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-10 w-10 rounded-full bg-secondary/10 hover:bg-secondary/20 text-secondary transition-colors"
-          >
-            <Share2 className="h-5 w-5" />
-            <span className="sr-only">Share</span>
-          </Button>
         </div>
       </div>
 

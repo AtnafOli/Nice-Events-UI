@@ -82,11 +82,11 @@ export default function Navbar() {
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
                 <Image
-                  src="/logo.webp"
+                  src="/logo_1.png"
                   alt="Luxe Event Connections Logo"
                   width={180}
                   height={32}
-                  className="h-12 lg:h-[74px] w-auto transition-opacity duration-300 group-hover:opacity-80"
+                  className="h-8 lg:h-[64px] w-auto transition-opacity duration-300 group-hover:opacity-80"
                 />
               </motion.div>
             </Link>
@@ -258,7 +258,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   <div className="flex flex-col h-full">
     <div className="flex items-center justify-between py-4 px-1 border-b border-border">
       <Image
-        src="/logo.webp"
+        src="/logo_1.png"
         alt="Luxe Event Connections Logo"
         width={140}
         height={28}

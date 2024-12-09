@@ -18,8 +18,8 @@ export function usePlans() {
     error,
   } = useQuery({
     queryKey: ["plans"],
-    queryFn: async (params?: any) => {
-      const response = await plansService.getPlans(params);
+    queryFn: async () => {
+      const response = await plansService.getPlans("?");
       return response.data;
     },
   });
