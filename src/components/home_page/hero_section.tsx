@@ -63,30 +63,7 @@ export default function EnhancedHeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-screen text-foreground overflow-visible lg:py-8 py-4 w-full px-6">
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/10" />
-      <div className="absolute inset-0">
-        <svg
-          className="absolute inset-0 h-full w-full"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <pattern
-              id="hero-pattern"
-              width="32"
-              height="32"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M0 32V.5H32"
-                fill="none"
-                stroke="rgba(255,255,255,0.05)"
-              ></path>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#hero-pattern)"></rect>
-        </svg>
-      </div>
+    <section className="relative min-h-screen text-foreground overflow-visible py-4 w-full px-4">
       <div className="mx-auto py-16 md:py-24 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-16 gap-4 items-center">
           <motion.div
@@ -215,7 +192,7 @@ export default function EnhancedHeroSection() {
           </motion.div>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 lg:h-32 h-12 bg-gradient-to-t from-background to-transparent" />
+      {/* <div className="absolute bottom-0 left-0 right-0 lg:h-32 h-12 bg-gradient-to-t from-background to-transparent" /> */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

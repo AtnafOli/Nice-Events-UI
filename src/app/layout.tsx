@@ -89,7 +89,7 @@ export default function RootLayout({
           antialiased
           selection:bg-primary/10
           selection:text-primary
-          bg-background
+          bg-background/70
           text-foreground
         `}
       >

@@ -53,7 +53,7 @@ const DesignAgencyProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-8 lg:mt-24 mt-8">
+    <div className="min-h-screen text-foreground p-8 lg:mt-24 mt-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <header className="mb-16">

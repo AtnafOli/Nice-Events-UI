@@ -9,13 +9,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Search, Menu, X, User, Heart, Bell, LogOut } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useUser } from "@/context/userContext";
 import { DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
@@ -68,27 +61,21 @@ export default function Navbar() {
       className={`fixed top-0 left-0 right-0 transition-all duration-500 ease-in-out z-50
         ${
           isScrolled
-            ? "bg-background/95 backdrop-blur-xl shadow-sm"
+            ? "bg-background backdrop-blur-3xl shadow-sm"
             : "bg-transparent"
         }`}
     >
-      <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1480px] mx-auto px-4 lg:px-4">
         <div className="flex justify-between items-center py-3 md:py-5">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 mr-8 group">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <Image
-                  src="/logo_1.png"
-                  alt="Luxe Event Connections Logo"
-                  width={180}
-                  height={32}
-                  className="h-8 lg:h-[64px] w-auto transition-opacity duration-300 group-hover:opacity-80"
-                />
-              </motion.div>
+              <Image
+                src="/logo.png"
+                alt="Luxe Event Connections Logo"
+                width={180}
+                height={32}
+                className="h-8 lg:h-[54px] w-auto"
+              />
             </Link>
             <nav className="hidden lg:flex space-x-1">
               <AnimatePresence>
@@ -258,7 +245,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   <div className="flex flex-col h-full">
     <div className="flex items-center justify-between py-4 px-1 border-b border-border">
       <Image
-        src="/logo_1.png"
+        src="/logo.png"
         alt="Luxe Event Connections Logo"
         width={140}
         height={28}
