@@ -2,9 +2,9 @@ import React from "react";
 import CategoryCard from "./category.card";
 
 import { AlertCircle } from "lucide-react";
-import { categoryService } from "@/services/category.service";
+import { Category } from "@/types/category";
 
-async function CategoryList({ categorys }) {
+async function CategoryList({ categorys }: { categorys: Category[] }) {
   return (
     <div className="lg:space-y-12 space-y-6 px-2">
       <h3 className="lg:my-4 my-2 lg:text-3xl text-xl font-bold">Categories</h3>
