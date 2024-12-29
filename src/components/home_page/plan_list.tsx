@@ -88,7 +88,7 @@ function PlanList({ plans }: { plans: PlanResponse["data"] }) {
     <div className="w-full mx-auto z-30 lg:px-12">
       <div className="flex flex-col items-center space-y-4 md:space-y-8 mb-6 md:mb-12">
         <div className="flex flex-col items-center space-y-4 text-center px-4">
-          <h2 className="text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent tracking-tight px-2 md:px-4">
+          <h2 className="text-2xl md:text-4xl font-extrabold text-primary tracking-tight px-2 md:px-4">
             Elevate Your Event Business
           </h2>
           <p className="text-sm md:text-xl text-muted-foreground max-w-xl sm:max-w-2xl md:max-w-3xl leading-relaxed px-2 sm:px-4 font-light">

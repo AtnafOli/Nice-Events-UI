@@ -18,7 +18,7 @@ export default function CategoryCard({ category }: { category: Category }) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link href={`/category/${category.id}`} className="block h-full w-full">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/10 to-black/60 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/60 z-10" />
 
         <motion.div
           className="absolute inset-0"

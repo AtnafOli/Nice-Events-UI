@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -25,13 +26,11 @@ const nextConfig = {
     ],
   },
   swcMinify: true,
-  httpAgentOptions: {
-    keepAlive: true,
-    timeout: 160000, // 160 seconds
-  },
+
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
+  staticPageGenerationTimeout: 1000,
 };
 
-module.exports = nextConfig;
+export default nextConfig;
