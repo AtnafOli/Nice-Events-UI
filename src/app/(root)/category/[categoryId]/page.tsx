@@ -1,8 +1,6 @@
-import { Suspense } from "react";
 import { categoryService } from "@/services/category.service";
 import { servicesService } from "@/services/services.service";
 import ServicesClient from "./serviceClient";
-import LoadingServices from "./loading";
 
 export async function generateMetadata({
   params,
@@ -31,11 +29,7 @@ async function ServicesPage({ params }: { params: { categoryId: string } }) {
   const category = categoryResponse.data[0];
   const services = servicesResponse.data;
 
-  return (
-    <Suspense fallback={<LoadingServices />}>
-      <ServicesClient initialServices={services} category={category} />
-    </Suspense>
-  );
+  return <ServicesClient initialServices={services} category={category} />;
 }
 
 export default ServicesPage;

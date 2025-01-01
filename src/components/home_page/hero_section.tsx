@@ -23,13 +23,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-
-const eventTypes = [
-  { name: "Wedding", icon: Heart },
-  { name: "Graduation", icon: GraduationCap },
-  { name: "Seminar", icon: Users },
-  { name: "Concert", icon: Music },
-];
+import { Category } from "@/types/category";
+import { useRouter } from "next/navigation";
 
 const images = [
   {
@@ -50,10 +45,17 @@ const images = [
   },
 ];
 
-export default function EnhancedHeroSection() {
+export default function EnhancedHeroSection({
+  categorys,
+}: {
+  categorys: Category[];
+}) {
   const [category, setCategory] = useState("");
+  
   const [city, setCity] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const router = useRouter(); 
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -111,18 +113,15 @@ export default function EnhancedHeroSection() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Select onValueChange={setCategory} value={category}>
                   <SelectTrigger className="bg-background/50 backdrop-blur-sm border-primary/20">
-                    <SelectValue placeholder="Event Type" />
+                    <SelectValue placeholder="Service Category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {eventTypes.map((type) => (
+                    {categorys.map((type) => (
                       <SelectItem
                         key={type.name}
                         value={type.name.toLowerCase()}
                       >
-                        <div className="flex items-center">
-                          <type.icon className="mr-2 h-4 w-4 text-primary" />
-                          {type.name}
-                        </div>
+                        <div className="flex items-center">{type.name}</div>
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -139,8 +138,10 @@ export default function EnhancedHeroSection() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button className="w-full bg-primary text-primary-foreground">
-                <Sparkles className="mr-2 h-4 w-4" /> Discover Vendors
+              <Button onClick={()=>{
+                router.push("/")
+              }} className="w-full bg-primary text-primary-foreground">
+                <Sparkles className="mr-2 h-4 w-4" /> Find Service
               </Button>
             </motion.div>
           </motion.div>
