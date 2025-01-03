@@ -3,13 +3,10 @@
 import { usePlans } from "@/hooks/plan.hook";
 import React, { useEffect, useState } from "react";
 import PlanComponent from "./plan";
-import { Skeleton } from "../ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
-import { Badge } from "../ui/badge";
-import { Check, Sparkles, Star } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BillingCycle, Plan, PlanResponse, Price } from "@/types/plan/plan";
-import { plansService } from "@/services/plan.service";
 
 interface CycleOption {
   value: BillingCycle;

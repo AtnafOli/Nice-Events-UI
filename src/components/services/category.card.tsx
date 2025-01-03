@@ -5,19 +5,25 @@ import { Card } from "@/components/ui/card";
 import { ArrowUpRight } from "lucide-react";
 import { Category } from "@/types/category";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function CategoryCard({ category }: { category: Category }) {
   const [isHovered, setIsHovered] = useState(false);
+  const router = useRouter();
+
+  const handleCategoryClick = () => {
+    router.push(`/category/${category.id}`);
+  };
 
   return (
     <Card
       className="group relative w-full aspect-[4/3] overflow-hidden rounded-lg cursor-pointer shadow-md hover:shadow-xl transition-all duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleCategoryClick}
     >
-      <Link href={`/category/${category.id}`} className="block h-full w-full">
+      <div className="block h-full w-full">
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/60 z-10" />
 
         <motion.div
@@ -80,7 +86,7 @@ export default function CategoryCard({ category }: { category: Category }) {
             </motion.div>
           </motion.div>
         </motion.div>
-      </Link>
+      </div>
     </Card>
   );
 }

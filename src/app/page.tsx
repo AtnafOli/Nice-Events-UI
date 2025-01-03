@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <div className="">
       <Navbar></Navbar>
-      <div className=" grid grid-cols-1 gap-20 lg:mt-16 mt-8 lg:px-12 p-2">
+      <div className=" grid grid-cols-1 gap-20 lg:mt-16 mt-8 lg:px-6 p-2">
         <HeroSection categorys={categorys} />
         <CategoryList categorys={categorys} />
         <PlanList plans={data} />
