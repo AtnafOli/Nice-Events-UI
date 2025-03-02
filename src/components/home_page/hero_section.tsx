@@ -51,11 +51,11 @@ export default function EnhancedHeroSection({
   categorys: Category[];
 }) {
   const [category, setCategory] = useState("");
-  
+
   const [city, setCity] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const router = useRouter(); 
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -138,9 +138,12 @@ export default function EnhancedHeroSection({
                   </SelectContent>
                 </Select>
               </div>
-              <Button onClick={()=>{
-                router.push("/")
-              }} className="w-full bg-primary text-primary-foreground">
+              <Button
+                onClick={() => {
+                  router.push("/");
+                }}
+                className="w-full bg-primary text-primary-foreground"
+              >
                 <Sparkles className="mr-2 h-4 w-4" /> Find Service
               </Button>
             </motion.div>

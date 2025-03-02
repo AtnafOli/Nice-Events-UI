@@ -10,6 +10,7 @@ import { CustomQueryClientProvider } from "@/components/providers/queryclient.pr
 import { Suspense } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Toaster } from "@/components/ui/toaster";
+import { Footer } from "@/components/common/footer/footer";
 
 // Primary Font - GeistSans
 const geistSans = localFont({
@@ -104,6 +105,7 @@ export default function RootLayout({
                     <div className="mx-auto w-full max-w-[1580px]">
                       <CustomQueryClientProvider>
                         {children}
+                        <Footer />
                         <Analytics />
                         <Toaster />
                       </CustomQueryClientProvider>

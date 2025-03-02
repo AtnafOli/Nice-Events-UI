@@ -1,3 +1,4 @@
+import { SubCategory } from "../category";
 import { ImageInterace } from "../image";
 import { VendorData } from "../vendor";
 
@@ -13,13 +14,6 @@ export interface Service {
   subCategory: SubCategory;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface SubCategory {
-  name: string;
-  description: string;
-  categoryId: number;
-  id: number;
 }
 
 export interface ServiceCreateData {

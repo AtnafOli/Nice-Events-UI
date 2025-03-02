@@ -15,6 +15,7 @@ export interface SubCategory {
   description: string;
   categoryId: number;
   id: number;
+  category: Category;
 }
 
 export interface CategoryCreateData {

@@ -21,15 +21,16 @@ export async function generateMetadata({
 async function ServicesPage({ params }: { params: { categoryId: string } }) {
   const { categoryId } = await params;
 
-  const [categoryResponse, servicesResponse] = await Promise.all([
-    categoryService.getCategorys(`?id=${categoryId}`),
-    servicesService.getServices(`?categoryId=${categoryId}`),
-  ]);
+  const { data: services } = await servicesService.getServices(
+    `?categoryId=${categoryId}`
+  );
 
-  const category = categoryResponse.data[0];
-  const services = servicesResponse.data;
-
-  return <ServicesClient initialServices={services} category={category} />;
+  return (
+    <ServicesClient
+      initialServices={services}
+      categoryName={services[0]?.subCategory?.category?.name}
+    />
+  );
 }
 
 export default ServicesPage;

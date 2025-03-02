@@ -8,7 +8,11 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ["res.cloudinary.com", "encrypted-tbn0.gstatic.com"],
+    domains: [
+      "res.cloudinary.com",
+      "encrypted-tbn0.gstatic.com",
+      "lh3.googleusercontent.com",
+    ],
     minimumCacheTTL: 60,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     formats: ["image/avif", "image/webp"],

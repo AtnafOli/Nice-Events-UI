@@ -4,33 +4,18 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import ServiceCard from "@/components/services/service_card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Service } from "@/types/service";
-import { Category } from "@/types/category";
 
 interface ServicesClientProps {
   initialServices: Service[];
-  category: Category;
+  categoryName: string;
 }
 
 const ServicesClient: React.FC<ServicesClientProps> = ({
   initialServices,
-  category,
+  categoryName,
 }) => {
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string>();
   const [services] = useState<Service[]>(initialServices);
-
-  const filteredServices = services.filter(
-    (service) =>
-      !selectedSubcategory ||
-      service.subCategory.id === parseInt(selectedSubcategory)
-  );
 
   return (
     <div className="min-h-screen bg-transparent py-12 px-4 sm:px-6 lg:px-16">
@@ -41,32 +26,13 @@ const ServicesClient: React.FC<ServicesClientProps> = ({
               <div className="flex items-center text-sm text-gray-500 mb-2">
                 <span>Categories</span>
                 <ChevronRight className="h-4 w-4 mx-2" />
-                <span className="text-gray-900">{category.name}</span>
+                <span className="text-gray-900">{categoryName}</span>
               </div>
               <h1 className="text-4xl font-extrabold text-gray-900">
-                {category.name}
+                {categoryName}
               </h1>
             </div>
           </div>
-
-          <Select
-            value={selectedSubcategory || "all"}
-            onValueChange={(value) =>
-              setSelectedSubcategory(value === "all" ? undefined : value)
-            }
-          >
-            <SelectTrigger className="w-[240px] bg-white bg-opacity-50 shadow-md rounded-lg border border-gray-200">
-              <SelectValue placeholder="Select subcategory" />
-            </SelectTrigger>
-            <SelectContent className="rounded-lg shadow-lg border border-gray-100">
-              <SelectItem value="all">All Categories</SelectItem>
-              {category.subcategories?.map((subcategory) => (
-                <SelectItem key={subcategory.id} value={String(subcategory.id)}>
-                  {subcategory.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
 
         <motion.div
@@ -74,7 +40,7 @@ const ServicesClient: React.FC<ServicesClientProps> = ({
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
         >
           <AnimatePresence>
-            {filteredServices.map((service) => (
+            {services.map((service) => (
               <motion.div
                 key={service.id}
                 layout
@@ -87,7 +53,7 @@ const ServicesClient: React.FC<ServicesClientProps> = ({
               </motion.div>
             ))}
 
-            {filteredServices.length === 0 && (
+            {services.length === 0 && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

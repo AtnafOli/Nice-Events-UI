@@ -131,7 +131,7 @@ export default function ContactForm({
   return (
     <>
       <style>{customDatePickerStyles}</style>
-      <Card className="w-full max-w-2xl mx-auto bg-white/75 shadow-md rounded-lg transition-all duration-300 hover:shadow-xl">
+      <Card className="w-full max-w-2xl mx-auto bg-white/55 shadow-md rounded-lg transition-all duration-300 hover:shadow-xl">
         <CardHeader className="p-6 border-b">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-gray-800">
