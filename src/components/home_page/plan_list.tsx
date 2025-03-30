@@ -82,7 +82,7 @@ function PlanList({ plans }: { plans: PlanResponse["data"] }) {
   if (!plans || plans.length === 0) return <EmptyState />;
 
   return (
-    <div className="w-full mx-auto z-30 lg:px-12">
+    <div className="w-full mx-auto z-30 lg:px-12 my-8">
       <div className="flex flex-col items-center space-y-4 md:space-y-8 mb-6 md:mb-12">
         <div className="flex flex-col items-center space-y-4 text-center px-4">
           <h2 className="text-2xl md:text-4xl font-extrabold text-primary tracking-tight px-2 md:px-4">

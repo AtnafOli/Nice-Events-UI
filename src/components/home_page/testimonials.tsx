@@ -48,7 +48,7 @@ export function Testimonials() {
               <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                 Real Stories
               </span>
-              <span className="block mt-3 text-xl text-muted-foreground">
+              <span className="block mt-3 text-xl font-light text-muted-foreground">
                 See how we've helped create unforgettable moments
               </span>
             </motion.h2>

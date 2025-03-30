@@ -38,11 +38,11 @@ export function HowItWorks() {
           {/* Header */}
           <div className="space-y-4 text-center">
             <motion.h2
-              className="text-4xl font-bold tracking-tight md:text-5xl"
+              className="text-3xl font-semibold tracking-tight md:text-3xl"
               initial={{ y: 20 }}
               whileInView={{ y: 0 }}
             >
-              <span className="text-primary">Simple Planning</span>
+              <span className="text-primary ">Simple Planning</span>
               <span className="block mt-2 text-2xl text-muted-foreground">
                 Three steps to your perfect event
               </span>

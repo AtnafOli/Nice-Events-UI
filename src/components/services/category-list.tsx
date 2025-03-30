@@ -3,13 +3,22 @@ import CategoryCard from "./category.card";
 
 import { AlertCircle } from "lucide-react";
 import { Category } from "@/types/category";
+import motion from "framer-motion";
 
 async function CategoryList({ categorys }: { categorys: Category[] }) {
   return (
     <div className="lg:space-y-12 space-y-4 px-2">
-      <h3 className="lg:my-4 my-2 lg:text-4xl text-xl text-center font-bold">
-        Categories
-      </h3>
+      <div className="space-y-5 text-center">
+        <div className="text-4xl font-bold tracking-tight md:text-5xl">
+          <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            Categories{" "}
+          </span>
+          <span className="block mt-3 text-xl font-light text-muted-foreground">
+            Explore a variety of services tailored to make every event truly
+            special{" "}
+          </span>
+        </div>
+      </div>
 
       {categorys && categorys.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

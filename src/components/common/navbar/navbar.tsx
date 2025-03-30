@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,7 +13,11 @@ import { Input } from "@/components/ui/input";
 import { useUser } from "@/context/userContext";
 import { DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
-import { MobileMenuProps, NavButtonProps, NavLinkProps } from "@/types/navbar";
+import type {
+  MobileMenuProps,
+  NavButtonProps,
+  NavLinkProps,
+} from "@/types/navbar";
 import { authService } from "@/services/auth.service";
 import UserMenu from "../usermenu";
 
@@ -59,23 +64,28 @@ export default function Navbar() {
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className={`fixed top-0 left-0 right-0 transition-all duration-500 ease-in-out z-50
-        ${
-          isScrolled
-            ? "bg-background backdrop-blur-3xl shadow-sm"
-            : "bg-transparent"
-        }`}
+    ${
+      isScrolled
+        ? "bg-background/95 backdrop-blur-xl shadow-md border-b border-primary/10"
+        : "bg-transparent"
+    }`}
     >
-      <div className="max-w-[1480px] mx-auto px-2 lg:px-8">
+      <div className="max-w-[1580px] mx-auto px-2 lg:px-8">
         <div className="flex justify-between items-center py-3 md:py-5">
           <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0 mr-8 group">
-              <Image
-                src="/logo.png"
-                alt="Luxe Event Connections Logo"
-                width={180}
-                height={32}
-                className="h-8 lg:h-[54px] w-auto"
-              />
+            <Link href="/" className="flex-shrink-0 mr-8 group relative">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Image
+                  src="/logo.png"
+                  alt="Luxe Event Connections Logo"
+                  width={180}
+                  height={32}
+                  className="h-8 lg:h-[54px] w-auto"
+                />
+              </motion.div>
             </Link>
             <nav className="hidden lg:flex space-x-1">
               <AnimatePresence>
@@ -102,7 +112,7 @@ export default function Navbar() {
                 opacity: 1,
               }}
               transition={{ duration: 0.3 }}
-              className="hidden md:flex items-center bg-muted/80 rounded-full border-none p-0.5  transition-all duration-300"
+              className="hidden md:flex items-center bg-background/80 rounded-full border border-primary/20 p-0.5 shadow-sm hover:shadow-md transition-all duration-300"
             >
               <Search className="h-5 w-5 text-muted-foreground ml-3" />
               <Input
@@ -138,7 +148,7 @@ export default function Navbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="lg:hidden hover:bg-primary/10 transition-colors duration-200 rounded-full"
+                  className="lg:hidden hover:bg-primary/10 transition-colors duration-200 rounded-full border border-transparent hover:border-primary/20"
                   aria-label="Toggle navigation menu"
                 >
                   <AnimatePresence mode="wait" initial={false}>
@@ -150,9 +160,9 @@ export default function Navbar() {
                       transition={{ duration: 0.2 }}
                     >
                       {isMenuOpen ? (
-                        <X className="h-16 w-16 text-foreground" />
+                        <X className="h-6 w-6 text-foreground" />
                       ) : (
-                        <Menu className="h-16 w-auto text-foreground " />
+                        <Menu className="h-6 w-6 text-foreground" />
                       )}
                     </motion.div>
                   </AnimatePresence>
@@ -160,7 +170,7 @@ export default function Navbar() {
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-[335px] bg-background text-foreground rounded-l-2xl"
+                className="w-[335px] bg-background/95 backdrop-blur-xl text-foreground rounded-l-2xl border-l border-primary/10 shadow-xl"
               >
                 <VisuallyHidden>
                   <DialogTitle>Navigation Menu</DialogTitle>
@@ -206,14 +216,14 @@ const NavLink: React.FC<NavLinkProps> = ({
       {active && (
         <motion.div
           layoutId="activeIndicator"
-          className="absolute inset-0 bg-primary/10 rounded-full"
+          className="absolute inset-0 bg-primary/20 rounded-full"
           initial={false}
           transition={{ type: "spring", stiffness: 500, damping: 30 }}
         />
       )}
       <motion.div
-        className="absolute inset-0 bg-primary opacity-0 transition-opacity duration-300"
-        whileHover={{ opacity: 0.1 }}
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-0 bg-primary transition-all duration-300"
+        whileHover={{ width: "60%" }}
       />
     </Link>
   </motion.div>
@@ -225,8 +235,8 @@ const NavButton: React.FC<NavButtonProps> = ({ children, variant }) => (
       variant={variant}
       className={`hidden md:inline-flex rounded-full px-6 py-2 text-sm font-medium transition-all duration-300 ${
         variant === "default"
-          ? "shadow-sm hover:shadow-md bg-primary text-primary-foreground"
-          : "hover:bg-primary/10"
+          ? "shadow-sm hover:shadow-md bg-primary text-primary-foreground border border-primary/20"
+          : "hover:bg-primary/10 border border-transparent hover:border-primary/20"
       }`}
     >
       {children}
@@ -243,7 +253,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   handleNavigate,
 }) => (
   <div className="flex flex-col h-full">
-    <div className="flex items-center justify-between py-4 px-1 border-b border-border">
+    <div className="flex items-center justify-between py-4 px-1 border-b border-primary/10">
       <Image
         src="/logo.png"
         alt="Luxe Event Connections Logo"
@@ -253,7 +263,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       />
     </div>
     <div className="py-4">
-      <div className="flex items-center bg-muted/80 rounded-full px-3 py-1.5 mb-6">
+      <div className="flex items-center bg-background/80 rounded-full border border-primary/20 px-3 py-1.5 mb-6 shadow-sm">
         <Search className="h-4 w-4 text-muted-foreground mr-2" />
         <Input
           type="text"
@@ -263,52 +273,73 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       </div>
       <nav className="space-y-2">
         {links.map((link) => (
-          <Link
+          <motion.div
             key={link.name}
-            href={link.href}
-            className={`block text-sm font-medium px-3 py-2 rounded-lg ${
-              activeLink === link.name
-                ? "bg-primary text-primary-foreground"
-                : "hover:bg-muted hover:text-muted-foreground"
-            }`}
-            onClick={() => {
-              setActiveLink(link.name);
-              setIsMenuOpen(false);
-            }}
+            whileHover={{ x: 5 }}
+            transition={{ duration: 0.2 }}
           >
-            {link.name}
-          </Link>
+            <Link
+              href={link.href}
+              className={`block text-sm font-medium px-4 py-2.5 rounded-lg transition-all duration-300 ${
+                activeLink === link.name
+                  ? "bg-primary/20 text-primary border-l-2 border-primary"
+                  : "hover:bg-primary/10 hover:text-primary border-l-2 border-transparent"
+              }`}
+              onClick={() => {
+                setActiveLink(link.name);
+                setIsMenuOpen(false);
+              }}
+            >
+              {link.name}
+            </Link>
+          </motion.div>
         ))}
       </nav>
     </div>
-    <div className="flex flex-col gap-2 py-4 mt-auto">
+    <div className="flex flex-col gap-3 py-4 mt-auto">
       {user ? (
         <>
-          <Button variant="outline" className="w-full justify-start">
+          <Button
+            variant="outline"
+            className="w-full justify-start rounded-lg border border-primary/20 hover:bg-primary/10 transition-all duration-300"
+          >
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </Button>
-          <Button variant="outline" className="w-full justify-start">
+          <Button
+            variant="outline"
+            className="w-full justify-start rounded-lg border border-primary/20 hover:bg-primary/10 transition-all duration-300"
+          >
             <Heart className="mr-2 h-4 w-4" />
             <span>Favorites</span>
           </Button>
-          <Button variant="outline" className="w-full justify-start">
+          <Button
+            variant="outline"
+            className="w-full justify-start rounded-lg border border-primary/20 hover:bg-primary/10 transition-all duration-300"
+          >
             <Bell className="mr-2 h-4 w-4" />
             <span>Notifications</span>
+          </Button>
+          <Button
+            variant="default"
+            className="w-full justify-start rounded-lg mt-2 bg-primary/90 hover:bg-primary transition-all duration-300"
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Sign Out</span>
           </Button>
         </>
       ) : (
         <>
           <Button
             variant="outline"
-            className="w-full"
+            className="w-full rounded-lg border border-primary/20 hover:bg-primary/10 transition-all duration-300"
             onClick={() => handleNavigate("/sign-in")}
           >
             Sign In
           </Button>
           <Button
             variant="default"
-            className="w-full"
+            className="w-full rounded-lg bg-primary/90 hover:bg-primary transition-all duration-300"
             onClick={() => handleNavigate("/sign-up")}
           >
             Register
