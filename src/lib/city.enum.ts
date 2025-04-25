@@ -1,0 +1,12 @@
+export enum City {
+  ADDIS_ABABA,
+  ADAMA,
+  BAHIR_DAR,
+  HAWASSA,
+  MEKELLE,
+  DIRE_DAWA,
+  GONDAR,
+  JIMMA,
+  DESSIE,
+  HARAR,
+}

@@ -1,11 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,29 +20,16 @@ import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { serviceRequestService } from "@/services/service-request.service";
+import { useToast } from "@/hooks/use-toast";
 
 const contactFormSchema = z.object({
-  firstName: z
-    .string()
-    .min(2, "First name must be at least 2 characters")
-    .max(50, "First name must be less than 50 characters"),
-  lastName: z
-    .string()
-    .min(2, "Last name must be at least 2 characters")
-    .max(50, "Last name must be less than 50 characters"),
-  email: z.string().email("Invalid email address").optional(),
-  phone: z
-    .string()
-    .regex(/^\d{9}$/, "Please enter 9 digits")
-    .or(z.literal("")),
-  message: z
-    .string()
-    .min(10, "Message must be at least 10 characters")
-    .max(1000, "Message must be less than 1000 characters"),
-  eventDate: z.date({
-    required_error: "Event date is required",
-    invalid_type_error: "That's not a valid date",
-  }),
+  firstName: z.string().min(2).max(50),
+  lastName: z.string().min(2).max(50),
+  email: z.string().email(),
+  phone: z.string().regex(/^\d{9}$/, "Enter 9 digits"),
+  message: z.string().min(10).max(1000),
+  eventDate: z.date(),
 });
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
@@ -46,16 +38,23 @@ export default function ContactForm({
   vendorProfile,
   vendorFirstName,
   vendorLastName,
+  vendorId,
+  serviceId,
 }: {
   vendorProfile: string;
   vendorFirstName: string;
   vendorLastName: string;
+  vendorId: number;
+  serviceId: number;
 }) {
+  const { toast } = useToast();
+  const [submitting, setSubmitting] = useState(false);
+
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -70,272 +69,201 @@ export default function ContactForm({
   });
 
   const onSubmit = async (data: ContactFormData) => {
+    setSubmitting(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Form submitted:", data);
+      await serviceRequestService.create({
+        serviceId,
+        vendorId: vendorId!,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phoneNumber: `+251${data.phone}`,
+        eventDate: data.eventDate,
+        eventDetails: data.message,
+      });
+      toast({
+        title: "Quote Request Sent",
+        description: `Your message has been sent to ${vendorFirstName}. They will contact you soon.`,
+        variant: "default",
+      });
       reset();
-    } catch (error) {
-      console.error("Error submitting form:", error);
+    } catch {
+      toast({
+        title: "Failed to Send Request",
+        description:
+          "There was a problem sending your request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const customDatePickerStyles = `
-    .react-datepicker {
-      font-family: inherit;
-      border: 1px solid hsl(20 5.9% 90%);
-      border-radius: var(--radius);
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-      background: hsl(0 0% 100%);
-    }
-    .react-datepicker__header {
-      background-color: hsl(150 8% 90.5%);
-      border-bottom: 1px solid hsl(20 5.9% 90%);
-      border-top-left-radius: var(--radius);
-      border-top-right-radius: var(--radius);
-      padding-top: 0.5rem;
-    }
-    .react-datepicker__current-month {
-      font-weight: 600;
-      font-size: 1rem;
-      color: hsl(240 50% 3.9%);
-    }
-    .react-datepicker__day-name {
-      color: hsl(240 3.8% 46.1%);
-      font-weight: 500;
-    }
-    .react-datepicker__day {
-      color: hsl(240 10% 3.9%);
-      border-radius: calc(var(--radius) * 0.5);
-      transition: all 0.2s;
-    }
-    .react-datepicker__day:hover {
-      background-color: hsl(150 15% 60%);
-      color: hsl(240 5.9% 10%);
-    }
-    .react-datepicker__day--selected {
-      background-color: hsl(20 55% 60%);
-      color: hsl(60 7.1% 96.8%);
-    }
-    .react-datepicker__day--disabled {
-      color: hsl(240 3.8% 46.1%);
-    }
-    .react-datepicker__navigation {
-      top: 0.75rem;
-    }
-    .react-datepicker__day--keyboard-selected {
-      background-color: hsl(40 40% 60%);
-      color: hsl(240 5.9% 10%);
-    }
-  `;
-
   return (
-    <>
-      <style>{customDatePickerStyles}</style>
-      <Card className="w-full max-w-2xl mx-auto bg-white/55 shadow-md rounded-lg transition-all duration-300 hover:shadow-xl">
-        <CardHeader className="p-6 border-b">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight text-gray-800">
-              Message Vendor
-            </h2>
-            <p className="text-sm text-gray-600 mt-2">
-              Required fields are marked with *
-            </p>
+    <Card className="w-full  mx-auto bg-white shadow-lg rounded-lg border border-gray-200">
+      <CardHeader className="flex items-start gap-4 justify-between border-b border-gray-200 pb-2">
+        <div>
+          <h2 className="text-lg font-bold text-gray-800">Request a Quote</h2>
+          <p className="text-xs text-gray-600">Fields marked * are required</p>
+        </div>
+        <div className="flex items-center">
+          <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary/30">
+            <Image
+              src={vendorProfile || "/placeholder.png"}
+              alt={`${vendorFirstName} ${vendorLastName}`}
+              width={48}
+              height={48}
+              className="object-cover"
+            />
           </div>
-          <div className="flex items-center space-x-6 pt-6">
-            <div className="relative w-16 h-16 overflow-hidden rounded-full ring-2 ring-primary/10">
-              <Image
-                src={vendorProfile || "/placeholder.png"}
-                alt="Coordinator"
-                width={200}
-                height={200}
-                className="object-cover"
-              />
-            </div>
-            <div>
-              <h3 className="font-semibold text-lg">
-                {vendorFirstName + " " + vendorLastName}
-              </h3>
-              <p className="text-sm text-muted-foreground">Owner</p>
-            </div>
+          <div className="ml-2 text-sm text-gray-700">
+            {vendorFirstName} {vendorLastName}
           </div>
-        </CardHeader>
-        <CardContent className="p-6">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <Label
-                  htmlFor="firstName"
-                  className="text-gray-700 font-medium"
-                >
-                  First name *
+        </div>
+      </CardHeader>
+      <CardContent className="py-4 space-y-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            {["firstName", "lastName"].map((field) => (
+              <div key={field} className="space-y-1">
+                <Label htmlFor={field} className="text-sm font-medium">
+                  {field === "firstName" ? "First Name" : "Last Name"}{" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Input
-                  id="firstName"
-                  {...register("firstName")}
+                  id={field}
+                  {...register(field as keyof ContactFormData)}
                   className={cn(
-                    "mt-1 p-2 border border-gray-300 bg-transparent  transition-all duration-200",
-                    errors.firstName && "border-red-500"
+                    "py-2 text-sm border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50",
+                    errors[field as keyof ContactFormData] && "border-red-500"
                   )}
+                  placeholder={`${field}`}
                 />
-                {errors.firstName && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.firstName.message}
+                {errors[field as keyof ContactFormData] && (
+                  <p className="text-red-500 text-xs">
+                    {errors[field as keyof ContactFormData]?.message}
                   </p>
                 )}
               </div>
-              <div>
-                <Label htmlFor="lastName" className="text-gray-700 font-medium">
-                  Last name *
-                </Label>
-                <Input
-                  id="lastName"
-                  {...register("lastName")}
-                  className={cn(
-                    "mt-1 p-2 border border-gray-300 bg-transparent  transition-all duration-200",
-                    errors.lastName && "border-red-500"
-                  )}
-                />
-                {errors.lastName && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.lastName.message}
-                  </p>
-                )}
-              </div>
-            </div>
+            ))}
+          </div>
 
-            <div>
-              <Label htmlFor="eventDate" className="text-gray-700 font-medium">
-                Event date *
-              </Label>
-              <div className="relative">
-                <Controller
-                  control={control}
-                  name="eventDate"
-                  render={({ field: { onChange, value } }) => (
-                    <DatePicker
-                      selected={value}
-                      onChange={onChange}
-                      minDate={startOfDay(new Date())}
-                      maxDate={addYears(new Date(), 1)}
-                      dateFormat="MMMM d, yyyy"
-                      placeholderText="Select event date"
-                      className={cn(
-                        "w-full mt-1 p-2 border border-gray-300 rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200",
-                        errors.eventDate && "border-red-500"
-                      )}
-                      customInput={
-                        <div className="relative w-full">
-                          <Input
-                            value={
-                              value
-                                ? value.toLocaleDateString()
-                                : "Select event date"
-                            }
-                            readOnly
-                            className="cursor-pointer pr-10"
-                          />
-                          <CalendarIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
-                        </div>
-                      }
-                    />
-                  )}
-                />
-                {errors.eventDate && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.eventDate.message}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="message" className="text-gray-700 font-medium">
-                Event details *
-              </Label>
-              <Textarea
-                id="message"
-                {...register("message")}
-                className={cn(
-                  "mt-1 p-2 min-h-[120px] border border-gray-300 bg-transparent  transition-all duration-200",
-                  errors.message && "border-red-500"
-                )}
-                placeholder="Please share your event details, preferences, and any special requirements..."
-              />
-              {errors.message && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.message.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <Label htmlFor="phone" className="text-gray-700 font-medium">
-                Phone number *
-              </Label>
-              <div className="relative flex items-center mt-1">
-                <div className="absolute left-0 flex items-center pl-3 pointer-events-none">
-                  <span className="text-gray-500 select-none">+251</span>
+          <div className="space-y-1">
+            <Label htmlFor="eventDate" className="text-sm font-medium">
+              Event Date <span className="text-red-500">*</span>
+            </Label>
+            <Controller
+              control={control}
+              name="eventDate"
+              render={({ field: { onChange, value } }) => (
+                <div className="relative">
+                  <DatePicker
+                    selected={value}
+                    onChange={onChange}
+                    minDate={startOfDay(new Date())}
+                    maxDate={addYears(new Date(), 2)}
+                    dateFormat="MMM d, yyyy"
+                    placeholderText="Select date"
+                    className={cn(
+                      "w-full py-2 text-sm border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50",
+                      errors.eventDate && "border-red-500"
+                    )}
+                    customInput={
+                      <Input
+                        readOnly
+                        value={value ? value.toLocaleDateString("en-US") : ""}
+                        className="cursor-pointer pr-8"
+                      />
+                    }
+                    showPopperArrow={false}
+                  />
+                  <CalendarIcon className="absolute right-3 top-1/2 w-4 h-4 text-gray-400 transform -translate-y-1/2" />
                 </div>
-                <Input
-                  id="phone"
-                  type="tel"
-                  {...register("phone")}
-                  className={cn(
-                    "pl-16 w-full border border-gray-300 bg-transparent transition-all duration-200",
-                    errors.phone && "border-red-500"
-                  )}
-                  placeholder="9xxxxxxxx"
-                />
-              </div>
-              {errors.phone && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.phone.message}
-                </p>
               )}
-            </div>
-            <div>
-              <Label htmlFor="email" className="text-gray-700 font-medium">
-                Email (optional)
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                {...register("email")}
-                className={cn(
-                  "mt-1 p-2 border border-gray-300 bg-transparent  transition-all duration-200",
-                  errors.email && "border-red-500"
-                )}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.email.message}
-                </p>
-              )}
-            </div>
+            />
+            {errors.eventDate && (
+              <p className="text-red-500 text-xs">{errors.eventDate.message}</p>
+            )}
+          </div>
 
-            <div className="space-y-4">
-              <p className="text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
-                By clicking 'Request Quote', you agree to our{" "}
-                <a href="#" className="text-primary hover:underline">
-                  Terms of Use
-                </a>
-                . See our{" "}
-                <a href="#" className="text-primary hover:underline">
-                  Privacy Policy
-                </a>{" "}
-                to learn how we handle your data.
-              </p>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-primary text-white hover:bg-primary/90 transition duration-300 py-6 text-lg font-medium rounded-lg"
-              >
-                {isSubmitting ? "Submitting..." : "Request Quote"}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </>
+          <div className="space-y-1">
+            <Label htmlFor="message" className="text-sm font-medium">
+              Event Details <span className="text-red-500">*</span>
+            </Label>
+            <Textarea
+              id="message"
+              {...register("message")}
+              className={cn(
+                "py-2 text-sm border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y",
+                errors.message && "border-red-500"
+              )}
+              placeholder="Share your event details..."
+              rows={3}
+            />
+            {errors.message && (
+              <p className="text-red-500 text-xs">{errors.message.message}</p>
+            )}
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            {["phone", "email"].map((field) => (
+              <div key={field} className="space-y-1">
+                <Label htmlFor={field} className="text-sm font-medium">
+                  {field.charAt(0).toUpperCase() + field.slice(1)}{" "}
+                  <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id={field}
+                  {...register(field as keyof ContactFormData)}
+                  className={cn(
+                    "py-2 text-sm border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50",
+                    errors[field as keyof ContactFormData] && "border-red-500"
+                  )}
+                  placeholder={
+                    field === "phone" ? "9xxxxxxxx" : "you@example.com"
+                  }
+                />
+                {errors[field as keyof ContactFormData] && (
+                  <p className="text-red-500 text-xs">
+                    {errors[field as keyof ContactFormData]?.message}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="text-xs text-gray-600">
+            <p>
+              By submitting, you agree to our{" "}
+              <a href="#" className="font-medium hover:underline">
+                Terms of Use
+              </a>{" "}
+              and{" "}
+              <a href="#" className="font-medium hover:underline">
+                Privacy Policy
+              </a>
+              .
+            </p>
+            <Button
+              type="submit"
+              disabled={submitting}
+              className="w-full py-2 mt-3 text-sm font-semibold text-white bg-primary rounded-lg shadow hover:bg-primary-dark transition"
+            >
+              {submitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span className="ml-2">Sending...</span>
+                </>
+              ) : (
+                "Request Quote"
+              )}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+      <CardFooter className="pt-2 border-t border-gray-200 text-xs text-center text-gray-500">
+        Vendors typically respond within 24–48 hours
+      </CardFooter>
+    </Card>
   );
 }

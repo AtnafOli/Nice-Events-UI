@@ -14,6 +14,15 @@ export function useAuth() {
   const router = useRouter();
   const { setUser } = useUser();
 
+  // Function to get redirectUrl from current URL
+  const getRedirectUrl = () => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get("redirectUrl");
+    }
+    return null;
+  };
+
   const { data: session, isLoading: isSessionLoading } = useQuery({
     queryKey: ["auth-session"],
     queryFn: authService.checkAuth,
@@ -27,8 +36,13 @@ export function useAuth() {
     mutationFn: (credentials) => authService.signIn(credentials),
     onSuccess: (data) => {
       setUser(data.user);
-      const redirectPath = getRouteByRole(data.user.role);
-      router.push(redirectPath);
+      const redirectUrl = getRedirectUrl();
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      } else {
+        const redirectPath = getRouteByRole(data.user.role);
+        router.push(redirectPath);
+      }
     },
   });
 
@@ -40,7 +54,17 @@ export function useAuth() {
   >({
     mutationFn: (credentials) => authService.signUp(credentials),
     onSuccess: (data) => {
-      router.push(`/verify-email?email=${encodeURIComponent(data.data.email)}`);
+      let verifyEmailUrl = `/verify-email?email=${encodeURIComponent(
+        data.data.email
+      )}`;
+
+      // Check if there's a redirectUrl in the current URL
+      const redirectUrl = getRedirectUrl();
+      if (redirectUrl) {
+        verifyEmailUrl += `&redirectUrl=${encodeURIComponent(redirectUrl)}`;
+      }
+
+      router.push(verifyEmailUrl);
     },
   });
 
@@ -58,9 +82,18 @@ export function useAuth() {
   >({
     mutationFn: (token) => authService.googleSignIn(token),
     onSuccess: (data) => {
+      console.log(data);
+      console.log("data is here*******8");
       setUser(data.user);
-      const redirectPath = getRouteByRole(data.user.role);
-      router.push(redirectPath);
+
+      // Check if there's a redirectUrl in the current URL
+      const redirectUrl = getRedirectUrl();
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      } else {
+        const redirectPath = getRouteByRole(data.user.role);
+        router.push(redirectPath);
+      }
     },
   });
 

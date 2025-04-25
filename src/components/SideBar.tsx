@@ -271,7 +271,7 @@ export default function Sidebar({
   return (
     <>
       {/* Mobile Navigation */}
-      <div className="fixed top-0 left-0 right-0 z-50 lg:hidden">
+      <div className="fixed top-0 left-0 right-0 z-50 lg:hidden ">
         <div className="flex items-center justify-between px-4 h-16 backdrop-blur-xl border-b border-border/50">
           <div className="flex items-center">
             <span className="font-semibold text-base text-primary">
@@ -328,7 +328,7 @@ export default function Sidebar({
       </div>
 
       {/* Desktop Sidebar */}
-      <div className="hidden lg:flex flex-col fixed h-screen w-72 border-r border-border/80 backdrop-blur-xl transition-all duration-300 ease-in-out">
+      <div className="hidden lg:flex flex-col fixed h-screen w-72 border-r border-border/80 backdrop-blur-xl transition-all duration-300 ease-in-out bg-secondary/20">
         <div className="p-4 border-b border-border/50">
           <div className="flex items-center">
             <span className="font-extrabold text-2xl text-primary">

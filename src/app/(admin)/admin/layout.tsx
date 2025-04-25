@@ -74,6 +74,18 @@ const links = [
       },
     ],
   },
+  {
+    label: "Requests",
+    href: "/admin/requests",
+    icon: <FaProductHunt className="w-5 h-5" />,
+    subLinks: [
+      {
+        label: "Service Requests",
+        href: "/admin/requests/service",
+        icon: <ClipboardDocumentListIcon className="w-4 h-4" />,
+      },
+    ],
+  },
   // {
   //   label: "Invoice Management",
   //   href: "/admin/invoices",
@@ -170,16 +182,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       />
       <div className="lg:pl-80">
         <main className="">
-          <div className="rounded-lg border bg-card text-card-foreground shadow">
-            <div className="flex justify-end px-8">
-              <UserMenu
-                menuItems={menuItems}
-                user={user}
-                handleNavigate={handleNavigate}
-                handleLogout={handleLogout}
-              />
-            </div>
-          </div>
           <div className="lg:px-6 lg:py-8">{children}</div>
         </main>
       </div>

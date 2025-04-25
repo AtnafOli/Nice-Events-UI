@@ -1,3 +1,5 @@
+import { VendorData } from "./vendor";
+
 export interface ApiErrorResponse {
   error?: string;
   message?: any;
@@ -11,14 +13,14 @@ export interface ApiSuccessResponse<T> {
 }
 
 export interface User {
-  id: string;
+  id: number;
   email: string;
   name: string;
   role: "admin" | "vendor" | "customer";
   Profile?: any;
   Subscriptions?: any[];
   PaymentMethod?: any[];
-  Vendor?: any;
+  Vendor?: VendorData;
   status?: any;
   createdAt?: any;
 }

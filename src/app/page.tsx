@@ -1,10 +1,13 @@
+import ChatWidget from "@/components/chatbot";
 import Navbar from "@/components/common/navbar/navbar";
+import GoToManageClientWrapper from "@/components/GoToManage.client";
 import { CTASection } from "@/components/home_page/cta-section";
 import HeroSection from "@/components/home_page/hero_section";
 import { HowItWorks } from "@/components/home_page/how_it_works";
 import PlanList from "@/components/home_page/plan_list";
 import { Testimonials } from "@/components/home_page/testimonials";
 import CategoryList from "@/components/services/category-list";
+import { useUser } from "@/context/userContext";
 import { categoryService } from "@/services/category.service";
 import { plansService } from "@/services/plan.service";
 
@@ -22,6 +25,7 @@ export default async function Home() {
         <PlanList plans={data} />
         <Testimonials />
         {/* <CTASection /> */}
+        <ChatWidget />
       </div>
     </div>
   );

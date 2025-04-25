@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/*───────────────────────────────────────────────────────────────────*/
+/*                        Theme CSS Variables                       */
+/*───────────────────────────────────────────────────────────────────*/
 @layer base {
   :root {
     --background: 150 8% 90.5%;
@@ -67,15 +70,16 @@
     --input: 90 14.3% 14.1%;
     --ring: 40 40% 60%;
   }
-}
 
-@layer base {
+  /* Global defaults */
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   h1,
   h2,
   h3,
@@ -86,7 +90,58 @@
   }
 }
 
-/* Custom utilities for events/weddings */
+/*───────────────────────────────────────────────────────────────────*/
+/*                 Custom “Creative” Background Pattern             */
+/*───────────────────────────────────────────────────────────────────*/
+.bg-pattern {
+  /* base fill */
+  background-color: hsl(var(--background));
+
+  /* three-layer dot + stripe mesh tinted by theme */
+  background-image:
+    /* small primary dots */
+    radial-gradient(circle at 10% 10%, hsla(var(--primary), .25) 1px, transparent 1px),
+    /* medium secondary dots */
+    radial-gradient(circle at 30% 80%, hsla(var(--secondary), .2) 2px, transparent 2px),
+    /* light diagonal stripes */
+    repeating-linear-gradient(45deg,
+      transparent,
+      transparent 8px,
+      hsla(var(--primary), .05) 9px,
+      hsla(var(--primary), .05) 12px);
+
+  /* mesh sizing */
+  background-size:
+    40px 40px,
+    60px 60px,
+    100px 100px;
+  opacity: 0.06;
+}
+
+/*───────────────────────────────────────────────────────────────────*/
+/*                          Components                              */
+/*───────────────────────────────────────────────────────────────────*/
+@layer components {
+  .event-card {
+    @apply rounded-lg border border-gold-200/30 bg-white/70 backdrop-blur-sm shadow-lg shadow-gold-500/5 transition-all duration-300 hover:shadow-gold-500/10 hover:border-gold-200/50;
+  }
+
+  .elegant-button {
+    @apply px-6 py-3 rounded-full bg-gradient-to-r from-rose-500 to-gold-500 text-white shadow-lg shadow-gold-500/20 transition-all duration-300 hover:shadow-gold-500/40 hover:scale-105;
+  }
+
+  .decorative-border {
+    @apply border-2 border-gold-200/30 rounded-lg p-1;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-heading font-bold text-gradient mb-6;
+  }
+}
+
+/*───────────────────────────────────────────────────────────────────*/
+/*                         Custom Utilities                        */
+/*───────────────────────────────────────────────────────────────────*/
 @layer utilities {
   .bg-gradient-elegant {
     @apply bg-gradient-to-r from-rose-100 via-background to-gold-100;
@@ -101,35 +156,16 @@
   }
 }
 
-/* Custom components for events/weddings */
-@layer components {
-  .event-card {
-    @apply rounded-lg border border-gold-200/30 bg-white/70 backdrop-blur-sm 
-           shadow-lg shadow-gold-500/5 transition-all duration-300 
-           hover:shadow-gold-500/10 hover:border-gold-200/50;
-  }
-
-  .elegant-button {
-    @apply px-6 py-3 rounded-full bg-gradient-to-r from-rose-500 to-gold-500 
-           text-white shadow-lg shadow-gold-500/20 transition-all duration-300 
-           hover:shadow-gold-500/40 hover:scale-105;
-  }
-
-  .decorative-border {
-    @apply border-2 border-gold-200/30 rounded-lg p-1;
-  }
-
-  .section-title {
-    @apply text-3xl md:text-4xl font-heading font-bold text-gradient mb-6;
-  }
-}
-
-/* Animations */
+/*───────────────────────────────────────────────────────────────────*/
+/*                            Animations                          */
+/*───────────────────────────────────────────────────────────────────*/
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -139,7 +175,39 @@
   animation: float 3s ease-in-out infinite;
 }
 
-/* Custom scrollbar */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(50px) rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg) translateX(50px) rotate(-360deg);
+  }
+}
+
+.animate-orbit {
+  animation: orbit 3s linear infinite;
+}
+
+/*───────────────────────────────────────────────────────────────────*/
+/*                       Scrollbar & Utilities                     */
+/*───────────────────────────────────────────────────────────────────*/
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -166,86 +234,63 @@ body {
   min-height: 100vh;
 }
 
-/* Responsive adjustments */
+/*───────────────────────────────────────────────────────────────────*/
+/*                       Responsive Tweaks                         */
+/*───────────────────────────────────────────────────────────────────*/
 @media (max-width: 768px) {
   .text-4xl {
     font-size: 2.25rem;
-    /* Adjust font size for smaller screens */
   }
 
   .text-5xl {
     font-size: 2.5rem;
-    /* Adjust font size for smaller screens */
   }
 
   .text-6xl {
     font-size: 3rem;
-    /* Adjust font size for smaller screens */
   }
 
   .p-8 {
     padding: 0.5rem;
-    /* Reduce padding for smaller screens */
   }
 
   .p-12 {
     padding: 1rem;
-    /* Reduce padding for smaller screens */
   }
 
   .grid-cols-2,
   .grid-cols-3 {
     grid-template-columns: 1fr;
-    /* Stack items vertically on smaller screens */
   }
 }
 
 @media (max-width: 480px) {
   .text-lg {
     font-size: 1rem;
-    /* Adjust font size for very small screens */
   }
 
   .text-xl {
     font-size: 1.25rem;
-    /* Adjust font size for very small screens */
   }
 
   .space-y-12 {
     gap: 0.5rem;
-    /* Reduce gap between items for very small screens */
   }
 }
 
+/*───────────────────────────────────────────────────────────────────*/
+/*                       Custom Grid Example                       */
+/*───────────────────────────────────────────────────────────────────*/
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Three equal columns */
-  grid-template-rows: repeat(2, 300px); /* Two rows with equal heights */
-  gap: 16px; /* Space between items */
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 300px);
+  gap: 16px;
 }
 
-.grid-container > div {
-  background: #1a1a1a; /* Optional: Background for a sleek design */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Optional: Subtle shadow for depth */
+.grid-container>div {
+  background: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  border-radius: 8px; /* Rounded corners for high-end look */
-}
-
-@keyframes orbit {
-  0% {
-    transform: rotate(0deg) translateX(50px) rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg) translateX(50px) rotate(-360deg);
-  }
-}
-
-.animate-orbit {
-  animation: orbit 3s linear infinite;
-}
-
-@media (max-width: 640px) {
-  .pricing-plan {
-    padding: 2rem;
-  }
+  border-radius: 8px;
 }

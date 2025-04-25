@@ -5,10 +5,10 @@ import {
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { DropdownMenuContent, DropdownMenuItem } from "../ui/dropdown-menu";
-import { LogOut } from "lucide-react";
+import { LucideIcon, LogOut } from "lucide-react";
 
 interface MenuItem {
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
   path: string;
 }
@@ -40,19 +40,20 @@ const UserMenu: React.FC<UserMenuProps> = ({
           className="relative h-14 w-14 rounded-full overflow-hidden transition-transform hover:scale-105 focus:ring-0 border border-primary/30"
         >
           <Avatar className="h-14 w-14">
-            {user.Profile && (
+            {user.Profile?.avatarUrl ? (
               <AvatarImage
-                src={user?.Profile?.avatarUrl || "/placeholder-user.jpg"}
-                alt={user?.name}
+                src={user.Profile.avatarUrl}
+                alt={user.name}
                 className="object-cover"
               />
+            ) : (
+              <AvatarFallback className="bg-gradient-to-br from-primary-400 to-primary-600 w-full h-full text-primary font-medium">
+                {user.name
+                  ?.split(" ")
+                  .map((n) => n[0])
+                  .join("") || "UN"}
+              </AvatarFallback>
             )}
-            <AvatarFallback className="bg-gradient-to-br from-primary-400 to-primary-600 w-full h-full text-primary font-medium">
-              {user?.name
-                ?.split(" ")
-                .map((n) => n[0])
-                .join("") || "UN"}
-            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -64,10 +65,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
       >
         <div className="px-2 py-3 border-b border-gray-100 dark:border-gray-700">
           <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-            {user?.name}
+            {user.name}
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            {user?.email}
+            {user.email}
           </p>
         </div>
 
@@ -88,7 +89,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         <div className="pt-2 mt-2 border-t border-gray-100 dark:border-gray-700">
           <DropdownMenuItem className="px-1 py-0.5">
             <button
-              onClick={() => handleLogout()}
+              onClick={handleLogout}
               className="w-full flex items-center gap-3 px-2 py-2 rounded-lg text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-150"
             >
               <LogOut className="h-4 w-4" />

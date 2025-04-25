@@ -32,6 +32,14 @@ export const servicesService = {
     return data;
   },
 
+  searchServices: async (name: string): Promise<ServicesResponse["data"]> => {
+    const { data } = await api.get<ServicesResponse>(
+      `/services/live/search?q=${name}`
+    );
+    console.log(data);
+    return data.data;
+  },
+
   createService: async (
     serviceData: ServiceCreateData
   ): Promise<ServiceResponse> => {

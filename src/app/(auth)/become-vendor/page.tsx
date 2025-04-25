@@ -83,11 +83,11 @@ export default function page() {
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none" />
             <CardHeader className="lg:space-y-2 space-y-1.5 relative">
               <CardTitle className="text-2xl md:text-5xl font-bold tracking-tight text-primary">
-                Become a Vendor{" "}
+                Become a Vendor
               </CardTitle>
               <CardDescription className="text-muted-foreground text-sm lg:text-base">
                 Register your account to start listing your services on
-                NiceEvents{" "}
+                NiceEvents
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 relative">

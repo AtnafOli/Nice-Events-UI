@@ -6,6 +6,8 @@ import { useUser } from "@/context/userContext";
 import Sidebar from "@/components/SideBar";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { FaServicestack } from "react-icons/fa";
+import { hrtime } from "process";
+import { sub } from "date-fns";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -25,6 +27,21 @@ const links = [
         label: "Your Service",
         href: "/vendor/service/manage",
       },
+    ],
+  },
+  {
+    label: "Requests",
+    href: "/vendor/service/requests",
+    icon: <FaServicestack className="w-5 h-5" />,
+    subLinks: [
+      {
+        label: "Service Requests",
+        href: "/vendor/requests/service",
+      },
+      // {
+      //   label: "New Requests",
+      //   href: "/vendor/service/requests/new",
+      // },
     ],
   },
 ];
@@ -67,9 +84,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       />
       <div className="lg:pl-80">
         <main className="">
-          <div className="rounded-lg  bg-card/40 text-card-foreground border">
-            <div className="flex flex-col space-y-1.5 p-7"></div>
-          </div>
           <div className="lg:px-6 lg:py-8">{children}</div>
         </main>
       </div>

@@ -27,20 +27,6 @@ async function ServicesPage({ params }: { params: { serviceId: string } }) {
   const response = await servicesService.getServices(`?id=${serviceId}`);
   const service = response?.data?.[0];
 
-  const reviewStats = {
-    rating: 4.9,
-    totalReviews: 132,
-    ratingDistribution: {
-      5: 93,
-      4: 7,
-      3: 0,
-      2: 0,
-      1: 0,
-    },
-    summary:
-      "Pratt Abbott is highly praised for their exceptional cleaning and preservation services for wedding gowns. Reviewers highlighted the friendly and knowledgeable staff, particularly Angela, who provided outstanding customer service and prompt communication. Customers appreciated the meticulous cleaning process and attention to detail, with many noting the beautiful presentation of the preserved gowns. The timely turnaround and ability to revive vintage items were also commended, making Pratt Abbott a top choice for wedding gown care.",
-  };
-
   return (
     <Suspense fallback={<LoadingServices />}>
       <div className="min-h-screen  py-12 px-4 sm:px-6 lg:px-20">
@@ -64,13 +50,18 @@ async function ServicesPage({ params }: { params: { serviceId: string } }) {
                     subtitle="Very Special Care for Your Wedding Gown!"
                     title="About this vendor"
                   />
-                  <ReviewHeaderSection stats={reviewStats} />
+                  <ReviewHeaderSection
+                    serviceId={service.id}
+                    reviewService={service.reviewService}
+                  />
                 </div>
                 <div>
                   <ContactForm
                     vendorFirstName={service.vendor?.user?.Profile.firstName}
                     vendorLastName={service.vendor?.user?.Profile.lastName}
                     vendorProfile={service.vendor?.user?.Profile.avatarUrl}
+                    vendorId={service.vendor?.user?.id!}
+                    serviceId={service.id!}
                   />
                 </div>
               </div>

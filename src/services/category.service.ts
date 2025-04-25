@@ -49,6 +49,11 @@ export const categoryService = {
     return data;
   },
 
+  getSubCategories: async () => {
+    const { data } = await api.get("/category/sub");
+    return data;
+  },
+
   addSubCategory: async (
     subCategoryData: SubCategoryCreateData
   ): Promise<SubCategoryResponse> => {

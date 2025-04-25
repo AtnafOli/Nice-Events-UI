@@ -54,7 +54,9 @@ export default function PricingPlan({
 
     const route = user
       ? `/plandetail?planId=${plan.id}&priceId=${selectedPrice?.id}`
-      : "/become-vendor";
+      : `/become-vendor?redirectUrl=${encodeURIComponent(
+          `/plandetail?planId=${plan.id}&priceId=${selectedPrice?.id}`
+        )}`;
     router.push(route);
   };
 

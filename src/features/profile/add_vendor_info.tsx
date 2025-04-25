@@ -14,27 +14,46 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import { FaBriefcase, FaUser, FaChevronRight } from "react-icons/fa";
+import {
+  FaBriefcase,
+  FaUser,
+  FaChevronRight,
+  FaMapMarkerAlt,
+  FaPhone,
+} from "react-icons/fa";
 import { Textarea } from "@/components/ui/textarea";
 import { SubscriptionCreateData } from "@/types/subscription";
 import { VendorData } from "@/types/vendor";
 import { ProfileData } from "@/types/profile";
 import { useUser } from "@/context/userContext";
+import { City } from "@/lib/city.enum";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+// Phone number validation pattern for Ethiopian numbers (9 digits after +251)
+const phoneRegex = /^[0-9]{9}$/;
 
 const formSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
-  phoneNumber: z.string().min(10, "Phone number must be at least 10 digits"),
+  phoneNumber: z
+    .string()
+    .regex(phoneRegex, "Phone number must be exactly 9 digits"),
   businessName: z
     .string()
     .min(2, "Business name must be at least 2 characters"),
   businessPhone: z
     .string()
-    .min(10, "Business phone must be at least 10 digits"),
+    .regex(phoneRegex, "Phone number must be exactly 9 digits"),
   businessDescription: z
     .string()
     .min(5, "Business description must be at least 5 characters"),
-  city: z.string().min(2, "City must be at least 2 characters"),
+  city: z.string().min(2, "Please select a city"),
   country: z.literal("Ethiopia"),
 });
 
@@ -64,18 +83,46 @@ export function VendorForm({
   const {
     handleSubmit,
     formState: { isSubmitting },
+    watch,
+    setValue,
   } = form;
+
+  // Function to format phone input with +251 prefix
+  const formatPhoneWithPrefix = (value: string, field: any) => {
+    // Remove any non-digits
+    const digitsOnly = value.replace(/\D/g, "");
+    // Limit to 9 digits
+    const limitedDigits = digitsOnly.slice(0, 9);
+    // Update the form value
+    field.onChange(limitedDigits);
+  };
+
+  // Format the city enum for display
+  const formatCityName = (city: string) => {
+    return city
+      .replace(/_/g, " ")
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  // Map numeric enum values to their string keys
+  const cityOptions = Object.keys(City)
+    .filter((key) => isNaN(Number(key)))
+    .map((key) => ({
+      value: key,
+      label: formatCityName(key),
+    }));
 
   function onSubmit(values: any) {
     const profileData: ProfileData = {
       firstName: values.firstName,
       lastName: values.lastName,
-      phoneNumber: values.phoneNumber,
+      phoneNumber: "+251" + values.phoneNumber,
     };
 
     const vendorData: VendorData = {
       businessName: values.businessName,
-      businessPhone: values.businessPhone,
+      businessPhone: "+251" + values.businessPhone,
       businessDescription: values.businessDescription,
       address: {
         city: values.city,
@@ -92,18 +139,23 @@ export function VendorForm({
   }
 
   return (
-    <div className="min-h-screen md:p-16 p-4">
+    <div className="scale-[0.94] min-h-screen md:p-6">
       <div className="transition-all duration-300 ease-in-out">
-        <Card className="max-w-4xl mx-auto bg-white/50 lg:p-8 backdrop-blur-xl rounded-3xl shadow-xl border-0">
+        <Card className="max-w-4xl mx-auto bg-white/40 lg:p-4 backdrop-blur-xl rounded-3xl shadow-xl border-0">
           <CardHeader className="space-y-6 pb-8">
             <div className="lg:space-y-3 space-y-1.5">
+              <div className="flex justify-center">
+                <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <FaBriefcase className="h-7 w-7 text-primary" />
+                </div>
+              </div>
               <h1 className="text-xl md:text-4xl font-semibold text-center tracking-tight text-[#1d1d1f]">
                 Vendor Registration
               </h1>
               <p className="text-center lg:text-lg text-xs text-[#86868b] max-w-2xl mx-auto leading-relaxed">
-                Please enter your business and personal information detial and
-                join NiceEvents as a service provider and showcase your
-                services.
+                Join NiceEvents as a service provider and showcase your services
+                to potential clients. Please complete your business and personal
+                details below.
               </p>
             </div>
           </CardHeader>
@@ -115,7 +167,7 @@ export function VendorForm({
               >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-10">
                   {/* Personal Information Section */}
-                  <section className="space-y-6">
+                  <section className="space-y-8 lg:border-r lg:pr-8 lg:border-gray-100">
                     <div className="flex items-center space-x-3">
                       <div className="lg:h-10 h-6 lg:w-10 w-6 rounded-full bg-primary/10 flex items-center justify-center">
                         <FaUser className="lg:h-5 h-3.5 lg:w-5 w-3.5 text-primary" />
@@ -125,8 +177,8 @@ export function VendorForm({
                       </h3>
                     </div>
 
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 gap-4">
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
                           name="firstName"
@@ -137,8 +189,8 @@ export function VendorForm({
                               </FormLabel>
                               <FormControl>
                                 <Input
-                                  className="h-11 rounded-xl border border-[#d2d2d7] bg-white/50
-                                           focus:border-primary focus:ring-0
+                                  className="h-12 rounded-xl border border-[#d2d2d7] bg-white/80
+                                           focus:border-primary focus:ring-1 focus:ring-primary
                                            transition-all duration-200"
                                   placeholder="Enter first name"
                                   {...field}
@@ -159,8 +211,8 @@ export function VendorForm({
                               </FormLabel>
                               <FormControl>
                                 <Input
-                                  className="h-11 rounded-xl border border-[#d2d2d7] bg-white/50
-                                           focus:border-primary focus:ring-0
+                                  className="h-12 rounded-xl border border-[#d2d2d7] bg-white/80
+                                           focus:border-primary focus:ring-1 focus:ring-primary
                                            transition-all duration-200"
                                   placeholder="Enter last name"
                                   {...field}
@@ -181,14 +233,30 @@ export function VendorForm({
                               Phone Number
                             </FormLabel>
                             <FormControl>
-                              <Input
-                                className="h-11 rounded-xl border border-[#d2d2d7] bg-white/50
-                                         focus:border-primary focus:ring-0
-                                         transition-all duration-200"
-                                placeholder="+251 XX XXX XXXX"
-                                {...field}
-                              />
+                              <div className="relative">
+                                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                  <span className="text-gray-500">+251</span>
+                                </div>
+                                <Input
+                                  className="h-12 rounded-xl border border-[#d2d2d7] bg-white/80
+                                          focus:border-primary focus:ring-1 focus:ring-primary
+                                          transition-all duration-200 pl-14"
+                                  placeholder="9XXXXXXXX"
+                                  type="tel"
+                                  inputMode="numeric"
+                                  value={field.value}
+                                  onChange={(e) =>
+                                    formatPhoneWithPrefix(e.target.value, field)
+                                  }
+                                />
+                                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                  <FaPhone className="text-gray-400 h-4 w-4" />
+                                </div>
+                              </div>
                             </FormControl>
+                            <p className="text-[11px] text-gray-500 mt-1">
+                              Enter 9 digits without country code
+                            </p>
                             <FormMessage className="text-xs" />
                           </FormItem>
                         )}
@@ -197,7 +265,7 @@ export function VendorForm({
                   </section>
 
                   {/* Business Information Section */}
-                  <section className="space-y-6">
+                  <section className="space-y-8">
                     <div className="flex items-center space-x-3">
                       <div className="lg:h-10 h-6 lg:w-10 w-6 rounded-full bg-primary/10 flex items-center justify-center">
                         <FaBriefcase className="lg:h-5 h-3.5 lg:w-5 w-3.5 text-primary" />
@@ -207,7 +275,7 @@ export function VendorForm({
                       </h3>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-6">
                       <FormField
                         control={form.control}
                         name="businessName"
@@ -218,32 +286,10 @@ export function VendorForm({
                             </FormLabel>
                             <FormControl>
                               <Input
-                                className="h-11 rounded-xl border border-[#d2d2d7] bg-white/50
-                                         focus:border-primary focus:ring-0
+                                className="h-12 rounded-xl border border-[#d2d2d7] bg-white/80
+                                         focus:border-primary focus:ring-1 focus:ring-primary
                                          transition-all duration-200"
                                 placeholder="Enter business name"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage className="text-xs" />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="businessDescription"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-sm font-medium text-[#86868b]">
-                              Business Description
-                            </FormLabel>
-                            <FormControl>
-                              <Textarea
-                                className="h-11 rounded-xl border border-[#d2d2d7] bg-white/50
-                                         focus:border-primary focus:ring-0
-                                         transition-all duration-200"
-                                placeholder="Brief description of your business"
                                 {...field}
                               />
                             </FormControl>
@@ -261,11 +307,49 @@ export function VendorForm({
                               Business Phone
                             </FormLabel>
                             <FormControl>
-                              <Input
-                                className="h-11 rounded-xl border border-[#d2d2d7] bg-white/50
-                                         focus:border-primary focus:ring-0
-                                         transition-all duration-200"
-                                placeholder="+251 XX XXX XXXX"
+                              <div className="relative">
+                                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                  <span className="text-gray-500">+251</span>
+                                </div>
+                                <Input
+                                  className="h-12 rounded-xl border border-[#d2d2d7] bg-white/80
+                                          focus:border-primary focus:ring-1 focus:ring-primary
+                                          transition-all duration-200 pl-14"
+                                  placeholder="9XXXXXXXX"
+                                  type="tel"
+                                  inputMode="numeric"
+                                  value={field.value}
+                                  onChange={(e) =>
+                                    formatPhoneWithPrefix(e.target.value, field)
+                                  }
+                                />
+                                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                  <FaPhone className="text-gray-400 h-4 w-4" />
+                                </div>
+                              </div>
+                            </FormControl>
+                            <p className="text-[11px] text-gray-500 mt-1">
+                              Enter 9 digits without country code
+                            </p>
+                            <FormMessage className="text-xs" />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="businessDescription"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-sm font-medium text-[#86868b]">
+                              Business Description
+                            </FormLabel>
+                            <FormControl>
+                              <Textarea
+                                className="min-h-[120px] rounded-xl border border-[#d2d2d7] bg-white/80
+                                         focus:border-primary focus:ring-1 focus:ring-primary
+                                         transition-all duration-200 resize-none"
+                                placeholder="Describe your services, expertise, and what makes your business unique"
                                 {...field}
                               />
                             </FormControl>
@@ -274,64 +358,85 @@ export function VendorForm({
                         )}
                       />
 
-                      <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                          <FormField
-                            control={form.control}
-                            name="city"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-sm font-medium text-[#86868b]">
-                                  City
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    className="h-11 rounded-xl border border-[#d2d2d7] bg-white/50
-                                             focus:border-primary focus:ring-0
-                                             transition-all duration-200"
-                                    placeholder="Enter city"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage className="text-xs" />
-                              </FormItem>
-                            )}
-                          />
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="city"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-sm font-medium text-[#86868b]">
+                                City
+                              </FormLabel>
+                              <FormControl>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                >
+                                  <SelectTrigger
+                                    className="h-12 rounded-xl border border-[#d2d2d7] bg-white/80
+                                              focus:border-primary focus:ring-1 focus:ring-primary
+                                              transition-all duration-200"
+                                  >
+                                    <SelectValue placeholder="Select city" />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-white/95 backdrop-blur-lg rounded-xl border-[#d2d2d7] shadow-lg">
+                                    {cityOptions.map((city) => (
+                                      <SelectItem
+                                        key={city.value}
+                                        value={city.value}
+                                        className="cursor-pointer hover:bg-primary/5 transition-colors"
+                                      >
+                                        {city.label}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                              <FormMessage className="text-xs" />
+                            </FormItem>
+                          )}
+                        />
 
-                          <FormField
-                            control={form.control}
-                            name="country"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-sm font-medium text-[#86868b]">
-                                  Country
-                                </FormLabel>
-                                <FormControl>
+                        <FormField
+                          control={form.control}
+                          name="country"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-sm font-medium text-[#86868b]">
+                                Country
+                              </FormLabel>
+                              <FormControl>
+                                <div className="relative">
                                   <Input
-                                    className="h-11 rounded-xl border border-[#d2d2d7] bg-[#f5f5f7]
+                                    className="h-12 rounded-xl border border-[#d2d2d7] bg-[#f5f5f7]
                                              text-[#86868b] cursor-not-allowed"
                                     disabled
                                     {...field}
                                   />
-                                </FormControl>
-                              </FormItem>
-                            )}
-                          />
-                        </div>
+                                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <FaMapMarkerAlt className="text-gray-400 h-4 w-4" />
+                                  </div>
+                                </div>
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
                       </div>
                     </div>
                   </section>
                 </div>
 
                 {/* Submit Button */}
-                <div className="pt-6">
+                <div className="pt-8">
                   <Button
                     type="submit"
-                    className="w-full h-12 rounded-full font-medium text-base
-                             bg-primary
+                    className="w-full h-14 rounded-full font-medium text-base
+                             bg-primary hover:bg-primary/90
+                             text-white shadow-lg shadow-primary/20
                              transition-all duration-300 ease-out
-                             hover:opacity-90 active:scale-[0.98]
-                             disabled:opacity-50 disabled:cursor-not-allowed"
+                             hover:shadow-xl hover:shadow-primary/30
+                             active:scale-[0.98]
+                             disabled:opacity-70 disabled:cursor-not-allowed"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -340,7 +445,7 @@ export function VendorForm({
                         <span>Processing...</span>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-center space-x-1.5">
+                      <div className="flex items-center justify-center space-x-2">
                         <span>Complete Registration</span>
                         <FaChevronRight className="h-3 w-3" />
                       </div>
