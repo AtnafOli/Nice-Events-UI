@@ -8,6 +8,7 @@ import type {
   CategoryUpdateData,
   SubCategory,
   SubCategoryCreateData,
+  SubCategoryUpdateData,
 } from "@/types/category";
 import { ApiError } from "@/lib/api-client";
 
@@ -56,6 +57,29 @@ export function useCategorys() {
     },
   });
 
+  const updateSubCategoryMutation = useMutation<
+    SubCategory,
+    ApiError,
+    SubCategoryUpdateData
+  >({
+    mutationFn: async (data) => {
+      const response = await categoryService.updateSubCategory(data.id, data);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categorys"] });
+    },
+  });
+
+  const deleteSubCategoryMutation = useMutation<void, ApiError, number>({
+    mutationFn: async (id) => {
+      await categoryService.deleteSubCategory(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categorys"] });
+    },
+  });
+
   const updateCategoryMutation = useMutation<
     Category,
     ApiError,
@@ -93,5 +117,12 @@ export function useCategorys() {
     createError: createCategoryMutation.error,
     updateError: updateCategoryMutation.error,
     deleteError: deleteCategoryMutation.error,
+    addSubcategoryError: addSubcategoryMutation.error,
+    updateSubCategory: updateSubCategoryMutation.mutate,
+    deleteSubCategory: deleteSubCategoryMutation.mutate,
+    updateSubCategoryError: updateSubCategoryMutation.error,
+    deleteSubCategoryError: deleteSubCategoryMutation.error,
+    isUpdatingSubCategory: updateSubCategoryMutation.isPending,
+    isDeletingSubCategory: deleteSubCategoryMutation.isPending,
   };
 }

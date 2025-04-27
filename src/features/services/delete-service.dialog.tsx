@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -6,25 +8,30 @@ import {
   DialogContent,
   DialogDescription,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Service } from "@/types/service";
+import type { Service } from "@/types/service";
 import React from "react";
 
 interface DeleteServiceDialogProps {
   service: Service;
   onDelete: (id: number) => void;
-  children: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const DeleteServiceDialog: React.FC<DeleteServiceDialogProps> = ({
+export const DeleteServiceDialog: React.FC<DeleteServiceDialogProps> = ({
   service,
   onDelete,
-  children,
+  isOpen,
+  onClose,
 }) => {
+  const handleDelete = () => {
+    onDelete(service.id);
+    onClose();
+  };
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[425px] rounded-lg shadow-lg bg-white p-6">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-gray-800">
@@ -32,30 +39,27 @@ const DeleteServiceDialog: React.FC<DeleteServiceDialogProps> = ({
           </DialogTitle>
           <DialogDescription className="text-gray-600 mt-2">
             Are you sure you want to delete <strong>{service.name}</strong> from
-            the NiceEvents service directory? This action cannot be undone.
+            the service directory? This action cannot be undone.
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter className="space-x-4">
+        <DialogFooter className="gap-2 sm:gap-0">
           <Button
             variant="outline"
-            onClick={() => {
-              onDelete(service.id);
-            }}
-            className="bg-red-600 text-white hover:bg-red-700"
-          >
-            Delete Service
-          </Button>
-          <Button
-            variant="secondary"
+            onClick={onClose}
             className="text-gray-700 hover:bg-gray-100"
           >
             Cancel
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={handleDelete}
+            className="hover:bg-red-700"
+          >
+            Delete Service
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 };
-
-export default DeleteServiceDialog;

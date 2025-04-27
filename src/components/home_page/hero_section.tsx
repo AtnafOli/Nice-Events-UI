@@ -25,6 +25,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Category } from "@/types/category";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const images = [
   {
@@ -32,15 +33,11 @@ const images = [
     alt: "Elegant wedding ceremony",
   },
   {
-    src: "/heroimages/hero_image_1.png",
+    src: "/heroimages/hero_image_2.jpg",
     alt: "Joyful graduation ceremony",
   },
   {
-    src: "/heroimages/hero_image_1.png",
-    alt: "Professional business seminar",
-  },
-  {
-    src: "/heroimages/hero_image_1.png",
+    src: "/heroimages/hero_image_3.jpg",
     alt: "Exciting live concert",
   },
 ];
@@ -65,7 +62,7 @@ export default function EnhancedHeroSection({
   }, []);
 
   return (
-    <section className="relative min-h-screen text-foreground overflow-visible py-4 w-full px-4">
+    <section className="relative min-h-screen text-foreground overflow-visible py-4 w-full lg:px-6 p-2">
       <div className="mx-auto py-16 md:py-24 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-16 gap-4 items-center">
           <motion.div
@@ -197,15 +194,17 @@ export default function EnhancedHeroSection({
         </div>
       </div>
       {/* <div className="absolute bottom-0 left-0 right-0 lg:h-32 h-12 bg-gradient-to-t from-background to-transparent" /> */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.6, duration: 0.8 }}
-        className="absolute lg:bottom-8 bottom-1 z-40 right-8 flex items-center space-x-2 text-sm font-medium text-primary cursor-pointer hover:underline group"
-      >
-        <span>Explore our exclusive services</span>
-        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-      </motion.div>
+      <Link href="/contact">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.6, duration: 0.8 }}
+          className="absolute lg:bottom-8 bottom-1 z-40 right-8 flex items-center space-x-2 text-sm font-medium text-primary cursor-pointer hover:underline group"
+        >
+          <span>Book Consultation</span>
+          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+        </motion.div>
+      </Link>
     </section>
   );
 }

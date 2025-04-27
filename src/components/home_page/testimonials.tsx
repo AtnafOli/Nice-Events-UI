@@ -1,120 +1,177 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Star, Quote, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const testimonials = [
   {
+    id: 1,
     name: "Selam B.",
     role: "Wedding Planner",
     content:
-      "Found our dream photographer in just two days! The whole process felt effortless.",
+      "NiceEvents connected us with our dream photographer in just two days! The platform is intuitive, and the whole process felt effortless. Highly recommended for planning any special occasion.",
     rating: 5,
+    avatar: "/avatars/selam.png",
   },
   {
+    id: 2,
     name: "Ermias M.",
-    role: "Corporate Team",
+    role: "Corporate Event Manager",
     content:
-      "Saved us countless hours of searching. The vendor quality here is unmatched.",
+      "Organizing our annual gala was seamless thanks to NiceEvents. It saved us countless hours of searching, and the quality of vendors available across Addis Ababa is truly unmatched.",
     rating: 5,
+    avatar: "/avatars/ermias.png",
   },
   {
+    id: 3,
     name: "Hiwot F.",
-    role: "Birthday Host",
+    role: "Birthday Party Host",
     content:
-      "From decorations to music, everything came together perfectly. 10/10!",
+      "Found the most amazing decorators and a fantastic DJ for my son's birthday through NiceEvents. From start to finish, everything came together perfectly. 10/10 experience!",
     rating: 5,
+    avatar: "/avatars/hiwot.png",
   },
 ];
 
-export function Testimonials() {
-  return (
-    <section className="relative py-24 bg-gradient-to-b from-primary/05 to-background">
-      <div className="container px-4 mx-auto">
-        <motion.div
-          className="space-y-16"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-        >
-          {/* Header */}
-          <div className="space-y-5 text-center">
-            <motion.h2
-              className="text-4xl font-bold tracking-tight md:text-5xl"
-              initial={{ y: 20 }}
-              whileInView={{ y: 0 }}
-            >
-              <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Real Stories
-              </span>
-              <span className="block mt-3 text-xl font-light text-muted-foreground">
-                See how we've helped create unforgettable moments
-              </span>
-            </motion.h2>
-          </div>
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
-          {/* Testimonial Cards */}
-          <div className="grid gap-6 md:grid-cols-3">
-            {testimonials.map((testimonial, index) => (
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
+
+export function SuccessStories() {
+  return (
+    <section className="relative py-20 md:py-28  overflow-hidden">
+      {/* Background Decorations */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 z-0 opacity-30 pointer-events-none"
+      >
+        <div className="absolute top-1/4 left-1/4 w-56 h-56 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl animate-blob-slow" />
+        <div className="absolute bottom-1/4 right-1/4 w-60 h-60 bg-accent/10 rounded-full mix-blend-multiply filter blur-3xl animate-blob-slow animation-delay-2000" />
+      </div>
+
+      <div className="relative z-10 container px-4 md:px-6 mx-auto">
+        <motion.div
+          className="space-y-12 md:space-y-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          {/* Section Heading */}
+          <motion.div
+            className="max-w-2xl mx-auto text-center space-y-3"
+            variants={itemVariants}
+          >
+            <span className="inline-block px-2.5 py-1 text-[10px] md:text-xs font-semibold tracking-wide uppercase rounded-full bg-primary/10 text-primary">
+              Success Stories
+            </span>
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
+              Creating Unforgettable{" "}
+              <span className="text-primary">Moments</span>
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto">
+              Hear how NiceEvents helped hosts and professionals across Ethiopia
+              bring their event visions to life.
+            </p>
+          </motion.div>
+
+          {/* Testimonials */}
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+            variants={containerVariants}
+          >
+            {testimonials.map((testimonial) => (
               <motion.div
-                key={testimonial.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: index * 0.1 }}
+                key={testimonial.id}
+                variants={itemVariants}
+                className="h-full"
               >
-                <Card className="h-full border-primary/10 hover:border-primary/20 transition-colors">
-                  <CardContent className="p-6 space-y-4">
-                    {/* Rating */}
-                    <div className="flex gap-1">
-                      {[...Array(testimonial.rating)].map((_, i) => (
+                <Card className="relative flex flex-col h-full overflow-hidden border border-border/10 bg-card/80 backdrop-blur-md shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group rounded-xl">
+                  {/* Quote Icon */}
+                  <Quote
+                    aria-hidden="true"
+                    className="absolute top-3 right-3 w-10 h-10 text-primary/5 opacity-50 group-hover:text-primary/10 transition-colors"
+                    strokeWidth={1}
+                  />
+                  <CardContent className="relative z-10 p-5 md:p-6 flex flex-col flex-grow space-y-4">
+                    {/* Rating Stars */}
+                    <div className="flex items-center gap-0.5">
+                      {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
                           className={cn(
-                            "w-5 h-5",
+                            "w-4 h-4",
                             i < testimonial.rating
-                              ? "fill-primary text-primary/80"
-                              : "fill-muted text-muted"
+                              ? "fill-primary text-primary"
+                              : "fill-muted/20 text-muted-foreground/30"
                           )}
+                          strokeWidth={1.5}
                         />
                       ))}
                     </div>
 
-                    {/* Testimonial Text */}
-                    <p className="text-lg text-muted-foreground">
-                      "{testimonial.content}"
-                    </p>
+                    {/* Testimonial Content */}
+                    <blockquote className="flex-grow">
+                      <p className="text-sm md:text-base text-foreground/90 leading-relaxed italic">
+                        "{testimonial.content}"
+                      </p>
+                    </blockquote>
 
                     {/* Author */}
-                    <div className="space-y-1">
-                      <div className="font-semibold text-primary">
-                        {testimonial.name}
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {testimonial.role}
+                    <div className="flex items-center gap-3 pt-3 border-t border-border/10">
+                      {/* Optional Avatar */}
+                      {/* <img src={testimonial.avatar} alt={testimonial.name} className="w-8 h-8 rounded-full object-cover bg-muted" /> */}
+                      <div className="flex flex-col">
+                        <p className="text-sm font-semibold text-primary">
+                          {testimonial.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {testimonial.role}
+                        </p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          {/* CTA */}
-          <motion.div
-            className="text-center"
-            initial={{ scale: 0.95 }}
-            whileInView={{ scale: 1 }}
-          >
-            <p className="text-muted-foreground">
-              Ready to start?{" "}
-              <button
-                aria-label="Get started"
-                className="font-medium text-primary hover:underline"
+          {/* Call To Action */}
+          <motion.div className="text-center space-y-2" variants={itemVariants}>
+            <Link href="/services" passHref>
+              <Button
+                size="sm"
+                variant="default"
+                className="group text-sm font-medium"
               >
-                Create your event story →
-              </button>
+                Explore Services
+                <ArrowRight className="ml-1.5 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+            <p className="text-xs md:text-sm text-muted-foreground">
+              Ready to plan your perfect event?
             </p>
           </motion.div>
         </motion.div>

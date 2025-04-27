@@ -25,6 +25,9 @@ export interface User {
   createdAt?: any;
 }
 
+export interface UsersResponse {
+  data: User[];
+}
 export interface LoginResponse {
   data: {
     user: User;

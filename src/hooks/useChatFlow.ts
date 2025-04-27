@@ -37,7 +37,7 @@ export function useChatFlow(initialTab: ActiveTab = "vendor") {
 
   /** Render vendor services as markdown list with clickable links */
   const formatVendorServices = (services: any[]): string => {
-    let out = "🛎️ **Vendor Recommendations**:\n\n";
+    let out = "🛎️ <strong>Vendor Recommendations</strong>:<br><br>";
     services.forEach((svc, i) => {
       const reviews = Array.isArray(svc.reviewService) ? svc.reviewService : [];
       const avgRating =
@@ -48,11 +48,17 @@ export function useChatFlow(initialTab: ActiveTab = "vendor") {
             ).toFixed(1)
           : "N/A";
 
-      out += `${i + 1}. [${svc.name}](/services/${svc.id})\n`;
-      out += `   • Category: ${svc.subCategory?.name || "—"}\n`;
-      out += `   • Business: ${svc.vendor?.businessName || "—"}\n`;
-      out += `   • Price: ${Number(svc.basicPrice).toLocaleString()}\n`;
-      out += `   • Rating: ${avgRating} ⭐  (${reviews.length} reviews)\n\n`;
+      out += `${i + 1}. <a href="/service/detail/${
+        svc.id
+      }" style="color: blue; text-decoration: underline;">${svc.name}</a><br>`;
+      out += `&nbsp;&nbsp;&bull; Category: ${svc.subCategory?.name || "—"}<br>`;
+      out += `&nbsp;&nbsp;&bull; Business: ${
+        svc.vendor?.businessName || "—"
+      }<br>`;
+      out += `&nbsp;&nbsp;&bull; Price: ${Number(
+        svc.basicPrice
+      ).toLocaleString()}<br>`;
+      out += `&nbsp;&nbsp;&bull; Rating: ${avgRating} ⭐  (${reviews.length} reviews)<br><br>`;
     });
     return out.trim();
   };

@@ -20,10 +20,11 @@ import {
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import AddReviewModal from "../../../../../components/review/addreviewmodal"; // Adjust path as needed
-import { reviewService } from "@/services/review.service"; // Adjust path as needed
+import { reviewService as reviewServiceService } from "@/services/review.service"; // Adjust path as needed
 import { CreateReview, Review } from "@/types/review"; // Adjust path as needed
 import Image from "next/image";
 import { cn } from "@/lib/utils"; // Assuming you have a cn helper for conditional classnames
+import { useRouter } from "next/navigation";
 
 interface ReviewSectionProps {
   serviceId: number;
@@ -58,26 +59,30 @@ const CustomProgress: React.FC<{
   );
 };
 
-const handleSubmitReview = async (formData: CreateReview): Promise<boolean> => {
-  try {
-    await reviewService.createReview(formData);
-    // Ideally, refetch or update state after successful submission
-    return true;
-  } catch (error) {
-    console.error("Submission failed:", error);
-    return false;
-  }
-};
-
 export default function ReviewHeaderSection({
   serviceId,
   reviewService, // Array of Review objects from the API
 }: ReviewSectionProps) {
+  const router = useRouter();
+
   const stars = Array(5).fill(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedReviews, setExpandedReviews] = useState<Set<number>>(
     new Set()
   );
+
+  const handleSubmitReview = async (
+    formData: CreateReview
+  ): Promise<boolean> => {
+    try {
+      await reviewServiceService.createReview(formData);
+      router.refresh();
+      return true;
+    } catch (error) {
+      console.error("Submission failed:", error);
+      return false;
+    }
+  };
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -156,7 +161,7 @@ export default function ReviewHeaderSection({
   );
 
   return (
-    <div className="container mx-auto px-4 md:px-8 py-12 space-y-10 bg-background text-foreground">
+    <div className="container mx-auto px-4 md:px-8 py-12 space-y-10 shadow-md text-foreground">
       {/* Header */}
       <div className="flex justify-between items-center pb-6 border-b border-border">
         <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
@@ -249,8 +254,7 @@ export default function ReviewHeaderSection({
               })}
             </div>
           </div>
-
-          {/* Review Summary Card */}
+          {/* Review Summary Card
           {stats.summary && (
             <Card className="bg-card border border-border shadow-sm">
               <CardHeader>
@@ -269,8 +273,7 @@ export default function ReviewHeaderSection({
                 </p>
               </CardContent>
             </Card>
-          )}
-
+          )} */}
           {/* Individual Reviews Section */}
           <div className="space-y-6 pt-8">
             <h3 className="text-xl font-semibold text-foreground">

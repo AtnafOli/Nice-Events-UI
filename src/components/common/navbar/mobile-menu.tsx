@@ -189,35 +189,14 @@ export default function MobileMenu({
               variant="outline"
               className="w-full justify-start rounded-lg border border-primary/20 hover:bg-primary/10 transition-all duration-300"
               onClick={() => {
-                handleNavigate("/profile");
+                handleNavigate("/vendor/profile");
                 setIsMenuOpen(false);
               }}
             >
               <UserIcon className="mr-2 h-4 w-4" />
               <span>Profile</span>
             </Button>
-            <Button
-              variant="outline"
-              className="w-full justify-start rounded-lg border border-primary/20 hover:bg-primary/10 transition-all duration-300"
-              onClick={() => {
-                handleNavigate("/favorites");
-                setIsMenuOpen(false);
-              }}
-            >
-              <Heart className="mr-2 h-4 w-4" />
-              <span>Favorites</span>
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full justify-start rounded-lg border border-primary/20 hover:bg-primary/10 transition-all duration-300"
-              onClick={() => {
-                handleNavigate("/notifications");
-                setIsMenuOpen(false);
-              }}
-            >
-              <Bell className="mr-2 h-4 w-4" />
-              <span>Notifications</span>
-            </Button>
+
             <Button
               variant="default"
               className="w-full justify-start rounded-lg mt-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300"

@@ -7,7 +7,7 @@ import motion from "framer-motion";
 
 async function CategoryList({ categorys }: { categorys: Category[] }) {
   return (
-    <div className="lg:space-y-12 space-y-4 px-2">
+    <div className="lg:space-y-12 space-y-4 lg:px-24 p-2">
       <div className="space-y-5 text-center">
         <div className="text-4xl font-bold tracking-tight md:text-5xl">
           <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">

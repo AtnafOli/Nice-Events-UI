@@ -25,6 +25,7 @@ import { EditSubcategoryDialog } from "../../features/category/edit-subcategory-
 import { DeleteSubcategoryDialog } from "../../features/category/delete-subcategory-dialog";
 import { AddSubcategoryDialog } from "../../features/category/add-subcategory-dialog";
 import { useCategorys } from "@/hooks/category.hooks";
+import React from "react";
 
 export default function CategoryTable() {
   const { categorys, isLoading } = useCategorys();
@@ -181,7 +182,7 @@ export default function CategoryTable() {
           </TableHeader>
           <TableBody>
             {categorys?.length === 0 ? (
-              <TableRow key="categories">
+              <TableRow>
                 <TableCell
                   colSpan={5}
                   className="text-center h-24 text-muted-foreground"
@@ -191,8 +192,8 @@ export default function CategoryTable() {
               </TableRow>
             ) : (
               categorys?.map((category) => (
-                <>
-                  <TableRow key={category.name}>
+                <React.Fragment key={category.id}>
+                  <TableRow key={category.id}>
                     <TableCell className="font-medium">
                       {category.name}
                     </TableCell>
@@ -294,7 +295,7 @@ export default function CategoryTable() {
                       </TableCell>
                     </TableRow>
                   )}
-                </>
+                </React.Fragment>
               ))
             )}
           </TableBody>

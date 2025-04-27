@@ -21,11 +21,11 @@ export function DeleteSubcategoryDialog({
   children: React.ReactNode;
   subcategory: SubCategory;
 }) {
-  const { isDeleting, deleteError } = useCategorys();
+  const { isDeleting, deleteError, deleteSubCategory } = useCategorys();
 
   async function handleDelete() {
     try {
-      //   deleteCategory(subcategory.id);
+      deleteSubCategory(subcategory.id);
     } catch (error) {
       console.error(error);
     }

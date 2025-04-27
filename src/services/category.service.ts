@@ -5,6 +5,7 @@ import {
   CategoryUpdateData,
   SubCategory,
   SubCategoryCreateData,
+  SubCategoryUpdateData,
 } from "@/types/category";
 
 export type CategorysResponse = {
@@ -77,5 +78,20 @@ export const categoryService = {
 
   deleteCategory: async (id: number): Promise<void> => {
     await api.delete(`/category/${id}`);
+  },
+
+  deleteSubCategory: async (id: number): Promise<void> => {
+    await api.delete(`/category/sub/${id}`);
+  },
+
+  updateSubCategory: async (
+    id: number,
+    subCategoryData: SubCategoryUpdateData
+  ): Promise<SubCategoryResponse> => {
+    const { data } = await api.put<SubCategoryResponse>(
+      `/category/sub/${id}`,
+      subCategoryData
+    );
+    return data;
   },
 };

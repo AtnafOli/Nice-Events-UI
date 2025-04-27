@@ -57,9 +57,11 @@ interface ImagePreview {
 }
 
 export default function CreateServiceDialog({
-  children,
+  isOpen,
+  setIsOpen,
 }: {
-  children: React.ReactNode;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }) {
   const { createService, isCreating, createError, isCreateSuccess } =
     useServices();
@@ -165,26 +167,25 @@ export default function CreateServiceDialog({
         createService(formData as unknown as ServiceCreateData);
 
         if (!createError) {
-          setTimeout(() => {
-            if (isCreateSuccess) {
-              setOpen(false);
-              form.reset();
-              setImagePreviews([]);
-              setPrimaryImageIndex(0);
-              setUploadProgress(0);
-              router.refresh();
-            }
-          }, 2000);
+          if (isCreateSuccess) {
+            setOpen(false);
+            form.reset();
+            setImagePreviews([]);
+            setPrimaryImageIndex(0);
+            setUploadProgress(0);
+            router.refresh();
+          }
         }
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setOpen(false);
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen} modal={true}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setOpen} modal={true}>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-foreground border-none shadow-2xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-4xl font-extrabold text-center mb-8 text-primary">
@@ -514,7 +515,6 @@ export default function CreateServiceDialog({
                     type="submit"
                     className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:from-primary/90 hover:to-secondary/90 text-lg py-6 rounded-md transition-all duration-300 transform hover:scale-[1.02]"
                     disabled={isCreating}
-                    onClick={() => {}}
                   >
                     {isCreating ? (
                       <>

@@ -36,6 +36,7 @@ export interface CategoryUpdateData {
 }
 
 export interface SubCategoryUpdateData {
+  id: number;
   name?: string;
   description?: string;
 }

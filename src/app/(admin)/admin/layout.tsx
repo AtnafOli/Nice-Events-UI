@@ -28,28 +28,7 @@ const links = [
     href: "/admin/dashboard",
     icon: <HomeIcon className="w-5 h-5" />,
   },
-  {
-    label: "Vendor Management",
-    href: "/admin/vendors",
-    icon: <UsersIcon className="w-5 h-5" />,
-    subLinks: [
-      {
-        label: "All Vendors",
-        href: "/admin/vendors/all",
-        icon: <UserGroupIcon className="w-4 h-4" />,
-      },
-      {
-        label: "Subscriptions",
-        href: "/admin/vendors/subscriptions",
-        icon: <CurrencyDollarIcon className="w-4 h-4" />,
-      },
-      {
-        label: "Verification Requests",
-        href: "/admin/vendors/verification",
-        icon: <ClipboardDocumentListIcon className="w-4 h-4" />,
-      },
-    ],
-  },
+
   {
     label: "Plan Management",
     href: "/admin/plans",
@@ -82,6 +61,11 @@ const links = [
       {
         label: "Service Requests",
         href: "/admin/requests/service",
+        icon: <ClipboardDocumentListIcon className="w-4 h-4" />,
+      },
+      {
+        label: "Consultation Requests",
+        href: "/admin/requests/consultation",
         icon: <ClipboardDocumentListIcon className="w-4 h-4" />,
       },
     ],

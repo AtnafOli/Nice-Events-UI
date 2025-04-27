@@ -39,6 +39,7 @@ async function ServicesPage({ params }: { params: { serviceId: string } }) {
               <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-2">
                   <VendorHeader
+                    service={service}
                     serviceName={service.name}
                     vendorAddress={{
                       city: service.vendor?.address?.city,

@@ -25,6 +25,16 @@ export const servicesService = {
     return data;
   },
 
+  getAllVenues: async (): Promise<ServicesResponse["data"]> => {
+    const { data } = await api.get("/services/venues");
+    return data;
+  },
+
+  getAllEventPlanners: async () => {
+    const { data } = await api.get("/services/event-planners");
+    return data;
+  },
+
   getServicesByCity: async (cityName: string): Promise<ServicesResponse> => {
     const { data } = await api.get<ServicesResponse>(
       `/services/city/${cityName}`

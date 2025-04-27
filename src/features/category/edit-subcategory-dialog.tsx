@@ -30,7 +30,8 @@ export function EditSubcategoryDialog({
   children: React.ReactNode;
   subcategory: SubCategory;
 }) {
-  const { isUpdating, updateError } = useCategorys();
+  const { isUpdating, updateError, updateSubCategory, isUpdatingSubCategory } =
+    useCategorys();
   const [open, setOpen] = useState(false);
   const form = useForm<SubCategoryUpdateData>({
     defaultValues: {
@@ -41,7 +42,7 @@ export function EditSubcategoryDialog({
 
   async function onSubmit(values: SubCategoryUpdateData) {
     try {
-      //   updateCategory({ id: subcategory.id, data: values });
+      updateSubCategory({ ...values, id: subcategory.id });
       setOpen(false);
     } catch (error) {
       console.error(error);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,7 +8,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -30,14 +29,15 @@ interface ServiceFormValues {
 }
 
 export function EditServiceDialog({
-  children,
   service,
+  isOpen,
+  onClose,
 }: {
-  children: React.ReactNode;
   service: Service;
+  isOpen: boolean;
+  onClose: () => void;
 }) {
   const { updateService, isUpdating, updateError } = useServices();
-  const [open, setOpen] = useState(false);
   const form = useForm<ServiceFormValues>({
     defaultValues: {
       name: service.name,
@@ -46,25 +46,34 @@ export function EditServiceDialog({
     },
   });
 
+  // Reset form when opening/closing dialog
+  useEffect(() => {
+    if (isOpen) {
+      form.reset({
+        name: service.name,
+        description: service.description,
+        basicPrice: service.basicPrice,
+      });
+    }
+  }, [isOpen, service, form]);
+
   async function onSubmit(values: ServiceFormValues) {
     try {
       await updateService({
         id: service.id,
         data: {
           ...values,
-          basicPrice: Number(values.basicPrice), // Ensure basicPrice is a number
+          basicPrice: Number(values.basicPrice),
         },
       });
-      form.reset(); // Reset form
-      setOpen(false);
+      onClose();
     } catch (error) {
       console.error("Error updating service:", error);
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Service</DialogTitle>
@@ -155,7 +164,6 @@ export function EditServiceDialog({
               type="submit"
               className="w-full"
               disabled={isUpdating || !form.formState.isDirty}
-              onClick={form.handleSubmit(onSubmit)}
             >
               {isUpdating ? "Saving..." : "Save Changes"}
             </Button>

@@ -1,5 +1,10 @@
 import api from "@/lib/api-client";
-import { LoginResponse, SignUpResponse } from "@/types/api";
+import {
+  LoginResponse,
+  SignUpResponse,
+  User,
+  UsersResponse,
+} from "@/types/api";
 import { SignInCredentials } from "@/types/auth/sign-in";
 
 export const authService = {
@@ -73,6 +78,22 @@ export const authService = {
     } catch (error) {
       return null;
     }
+  },
+
+  getAllUsers: async (): Promise<UsersResponse["data"]> => {
+    const { data } = await api.get("/auth/users");
+    console.log(data);
+    return data;
+  },
+
+  blockUser: async (userId: number) => {
+    const { data } = await api.put(`/auth/users/${userId}/block`);
+    return data;
+  },
+
+  unblockUser: async (userId: number) => {
+    const { data } = await api.put(`/auth/users/${userId}/unblock`);
+    return data;
   },
 
   resendVerificationCode: async (email: string): Promise<any> => {
