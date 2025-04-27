@@ -34,7 +34,7 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
     }
 
     console.log(`Pushing changes to branch: ${BRANCH}`);
-    execSync(`git push ${REPO_URL} ${BRANCH}`, { stdio: "inherit" });
+    execSync(`git push ${REPO_URL} ${BRANCH} -f`, { stdio: "inherit" });
 
     console.log("Changes pushed successfully!");
   } catch (error) {
