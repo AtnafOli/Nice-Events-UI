@@ -78,5 +78,6 @@ export function useServices(params?: any) {
     createError: createServiceMutation.error,
     updateError: updateServiceMutation.error,
     deleteError: deleteServiceMutation.error,
+    resetCreateService: createServiceMutation.reset,
   };
 }

@@ -26,6 +26,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Category } from "@/types/category";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { City } from "@/lib/city.enum";
 
 const images = [
   {
@@ -114,10 +115,7 @@ export default function EnhancedHeroSection({
                   </SelectTrigger>
                   <SelectContent>
                     {categorys.map((type) => (
-                      <SelectItem
-                        key={type.name}
-                        value={type.name.toLowerCase()}
-                      >
+                      <SelectItem key={type.name} value={type.id.toString()}>
                         <div className="flex items-center">{type.name}</div>
                       </SelectItem>
                     ))}
@@ -128,16 +126,21 @@ export default function EnhancedHeroSection({
                     <SelectValue placeholder="City" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="addis-ababa">Addis Ababa</SelectItem>
-                    <SelectItem value="bahirdar">Bahirdar</SelectItem>
-                    <SelectItem value="adama">Adama</SelectItem>
-                    <SelectItem value="hawasa">Hawasa</SelectItem>
+                    {Object.keys(City)
+                      .filter((key) => isNaN(Number(key)))
+                      .map((cityKey) => (
+                        <SelectItem key={cityKey} value={cityKey}>
+                          {cityKey.replaceAll("_", " ")}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </div>
               <Button
                 onClick={() => {
-                  router.push("/");
+                  router.push(
+                    `/city-and-category-discover/${city}/${category}`
+                  );
                 }}
                 className="w-full bg-primary text-primary-foreground"
               >

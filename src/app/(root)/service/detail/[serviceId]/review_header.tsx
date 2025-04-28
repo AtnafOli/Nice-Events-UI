@@ -161,7 +161,7 @@ export default function ReviewHeaderSection({
   );
 
   return (
-    <div className="container mx-auto px-4 md:px-8 py-12 space-y-10 shadow-md text-foreground">
+    <div className="container mx-auto  py-12 space-y-10  text-foreground">
       {/* Header */}
       <div className="flex justify-between items-center pb-6 border-b border-border">
         <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">

@@ -61,7 +61,7 @@ const itemVariants = {
 
 export function SuccessStories() {
   return (
-    <section className="relative py-20 md:py-28  overflow-hidden">
+    <section className="relative py-2 md:py-28  overflow-hidden px-12">
       {/* Background Decorations */}
       <div
         aria-hidden="true"
@@ -88,7 +88,7 @@ export function SuccessStories() {
               Success Stories
             </span>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
-              Creating Unforgettable{" "}
+              Creating Unforgettable
               <span className="text-primary">Moments</span>
             </h2>
             <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto">
@@ -156,23 +156,6 @@ export function SuccessStories() {
                 </Card>
               </motion.div>
             ))}
-          </motion.div>
-
-          {/* Call To Action */}
-          <motion.div className="text-center space-y-2" variants={itemVariants}>
-            <Link href="/services" passHref>
-              <Button
-                size="sm"
-                variant="default"
-                className="group text-sm font-medium"
-              >
-                Explore Services
-                <ArrowRight className="ml-1.5 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-            <p className="text-xs md:text-sm text-muted-foreground">
-              Ready to plan your perfect event?
-            </p>
           </motion.div>
         </motion.div>
       </div>

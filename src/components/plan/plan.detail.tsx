@@ -103,7 +103,6 @@ export const renderPlanDetails = (
               )}
             </div>
           </section>
-
           {/* Pricing Section */}
           <section className="pt-6 border-t border-gray-200 dark:border-gray-700">
             <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-3 mb-4">
@@ -181,8 +180,7 @@ export const renderPlanDetails = (
               ))}
             </div>
           </section>
-
-          {/* Subscriptions Link */}
+          {/* Subscriptions Link
           <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
             <Link
               href={`/plans/${plan.id}/subscriptions`}
@@ -194,7 +192,7 @@ export const renderPlanDetails = (
               <span>View Subscriptions</span>
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
 

@@ -76,7 +76,7 @@ const PaymentGateways = ({
       id: "chapa",
       name: "Chapa",
       logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl2omZr0ntD1eBRPTQBYdwll8tMqsT3MaeGQ&s",
-      description: "Pay with Telebirr Mobile Money",
+      description: "Pay with Mobile Money",
     },
   ];
 

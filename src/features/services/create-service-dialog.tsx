@@ -63,8 +63,13 @@ export default function CreateServiceDialog({
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }) {
-  const { createService, isCreating, createError, isCreateSuccess } =
-    useServices();
+  const {
+    createService,
+    isCreating,
+    createError,
+    isCreateSuccess,
+    resetCreateService,
+  } = useServices();
   const { categorys } = useCategorys();
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
@@ -137,6 +142,15 @@ export default function CreateServiceDialog({
     };
   }, [imagePreviews]);
 
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+    form.reset();
+    setImagePreviews([]);
+    setPrimaryImageIndex(0);
+    setUploadProgress(0);
+    resetCreateService();
+  }, [setIsOpen, form, resetCreateService]);
+
   async function onSubmit(values: ServiceCreateData) {
     try {
       if (!isCreating) {
@@ -168,11 +182,7 @@ export default function CreateServiceDialog({
 
         if (!createError) {
           if (isCreateSuccess) {
-            setOpen(false);
-            form.reset();
-            setImagePreviews([]);
-            setPrimaryImageIndex(0);
-            setUploadProgress(0);
+            handleClose();
             router.refresh();
           }
         }
@@ -185,7 +195,7 @@ export default function CreateServiceDialog({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setOpen} modal={true}>
+    <Dialog open={isOpen} onOpenChange={handleClose} modal={true}>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-foreground border-none shadow-2xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-4xl font-extrabold text-center mb-8 text-primary">

@@ -23,7 +23,7 @@ export default function VendorDescription({
         <CardTitle className="md:text-xl text-base font-bold text-black">
           {title}
         </CardTitle>
-        <h2 className="text-sm font-mono text-muted-foreground">{subtitle}</h2>
+        {/* <h2 className="text-sm font-mono text-muted-foreground">{subtitle}</h2> */}
       </CardHeader>
       <CardContent className="space-y-4">
         <div

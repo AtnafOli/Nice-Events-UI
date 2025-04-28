@@ -100,7 +100,7 @@ export default function ContactForm({
   };
 
   return (
-    <Card className="w-full  mx-auto bg-white shadow-lg rounded-lg border border-gray-200">
+    <Card className="w-full  mx-auto bg-white/50 shadow-lg rounded-lg ">
       <CardHeader className="flex items-start gap-4 justify-between border-b border-gray-200 pb-2">
         <div>
           <h2 className="text-lg font-bold text-gray-800">Request a Quote</h2>

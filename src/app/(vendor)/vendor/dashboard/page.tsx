@@ -51,6 +51,16 @@ export default function DashboardPage() {
     fetchDashboard();
   }, []);
 
+  // Find the active subscription (with payment status "paid")
+  const getActiveSubscription = () => {
+    if (!data?.subscriptions || data.subscriptions.length === 0) return null;
+    return (
+      data.subscriptions.find((sub) => sub.paymentStatus === "paid") || null
+    );
+  };
+
+  const activeSubscription = data ? getActiveSubscription() : null;
+
   if (loading) {
     return (
       <div className="p-8 space-y-8">
@@ -92,7 +102,10 @@ export default function DashboardPage() {
             </p>
           </div>
           <Button asChild>
-            <Link href="/services/new" className="flex items-center gap-2">
+            <Link
+              href="/vendor/service/manage"
+              className="flex items-center gap-2"
+            >
               <Package className="h-4 w-4" />
               Add New Service
               <ArrowUpRight className="h-4 w-4" />
@@ -126,7 +139,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Subscription Card */}
+          {/* Subscription Card - Only show active subscription */}
           <Card className="border-none shadow-sm hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between pb-4">
               <div>
@@ -134,9 +147,9 @@ export default function DashboardPage() {
                   Subscription
                 </CardTitle>
                 <CardDescription className="text-2xl font-bold mt-1">
-                  {data.subscriptions.length > 0
-                    ? data.subscriptions[0].plan.name
-                    : "No Plan"}
+                  {activeSubscription
+                    ? activeSubscription.plan.name
+                    : "No Active Plan"}
                 </CardDescription>
               </div>
               <div className="p-3 rounded-lg bg-purple-50 dark:bg-purple-900/30">
@@ -145,9 +158,9 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent className="pt-0">
               <p className="text-xs text-muted-foreground">
-                {data.subscriptions.length > 0
+                {activeSubscription
                   ? `Valid until ${format(
-                      new Date(data.subscriptions[0].endDate),
+                      new Date(activeSubscription.endDate),
                       "MMM dd, yyyy"
                     )}`
                   : "No active subscription"}
@@ -261,18 +274,6 @@ export default function DashboardPage() {
                         </p>
                       </div>
                     </CardContent>
-                    <CardFooter className="flex justify-end gap-2 pt-0">
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href={`/requests/${request.id}/reject`}>
-                          Reject
-                        </Link>
-                      </Button>
-                      <Button size="sm" asChild>
-                        <Link href={`/requests/${request.id}/accept`}>
-                          Accept
-                        </Link>
-                      </Button>
-                    </CardFooter>
                   </Card>
                 ))}
               </div>
@@ -289,91 +290,178 @@ export default function DashboardPage() {
             )}
           </TabsContent>
 
-          {/* Subscription Tab */}
+          {/* Subscription Tab - Show all subscriptions but highlight the active one */}
           <TabsContent value="subscription" className="space-y-4">
             {data.subscriptions.length > 0 ? (
-              <Card className="border-none shadow-sm">
-                <CardHeader>
-                  <CardTitle>{data.subscriptions[0].plan.name} Plan</CardTitle>
-                  <CardDescription>
-                    {data.subscriptions[0].plan.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium">Start Date</p>
-                      <p className="text-sm text-muted-foreground">
-                        {format(
-                          new Date(data.subscriptions[0].startDate),
-                          "MMMM dd, yyyy"
-                        )}
-                      </p>
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium">End Date</p>
-                      <p className="text-sm text-muted-foreground">
-                        {format(
-                          new Date(data.subscriptions[0].endDate),
-                          "MMMM dd, yyyy"
-                        )}
-                      </p>
-                    </div>
-                  </div>
+              <div className="space-y-6">
+                {activeSubscription && (
+                  <Card className="border-none shadow-sm">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle>
+                          {activeSubscription.plan.name} Plan
+                        </CardTitle>
+                        <Badge variant="default">Active Plan</Badge>
+                      </div>
+                      <CardDescription>
+                        {activeSubscription.plan.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium">Start Date</p>
+                          <p className="text-sm text-muted-foreground">
+                            {format(
+                              new Date(activeSubscription.startDate),
+                              "MMMM dd, yyyy"
+                            )}
+                          </p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium">End Date</p>
+                          <p className="text-sm text-muted-foreground">
+                            {format(
+                              new Date(activeSubscription.endDate),
+                              "MMMM dd, yyyy"
+                            )}
+                          </p>
+                        </div>
+                      </div>
 
-                  <Separator />
+                      <Separator />
 
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">Status</p>
-                      <Badge
-                        variant={
-                          data.subscriptions[0].status === "active"
-                            ? "default"
-                            : "destructive"
-                        }
-                        className="capitalize"
-                      >
-                        {data.subscriptions[0].status}
-                      </Badge>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">Payment Status</p>
-                      <Badge
-                        variant={
-                          data.subscriptions[0].paymentStatus === "paid"
-                            ? "default"
-                            : "destructive"
-                        }
-                        className="capitalize"
-                      >
-                        {data.subscriptions[0].paymentStatus}
-                      </Badge>
-                    </div>
-                  </div>
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Status</p>
+                          <Badge
+                            variant={
+                              activeSubscription.status === "active"
+                                ? "default"
+                                : "destructive"
+                            }
+                            className="capitalize"
+                          >
+                            {activeSubscription.status}
+                          </Badge>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Payment Status</p>
+                          <Badge
+                            variant={
+                              activeSubscription.paymentStatus === "paid"
+                                ? "default"
+                                : "destructive"
+                            }
+                            className="capitalize"
+                          >
+                            {activeSubscription.paymentStatus}
+                          </Badge>
+                        </div>
+                      </div>
 
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium">Price</p>
-                    <p className="text-3xl font-bold">
-                      ETB{" "}
-                      {data.subscriptions[0].plan.basePrice.toLocaleString()}
-                    </p>
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium">Price</p>
+                        <p className="text-3xl font-bold">
+                          ETB{" "}
+                          {activeSubscription.plan.basePrice.toLocaleString()}
+                        </p>
+                      </div>
+                    </CardContent>
+                    {/* <CardFooter className="flex justify-between">
+                      <Button variant="outline" asChild>
+                        <Link href="/subscription/upgrade">Upgrade Plan</Link>
+                      </Button>
+                      <Button variant="ghost" asChild>
+                        <Link
+                          href="/subscription/details"
+                          className="flex items-center gap-1"
+                        >
+                          View Details <ChevronRight className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </CardFooter> */}
+                  </Card>
+                )}
+
+                {!activeSubscription && (
+                  <Card className="border-none shadow-sm text-center py-8">
+                    <CardHeader>
+                      <CreditCard className="mx-auto h-10 w-10 text-muted-foreground" />
+                      <CardTitle className="mt-4">
+                        No Active Subscription
+                      </CardTitle>
+                      <CardDescription className="mt-2">
+                        You have subscriptions but none are currently active
+                        (paid).
+                      </CardDescription>
+                    </CardHeader>
+                    <CardFooter className="flex justify-center">
+                      <Button asChild>
+                        <Link href="/subscription/plans">View Plans</Link>
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                )}
+
+                {/* {data.subscriptions.length > 1 && (
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-medium">Other Subscriptions</h3>
+                    {data.subscriptions
+                      .filter((sub) => sub.paymentStatus !== "paid")
+                      .map((subscription) => (
+                        <Card
+                          key={subscription.id}
+                          className="border-none shadow-sm"
+                        >
+                          <CardHeader>
+                            <div className="flex items-center justify-between">
+                              <CardTitle>
+                                {subscription.plan.name} Plan
+                              </CardTitle>
+                              <Badge variant="outline" className="capitalize">
+                                {subscription.paymentStatus}
+                              </Badge>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div className="flex justify-between">
+                              <div>
+                                <p className="text-sm font-medium">
+                                  Plan Price
+                                </p>
+                                <p className="text-lg font-semibold">
+                                  ETB{" "}
+                                  {subscription.plan.basePrice.toLocaleString()}
+                                </p>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-sm font-medium">Status</p>
+                                <p className="text-sm text-muted-foreground capitalize">
+                                  {subscription.status}
+                                </p>
+                              </div>
+                            </div>
+                          </CardContent>
+                          <CardFooter>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="w-full"
+                              asChild
+                            >
+                              <Link
+                                href={`/subscription/${subscription.id}/complete-payment`}
+                              >
+                                Complete Payment
+                              </Link>
+                            </Button>
+                          </CardFooter>
+                        </Card>
+                      ))}
                   </div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Button variant="outline" asChild>
-                    <Link href="/subscription/upgrade">Upgrade Plan</Link>
-                  </Button>
-                  <Button variant="ghost" asChild>
-                    <Link
-                      href="/subscription/details"
-                      className="flex items-center gap-1"
-                    >
-                      View Details <ChevronRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
+                )} */}
+              </div>
             ) : (
               <Card className="border-none shadow-sm text-center py-12">
                 <CardHeader>
@@ -429,14 +517,6 @@ export default function DashboardPage() {
                         ETB {service.basicPrice.toLocaleString()}
                       </p>
                     </CardContent>
-                    <CardFooter className="flex justify-between gap-2">
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href={`/services/${service.id}`}>View</Link>
-                      </Button>
-                      <Button size="sm" asChild>
-                        <Link href={`/services/${service.id}/edit`}>Edit</Link>
-                      </Button>
-                    </CardFooter>
                   </Card>
                 ))}
               </div>
@@ -452,7 +532,7 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardFooter className="flex justify-center">
                   <Button asChild>
-                    <Link href="/services/new">Add New Service</Link>
+                    <Link href="/vendor/service/manage">Add New Service</Link>
                   </Button>
                 </CardFooter>
               </Card>

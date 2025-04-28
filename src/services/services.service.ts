@@ -35,10 +35,14 @@ export const servicesService = {
     return data;
   },
 
-  getServicesByCity: async (cityName: string): Promise<ServicesResponse> => {
+  getServicesByCityAndCategory: async (
+    cityName: string,
+    category: string
+  ): Promise<ServicesResponse> => {
     const { data } = await api.get<ServicesResponse>(
-      `/services/city/${cityName}`
+      `/services/city/${cityName}/category/${category}`
     );
+    console.log(data);
     return data;
   },
 

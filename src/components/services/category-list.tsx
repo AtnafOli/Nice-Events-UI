@@ -11,11 +11,11 @@ async function CategoryList({ categorys }: { categorys: Category[] }) {
       <div className="space-y-5 text-center">
         <div className="text-4xl font-bold tracking-tight md:text-5xl">
           <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Categories{" "}
+            Categories
           </span>
           <span className="block mt-3 text-xl font-light text-muted-foreground">
             Explore a variety of services tailored to make every event truly
-            special{" "}
+            special
           </span>
         </div>
       </div>

@@ -47,7 +47,7 @@ export default function VendorHeader({
             </p>
           </div>
         </div>
-        <div className="flex gap-2">
+        {/* <div className="flex gap-2">
           <Button
             variant="ghost"
             size="icon"
@@ -56,7 +56,7 @@ export default function VendorHeader({
             <Heart className="h-5 w-5" />
             <span className="sr-only">Save to favorites</span>
           </Button>
-        </div>
+        </div> */}
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
@@ -77,7 +77,7 @@ export default function VendorHeader({
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-3">
+      {/* <div className="flex flex-wrap gap-3">
         {[
           { icon: Facebook, label: "Facebook", href: "#" },
           { icon: Twitter, label: "Twitter", href: "#" },
@@ -98,7 +98,7 @@ export default function VendorHeader({
             </Link>
           </Button>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
