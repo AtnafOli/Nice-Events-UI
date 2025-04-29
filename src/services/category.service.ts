@@ -31,7 +31,7 @@ export const categoryService = {
   },
 
   getCategoryById: async (id: number): Promise<CategoryResponse> => {
-    const { data } = await api.get<CategoryResponse>(`/category/${id}`);
+    const { data } = await api.get<CategoryResponse>(`/category?id=${id}`);
     return data;
   },
 
