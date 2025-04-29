@@ -31,9 +31,15 @@ export const authService = {
   googleSignIn: async (token: string): Promise<LoginResponse["data"]> => {
     console.log(token);
 
-    const { data } = await api.post<LoginResponse>("/auth/google/signin", {
-      token,
-    });
+    const { data } = await api.post<LoginResponse>(
+      "/auth/google/signin",
+      {
+        token,
+      },
+      {
+        withCredentials: true,
+      }
+    );
 
     return data.data;
   },
