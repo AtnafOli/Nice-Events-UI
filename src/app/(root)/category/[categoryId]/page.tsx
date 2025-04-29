@@ -1,36 +1,41 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { categoryService } from "@/services/category.service";
 import { servicesService } from "@/services/services.service";
 import ServicesClient from "./serviceClient";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { categoryId: string };
-}) {
-  const { categoryId } = await params;
-  const {
-    data: [category],
-  } = await categoryService.getCategorys(`?id=${categoryId}`);
+export default function ServicesPage() {
+  const { categoryId } = useParams() as { categoryId: string };
 
-  return {
-    title: { default: `${category?.name || "Services"}` },
-    description: `Browse our ${category?.name} services`,
-  };
-}
+  const [services, setServices] = useState<any[]>([]);
+  const [categoryName, setCategoryName] = useState<string>("");
 
-async function ServicesPage({ params }: { params: { categoryId: string } }) {
-  const { categoryId } = await params;
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data: serviceData } = await servicesService.getServices(
+          `?categoryId=${categoryId}`
+        );
+        setServices(serviceData);
 
-  const { data: services } = await servicesService.getServices(
-    `?categoryId=${categoryId}`
-  );
+        const {
+          data: [category],
+        } = await categoryService.getCategorys(`?id=${categoryId}`);
+
+        setCategoryName(category?.name || "");
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    }
+
+    if (categoryId) {
+      fetchData();
+    }
+  }, [categoryId]);
 
   return (
-    <ServicesClient
-      initialServices={services}
-      categoryName={services[0]?.subCategory?.category?.name}
-    />
+    <ServicesClient initialServices={services} categoryName={categoryName} />
   );
 }
-
-export default ServicesPage;
