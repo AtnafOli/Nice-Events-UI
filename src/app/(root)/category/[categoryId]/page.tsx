@@ -5,7 +5,7 @@ import { categoryService } from "@/services/category.service";
 import { servicesService } from "@/services/services.service";
 import ServicesClient from "./serviceClient";
 
-export default function ServicesPageClient({
+export default function CategoryPage({
   params,
 }: {
   params: Promise<{ categoryId: string }>;
