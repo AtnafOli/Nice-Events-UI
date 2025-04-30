@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-// Assuming Input might be used elsewhere, keeping import
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -59,7 +58,7 @@ export default function SleekHeroSection({
   }, []);
 
   return (
-    <section className="relative  w-full overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 text-foreground lg:px-8 px-4 lg:py-32">
+    <section className="relative  w-full min-h-screen overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 text-foreground lg:px-8 px-4 py-12 lg:py-32">
       <div className="container mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-20 gap-12 items-center">
           {/* Text Content & Search Form */}
