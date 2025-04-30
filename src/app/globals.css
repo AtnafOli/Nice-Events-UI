@@ -3,83 +3,134 @@
 @tailwind utilities;
 
 /*───────────────────────────────────────────────────────────────────*/
-/*                        Theme CSS Variables                       */
+/* Creative Professional Event Theme CSS Variables              */
 /*───────────────────────────────────────────────────────────────────*/
 @layer base {
   :root {
-    --background: 150 8% 90.5%;
-    --foreground: 240 50% 3.9%;
+    /* Base: Subtle warm off-white background, very dark near-black text for contrast */
+    --background: 30 20% 97%;
+    /* Very light warm off-white */
+    --foreground: 220 15% 15%;
+    /* Very dark, slightly desaturated blue/near-black */
 
+    /* Card: Clean white card background */
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 220 15% 15%;
+    /* Same as base foreground */
 
+    /* Popover: Consistent with Card */
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover-foreground: 220 15% 15%;
 
-    /* Warm rose gold primary */
-    --primary: 20 55% 60%;
-    --primary-foreground: 60 7.1% 96.8%;
+    /* Primary: Refined warm rose/copper */
+    --primary: 20 65% 65%;
+    /* Slightly adjusted saturation/lightness */
+    --primary-foreground: 20 20% 98%;
+    /* Very light, warm contrast */
 
-    /* Sage green secondary */
-    --secondary: 150 15% 60%;
-    --secondary-foreground: 240 5.9% 10%;
+    /* Secondary: Soft Champagne/Beige for elegance */
+    --secondary: 45 40% 85%;
+    /* Light, warm, desaturated yellow/beige */
+    --secondary-foreground: 45 15% 25%;
+    /* Darker, muted contrast for secondary */
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    /* Muted: Subtle warm grays */
+    --muted: 30 15% 94%;
+    /* Slightly darker than background */
+    --muted-foreground: 220 8% 45%;
+    /* Muted cool gray text */
 
-    /* Warm gold accent */
-    --accent: 40 40% 60%;
-    --accent-foreground: 240 5.9% 10%;
+    /* Accent: Richer Warm Gold */
+    --accent: 40 60% 60%;
+    /* More saturated gold */
+    --accent-foreground: 40 15% 20%;
+    /* Dark contrast for accent */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
+    /* Destructive: Slightly softer red */
+    --destructive: 0 70% 65%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 20 5.9% 90%;
-    --input: 90 99.9% 99%;
-    --ring: 40 40% 60%;
+    /* Border & Input: Subtle warm grays */
+    --border: 30 15% 90%;
+    --input: 30 15% 96%;
+    /* Slightly distinct from background */
+    --ring: 40 60% 60%;
+    /* Use Accent for focus ring */
 
     --radius: 0.75rem;
+    /* Existing radius */
   }
 
   .dark {
-    --background: 150 15% 30%;
-    --foreground: 60 9.1% 97.8%;
+    /* Base: Deep warm charcoal background, light warm foreground */
+    --background: 25 10% 12%;
+    /* Very dark warm gray/brown */
+    --foreground: 30 10% 95%;
+    /* Light warm off-white */
 
-    --card: 20 14.3% 4.1%;
-    --card-foreground: 60 9.1% 97.8%;
+    /* Card: Slightly lighter warm dark background */
+    --card: 25 8% 15%;
+    --card-foreground: 30 10% 95%;
+    /* Same as base foreground */
 
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 60 9.1% 97.8%;
+    /* Popover: Consistent with Card */
+    --popover: 25 8% 15%;
+    --popover-foreground: 30 10% 95%;
 
-    --primary: 20 40% 60%;
-    --primary-foreground: 60 9.1% 97.8%;
+    /* Primary: Brighter rose/copper for dark mode */
+    --primary: 20 60% 70%;
+    /* Adjusted for visibility */
+    --primary-foreground: 20 15% 10%;
+    /* Dark contrast */
 
-    --secondary: 150 15% 30%;
-    --secondary-foreground: 60 9.1% 97.8%;
+    /* Secondary: Deeper Champagne/Beige */
+    --secondary: 45 25% 35%;
+    /* Darker, muted champagne */
+    --secondary-foreground: 45 15% 85%;
+    /* Light contrast */
 
-    --muted: 20 14.3% 14.1%;
-    --muted-foreground: 20 14.3% 64.1%;
+    /* Muted: Dark warm grays */
+    --muted: 25 8% 20%;
+    --muted-foreground: 30 5% 65%;
+    /* Lighter muted text */
 
-    --accent: 40 40% 40%;
-    --accent-foreground: 60 9.1% 97.8%;
+    /* Accent: Vibrant Gold for dark mode */
+    --accent: 40 65% 68%;
+    /* Brighter, more saturated gold */
+    --accent-foreground: 40 15% 10%;
+    /* Dark contrast */
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 60 9.1% 97.8%;
+    /* Destructive: Visible red on dark */
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 20 14.3% 14.1%;
-    --input: 90 14.3% 14.1%;
-    --ring: 40 40% 60%;
+    /* Border & Input: Subtle dark warm grays */
+    --border: 25 8% 25%;
+    --input: 25 8% 18%;
+    --ring: 40 65% 68%;
+    /* Use Accent for focus ring */
+
+    /* Radius remains the same */
+    /* --radius: 0.75rem; */
   }
 
   /* Global defaults */
   * {
     @apply border-border;
+    /* Use the theme's border color by default */
   }
 
   body {
     @apply bg-background text-foreground;
+    /* Add smooth scrolling and default font */
+    scroll-behavior: smooth;
+    font-family: 'Inter', sans-serif;
+    /* Example: Replace with your chosen body font */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Define heading font - ensure 'Playfair Display' is imported */
   h1,
   h2,
   h3,
@@ -87,77 +138,132 @@
   h5,
   h6 {
     @apply font-heading;
+    /* Assumes font-heading is defined in tailwind.config.js */
+    font-family: 'Playfair Display', serif;
+    /* Example: Replace/confirm with your heading font */
   }
 }
 
+
 /*───────────────────────────────────────────────────────────────────*/
-/*                 Custom “Creative” Background Pattern             */
+/* Custom “Creative” Background Pattern (Refined)         */
 /*───────────────────────────────────────────────────────────────────*/
-.bg-pattern {
-  /* base fill */
+/* Apply this class to a container, e.g., body or a specific section */
+.creative-background-pattern {
+  position: relative;
   background-color: hsl(var(--background));
+  /* Ensure base color */
+}
+
+.creative-background-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Place behind content */
+
+  /* base fill */
+  background-color: transparent;
+  /* Pattern is applied here */
 
   /* three-layer dot + stripe mesh tinted by theme */
   background-image:
     /* small primary dots */
-    radial-gradient(circle at 10% 10%, hsla(var(--primary), .25) 1px, transparent 1px),
+    radial-gradient(circle at 10% 10%, hsla(var(--primary), .15) 1px, transparent 1px),
+    /* Slightly less opaque */
     /* medium secondary dots */
-    radial-gradient(circle at 30% 80%, hsla(var(--secondary), .2) 2px, transparent 2px),
-    /* light diagonal stripes */
-    repeating-linear-gradient(45deg,
+    radial-gradient(circle at 75% 80%, hsla(var(--secondary), .2) 2px, transparent 2px),
+    /* Adjusted position */
+    /* light diagonal stripes using accent */
+    repeating-linear-gradient(-45deg,
+      /* Changed angle */
       transparent,
-      transparent 8px,
-      hsla(var(--primary), .05) 9px,
-      hsla(var(--primary), .05) 12px);
+      transparent 5px,
+      hsla(var(--accent), .04) 6px,
+      /* Use accent, more subtle */
+      hsla(var(--accent), .04) 8px);
 
   /* mesh sizing */
   background-size:
-    40px 40px,
-    60px 60px,
-    100px 100px;
-  opacity: 0.06;
+    30px 30px,
+    /* Smaller primary dots */
+    80px 80px,
+    /* Larger secondary dots */
+    50px 50px;
+  /* Stripe sizing */
+
+  opacity: 0.5;
+  /* Adjust overall visibility - was 0.06, increased for subtle visibility */
+  pointer-events: none;
+  /* Make sure it doesn't interfere with interactions */
 }
 
+
 /*───────────────────────────────────────────────────────────────────*/
-/*                          Components                              */
+/* Components using Theme Variables                       */
 /*───────────────────────────────────────────────────────────────────*/
 @layer components {
+
+  /* Example: Event Card using theme colors */
   .event-card {
-    @apply rounded-lg border border-gold-200/30 bg-white/70 backdrop-blur-sm shadow-lg shadow-gold-500/5 transition-all duration-300 hover:shadow-gold-500/10 hover:border-gold-200/50;
+    @apply rounded-lg border border-accent/20 bg-card/80 backdrop-blur-md shadow-lg shadow-accent/5 transition-all duration-300 hover:shadow-accent/10 hover:border-accent/30 dark:bg-card/70;
+    /* Use theme variables: border-accent, bg-card, shadow-accent */
   }
 
+  /* Example: Elegant Button using theme colors */
   .elegant-button {
-    @apply px-6 py-3 rounded-full bg-gradient-to-r from-rose-500 to-gold-500 text-white shadow-lg shadow-gold-500/20 transition-all duration-300 hover:shadow-gold-500/40 hover:scale-105;
+    @apply inline-block px-6 py-3 rounded-full bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-primary/30 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring;
+    /* Use theme variables: from-primary, to-accent, text-primary-foreground, shadow-primary, focus:ring-ring */
   }
 
+  /* Example: Decorative Border using theme colors */
   .decorative-border {
-    @apply border-2 border-gold-200/30 rounded-lg p-1;
+    @apply border-2 border-accent/30 rounded-lg p-1;
+    /* Use theme variable: border-accent */
   }
 
+  /* Example: Section Title using theme text gradient */
   .section-title {
-    @apply text-3xl md:text-4xl font-heading font-bold text-gradient mb-6;
+    @apply text-3xl md:text-4xl font-heading font-bold mb-6;
+    /* Base styles */
+  }
+
+  .section-title--gradient {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary;
+    /* Gradient specific class */
+    /* Use theme variables: from-accent, to-primary */
   }
 }
 
+
 /*───────────────────────────────────────────────────────────────────*/
-/*                         Custom Utilities                        */
+/* Custom Utilities using Theme Variables                 */
 /*───────────────────────────────────────────────────────────────────*/
 @layer utilities {
+
+  /* Example: Elegant gradient background */
   .bg-gradient-elegant {
-    @apply bg-gradient-to-r from-rose-100 via-background to-gold-100;
+    @apply bg-gradient-to-br from-secondary/30 via-background to-primary/10;
+    /* Use subtle theme gradients */
+    /* Use theme variables: from-secondary, via-background, to-primary */
   }
 
+  /* Example: Celebration gradient background */
   .bg-gradient-celebration {
-    @apply bg-gradient-to-r from-gold-200 via-rose-100 to-sage-100;
+    @apply bg-gradient-to-r from-accent/20 via-primary/10 to-secondary/20;
+    /* Use theme variables: from-accent, via-primary, to-secondary */
   }
 
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-gold-600 to-rose-500;
+  /* Text gradient utility */
+  .text-gradient-primary-accent {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent;
+    /* Use theme variables: from-primary, to-accent */
   }
 }
 
+
 /*───────────────────────────────────────────────────────────────────*/
-/*                            Animations                          */
+/* Animations (Keep as is)                    */
 /*───────────────────────────────────────────────────────────────────*/
 @keyframes float {
 
@@ -167,18 +273,22 @@
   }
 
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
+
+  /* Slightly reduced float */
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite;
 }
+
+/* Slower float */
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(15px);
   }
 
   to {
@@ -188,111 +298,88 @@
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+  animation: fadeIn 0.8s ease-out forwards;
 }
 
+/* Slightly longer fade */
+
+/* Orbit animation might be too distracting, use sparingly */
 @keyframes orbit {
   0% {
-    transform: rotate(0deg) translateX(50px) rotate(0deg);
+    transform: rotate(0deg) translateX(40px) rotate(0deg);
   }
 
+  /* Smaller radius */
   100% {
-    transform: rotate(360deg) translateX(50px) rotate(-360deg);
+    transform: rotate(360deg) translateX(40px) rotate(-360deg);
   }
 }
 
 .animate-orbit {
-  animation: orbit 3s linear infinite;
+  animation: orbit 5s linear infinite;
 }
 
+/* Slower orbit */
+
+
 /*───────────────────────────────────────────────────────────────────*/
-/*                       Scrollbar & Utilities                     */
+/* Scrollbar & Base Utilities (using Theme)             */
 /*───────────────────────────────────────────────────────────────────*/
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
+  /* Added height for horizontal */
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-background;
+  @apply bg-background/50;
+  /* Subtle track */
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gold-200 rounded-full;
+  @apply bg-accent/50 rounded-full border-2 border-transparent bg-clip-content;
+  /* Use accent, slight border */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gold-300;
+  @apply bg-accent/70;
+  /* Darken on hover */
 }
 
+/* Ensure viewport width is managed */
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
 }
 
-.min-h-screen {
-  min-height: 100vh;
-}
+/* min-h-screen utility (Tailwind usually provides this) */
+/* .min-h-screen { min-height: 100vh; } */
+
 
 /*───────────────────────────────────────────────────────────────────*/
-/*                       Responsive Tweaks                         */
+/* Responsive Tweaks (Consider reviewing/removing)       */
 /*───────────────────────────────────────────────────────────────────*/
-@media (max-width: 768px) {
-  .text-4xl {
-    font-size: 2.25rem;
-  }
+/*
+  Tailwind is mobile-first. It's often better to define base styles
+  for mobile and use screen prefixes (sm:, md:, lg:) for larger sizes.
+  Explicitly overriding Tailwind's responsive text sizes like this
+  can sometimes lead to unexpected behavior. Review if these are necessary
+  or if standard Tailwind classes (text-2xl md:text-3xl etc.) suffice.
+*/
 
-  .text-5xl {
-    font-size: 2.5rem;
-  }
+/* Example: Keeping one override for demonstration, but review */
+/* @media (max-width: 768px) { */
+/* .grid-cols-2, */
+/* .grid-cols-3 { */
+/* @apply grid-cols-1; */
+/* Let Tailwind handle this: grid grid-cols-1 md:grid-cols-2 */
+/* } */
+/* } */
 
-  .text-6xl {
-    font-size: 3rem;
-  }
-
-  .p-8 {
-    padding: 0.5rem;
-  }
-
-  .p-12 {
-    padding: 1rem;
-  }
-
-  .grid-cols-2,
-  .grid-cols-3 {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .text-lg {
-    font-size: 1rem;
-  }
-
-  .text-xl {
-    font-size: 1.25rem;
-  }
-
-  .space-y-12 {
-    gap: 0.5rem;
-  }
-}
 
 /*───────────────────────────────────────────────────────────────────*/
-/*                       Custom Grid Example                       */
+/* Custom Grid Example (Keep as is if needed)            */
 /*───────────────────────────────────────────────────────────────────*/
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 300px);
-  gap: 16px;
-}
-
-.grid-container>div {
-  background: #1a1a1a;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-
+/* .grid-container { ... } */
+/* .grid-container > div { ... } */

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+// Assuming Input might be used elsewhere, keeping import
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -11,119 +12,132 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Heart,
-  GraduationCap,
-  Users,
-  Music,
-  Search,
-  Sparkles,
-  ChevronRight,
+  Sparkles, // Keep for flair
+  Search, // Consider for search button
   ArrowRight,
   Camera,
+  Tag, // For Category
+  MapPin, // For City
 } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Category } from "@/types/category";
+import { Category } from "@/types/category"; // Assuming this type structure
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { City } from "@/lib/city.enum";
+import { City } from "@/lib/city.enum"; // Assuming this enum structure
 
 const images = [
   {
-    src: "/heroimages/hero_image_1.png",
-    alt: "Elegant wedding ceremony",
+    src: "/heroimages/hero_image_1.png", // Ensure these images are high-resolution and premium
+    alt: "Elegant wedding reception details",
   },
   {
     src: "/heroimages/hero_image_2.jpg",
-    alt: "Joyful graduation ceremony",
+    alt: "Professional corporate event setup",
   },
   {
     src: "/heroimages/hero_image_3.jpg",
-    alt: "Exciting live concert",
+    alt: "Stylish private celebration atmosphere",
   },
 ];
 
-export default function EnhancedHeroSection({
+export default function SleekHeroSection({
   categorys,
 }: {
   categorys: Category[];
 }) {
   const [category, setCategory] = useState("");
-
   const [city, setCity] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   const router = useRouter();
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000);
+    }, 6000); // Slightly longer interval for a calmer feel
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <section className="relative min-h-screen text-foreground overflow-visible py-4 w-full lg:px-6 p-2">
-      <div className="mx-auto py-16 md:py-24 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-16 gap-4 items-center">
+    <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 text-foreground lg:px-8 px-4 py-24 lg:py-32">
+      <div className="container mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-20 gap-12 items-center">
+          {/* Text Content & Search Form */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-10"
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="space-y-12" // Increased spacing
           >
-            <div className="lg:space-y-6 space-y-4">
+            {/* Headline Area */}
+            <div className="space-y-6">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
-                className="inline-flex items-center space-x-2 bg-primary/10 rounded-full lg:px-4 py-2 lg:text-sm text-xs font-medium text-primary"
+                transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+                className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-1.5 text-sm font-medium text-primary"
               >
-                <Sparkles className="lg:h-4 h-3 lg:w-4 w-3" />
-                <span>Find event vendors</span>
+                <Sparkles className="h-4 w-4" />
+                <span>Your Premier Event Partner</span>
               </motion.div>
               <motion.h1
-                initial={{ y: 0 }}
-                animate={{ y: 0 }}
-                className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight" // Adjusted leading
               >
                 Find <span className="text-primary">Elite Vendors</span> for
-                every vibe
+                Every Moment.
               </motion.h1>
               <motion.p
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.8 }}
-                className="lg:text-xl text-base text-muted-foreground max-w-2xl"
+                transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+                className="text-lg md:text-xl text-muted-foreground max-w-xl" // Slightly larger text
               >
-                Curate unforgettable experiences with our handpicked selection
-                of top-tier vendors for weddings, graduations, seminars, and
-                more.
+                Connect with top-tier professionals curated for weddings,
+                corporate events, celebrations, and more. Effortlessly bring
+                your vision to life.
               </motion.p>
             </div>
+
+            {/* Search Form Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              className="bg-card/80 backdrop-blur-md rounded-2xl p-8 shadow-2xl space-y-6 relative overflow-hidden border border-primary/10"
+              transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
+              className="bg-card/60 dark:bg-black/30 backdrop-blur-lg rounded-xl p-6 md:p-8 shadow-xl space-y-6 relative overflow-hidden border border-border/20" // Softer bg, subtle border
             >
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Subtle glow effect */}
+              <div className="absolute top-0 right-0 w-72 h-72 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 z-10 relative">
                 <Select onValueChange={setCategory} value={category}>
-                  <SelectTrigger className="bg-background/50 backdrop-blur-sm border-primary/20">
-                    <SelectValue placeholder="Service Category" />
+                  <SelectTrigger className="bg-background/70 backdrop-blur-sm border-border/50 h-12 text-base">
+                    {" "}
+                    {/* Subtle bg, standard height */}
+                    <div className="flex items-center space-x-2">
+                      <Tag className="h-4 w-4 text-muted-foreground" />
+                      <SelectValue placeholder="Select Service" />
+                    </div>
                   </SelectTrigger>
                   <SelectContent>
                     {categorys.map((type) => (
                       <SelectItem key={type.name} value={type.id.toString()}>
-                        <div className="flex items-center">{type.name}</div>
+                        {type.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+
                 <Select onValueChange={setCity} value={city}>
-                  <SelectTrigger className="bg-background/50 backdrop-blur-sm border-primary/20">
-                    <SelectValue placeholder="City" />
+                  <SelectTrigger className="bg-background/70 backdrop-blur-sm border-border/50 h-12 text-base">
+                    {" "}
+                    {/* Subtle bg, standard height */}
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                      <SelectValue placeholder="Select City" />
+                    </div>
                   </SelectTrigger>
                   <SelectContent>
                     {Object.keys(City)
@@ -137,57 +151,79 @@ export default function EnhancedHeroSection({
                 </Select>
               </div>
               <Button
+                size="lg" // Larger button
                 onClick={() => {
-                  router.push(
-                    `/city-and-category-discover/${city}/${category}`
-                  );
+                  if (city && category) {
+                    // Basic check before routing
+                    router.push(
+                      `/city-and-category-discover/${city}/${category}`
+                    );
+                  } else {
+                    // Optional: Add some user feedback if fields are missing
+                    console.warn("Please select both category and city.");
+                  }
                 }}
-                className="w-full bg-primary text-primary-foreground"
+                className="w-full text-base font-semibold bg-primary text-primary-foreground h-12 hover:bg-primary/90 transition-colors duration-200 shadow-md" // Refined button style
               >
-                <Sparkles className="mr-2 h-4 w-4" /> Find Service
+                <Search className="mr-2 h-5 w-5" /> Discover Vendors
               </Button>
             </motion.div>
           </motion.div>
+
+          {/* Image Column */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="relative hidden lg:block"
+            transition={{ delay: 0.4, duration: 1.0, ease: "easeOut" }}
+            className="relative hidden lg:block aspect-[4/3]" // Maintain aspect ratio
           >
-            <div className="absolute -inset-4 bg-primary/20 rounded-full blur-3xl" />
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            {/* Optional subtle background glow for the image */}
+            <div className="absolute -inset-6 bg-primary/10 rounded-full blur-3xl opacity-50 pointer-events-none" />
+
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl h-full">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentImageIndex}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: 0.7, ease: "easeInOut" }} // Smoother image transition
+                  className="absolute inset-0"
                 >
                   <Image
                     src={images[currentImageIndex].src}
-                    width={800}
-                    height={600}
+                    fill // Use fill and object-cover for responsiveness
+                    style={{ objectFit: "cover" }}
                     alt={images[currentImageIndex].alt}
-                    className="rounded-2xl object-cover w-full h-[600px]"
-                    priority
+                    className="rounded-2xl"
+                    priority={currentImageIndex === 0} // Prioritize first image load
                   />
+                  {/* Subtle overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent rounded-2xl pointer-events-none" />
                 </motion.div>
               </AnimatePresence>
+
+              {/* Floating Info Card - Refined Style */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.2, duration: 0.8 }}
-                className="absolute right-4 top-4 bg-background backdrop-blur-md rounded-lg p-4 shadow-lg"
+                transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
+                className="absolute bottom-6 right-6 bg-background/70 backdrop-blur-md rounded-lg p-3 shadow-lg border border-border/20" // Adjusted position & style
               >
                 <div className="flex items-center space-x-3">
-                  <div className="bg-primary/20 rounded-full p-2">
-                    <Camera className="h-6 w-6 text-primary" />
+                  <div className="bg-primary/10 rounded-md p-2">
+                    {" "}
+                    {/* Slightly larger padding */}
+                    <Camera className="h-5 w-5 text-primary" />{" "}
+                    {/* Adjusted icon size */}
                   </div>
                   <div>
-                    <p className="font-semibold">Photography</p>
-                    <p className="text-sm text-muted-foreground">
-                      Capture timeless moments
+                    <p className="font-semibold text-sm">Photography</p>{" "}
+                    {/* Adjusted text size */}
+                    <p className="text-xs text-muted-foreground">
+                      {" "}
+                      {/* Adjusted text size */}
+                      Capture your moments
                     </p>
                   </div>
                 </div>
@@ -196,18 +232,22 @@ export default function EnhancedHeroSection({
           </motion.div>
         </div>
       </div>
-      {/* <div className="absolute bottom-0 left-0 right-0 lg:h-32 h-12 bg-gradient-to-t from-background to-transparent" /> */}
-      <Link href="/contact">
-        <motion.div
+
+      {/* Optional: Kept the "Book Consultation" link, styled consistently */}
+      <Link href="/contact" passHref legacyBehavior>
+        <motion.a
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.6, duration: 0.8 }}
-          className="absolute lg:bottom-8 bottom-1 z-40 right-8 flex items-center space-x-2 text-sm font-medium text-primary cursor-pointer hover:underline group"
+          transition={{ delay: 1.6, duration: 0.8, ease: "easeOut" }}
+          className="absolute bottom-8 right-8 lg:bottom-12 lg:right-12 z-20 flex items-center space-x-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors group" // Adjusted position and spacing
         >
           <span>Book Consultation</span>
           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-        </motion.div>
+        </motion.a>
       </Link>
+
+      {/* Decorative gradient overlay at the bottom (optional) */}
+      {/* <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent pointer-events-none" /> */}
     </section>
   );
 }
