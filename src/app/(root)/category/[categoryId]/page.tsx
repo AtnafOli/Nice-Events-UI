@@ -40,7 +40,9 @@ export default function CategoryPage({
 
         setServices(servicesRes.data || []);
         console.log(categoryRes.data);
-        setCategoryName(categoryRes.data[0].name + "Services" || "Services");
+        setCategoryName(
+          categoryRes.data[0].name + " " + "Services" || "Services"
+        );
       } catch (err: any) {
         if (!isMounted) return;
         console.error("Data fetch error:", err);
