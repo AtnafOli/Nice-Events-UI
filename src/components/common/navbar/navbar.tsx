@@ -20,6 +20,7 @@ import NavButton from "./nav-button";
 import MobileMenu from "./mobile-menu";
 import SearchBar from "../search/search-bar";
 import { User, Heart, Bell } from "lucide-react";
+import DevBadge from "@/app/badge";
 
 const links = [
   { name: "Services", href: "/services" },
@@ -103,6 +104,7 @@ export default function Navbar() {
         }`}
     >
       <div className="max-w-[1580px] mx-auto px-2 lg:px-8">
+        {/* <DevBadge /> */}
         <div className="flex justify-between items-center py-2 md:py-3.5">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 mr-8 group relative">

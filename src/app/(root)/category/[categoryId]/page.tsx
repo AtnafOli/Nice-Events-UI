@@ -39,7 +39,8 @@ export default function CategoryPage({
         if (!isMounted) return;
 
         setServices(servicesRes.data || []);
-        setCategoryName(categoryRes.data?.name || "Services");
+        console.log(categoryRes.data);
+        setCategoryName(categoryRes.data[0].name + "Services" || "Services");
       } catch (err: any) {
         if (!isMounted) return;
         console.error("Data fetch error:", err);

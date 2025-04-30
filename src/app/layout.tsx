@@ -10,7 +10,7 @@ import { CustomQueryClientProvider } from "@/components/providers/queryclient.pr
 import { Suspense } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Toaster } from "@/components/ui/toaster";
-import { Footer } from "@/components/common/footer/footer";
+import DevBadge from "./badge";
 
 // Primary Font - GeistSans
 const geistSans = localFont({
