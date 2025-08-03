@@ -183,22 +183,6 @@ export default function SleekHeroSection({
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent rounded-2xl pointer-events-none" />
                 </motion.div>
               </AnimatePresence>
-
-              {/* Testimonial Card */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
-                className="absolute bottom-6 right-6 bg-background/80 backdrop-blur-md rounded-lg p-4 shadow-lg border border-border/30 max-w-xs"
-              >
-                <p className="text-sm italic text-foreground">
-                  "Amazing experience! Found the perfect photographer for my
-                  wedding."
-                </p>
-                <p className="text-xs mt-2 text-right text-muted-foreground">
-                  - Jane D.
-                </p>
-              </motion.div>
             </div>
           </motion.div>
         </div>
