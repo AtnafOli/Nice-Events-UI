@@ -15,11 +15,11 @@ const config = {
       center: true,
       padding: "1rem",
       screens: {
-        sm: "640px", // Small screens (phones)
-        md: "768px", // Medium screens (tablets)
-        lg: "1024px", // Large screens (desktops)
-        xl: "1280px", // Extra large screens
-        "2xl": "1536px", // 2X extra large screens
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
       },
     },
     extend: {
