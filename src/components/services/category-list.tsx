@@ -7,23 +7,26 @@ import motion from "framer-motion";
 
 async function CategoryList({ categorys }: { categorys: Category[] }) {
   return (
-    <div className="lg:space-y-12 space-y-4 lg:px-24 p-2">
+    <div className="space-y-2 sm:space-y-4 lg:space-y-12 p-2 sm:p-4 lg:p-24">
       <div className="space-y-5 text-center">
-        <div className="text-4xl font-bold tracking-tight md:text-5xl">
+        <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
           <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
             Categories
           </span>
-          <span className="block mt-3 text-xl font-light text-muted-foreground">
-            Explore a variety of services tailored to make every event truly
-            special
-          </span>
         </div>
+        <p className="text-base sm:text-lg md:text-xl font-light text-muted-foreground">
+          Explore a variety of services tailored to make every event truly
+          special
+        </p>
+        <div className="w-16 h-1 bg-primary mx-auto mt-4"></div>
       </div>
 
       {categorys && categorys.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categorys.map((category) => (
-            <CategoryCard key={category.id} category={category} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {categorys.map((category, index) => (
+            <div key={category.id}>
+              <CategoryCard category={category} />
+            </div>
           ))}
         </div>
       ) : (
@@ -34,6 +37,12 @@ async function CategoryList({ categorys }: { categorys: Category[] }) {
             There are no categories available at the moment. Check back later or
             contact support if this persists.
           </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+          >
+            Refresh
+          </button>
         </div>
       )}
     </div>

@@ -50,7 +50,7 @@ export default function SleekHeroSection({
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-background via-background to-muted/30 text-foreground px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-32">
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-background via-background to-muted/30 text-foreground px-4 sm:px-4 lg:px-8 py-16 sm:py-16 lg:py-32">
       <div className="container mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-20 gap-12 items-center">
           {/* Text Content & Search Form */}

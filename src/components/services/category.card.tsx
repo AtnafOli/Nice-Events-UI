@@ -24,13 +24,13 @@ export default function CategoryCard({ category }: { category: Category }) {
       onClick={handleCategoryClick}
     >
       <div className="block h-full w-full">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/60 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/50 z-10" />
 
         <motion.div
           className="absolute inset-0"
           initial={{ scale: 1 }}
-          animate={{ scale: isHovered ? 1.05 : 1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          animate={{ scale: isHovered ? 1.03 : 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         >
           {category.image ? (
             <img
@@ -38,21 +38,21 @@ export default function CategoryCard({ category }: { category: Category }) {
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
           ) : (
-            <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800" />
+            <div className="w-full h-full bg-neutral-200 dark:bg-neutral-900" />
           )}
         </motion.div>
 
         <motion.div
-          className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 z-20"
+          className="absolute inset-0 flex flex-col justify-end p-2 sm:p-3 md:p-4 lg:p-6 z-20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.3 }}
         >
           <motion.h3
-            className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight mb-2"
-            initial={{ y: 20, opacity: 0 }}
+            className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white tracking-tight mb-1 sm:mb-2"
+            initial={{ y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.4 }}
+            transition={{ delay: 0.1, duration: 0.3 }}
           >
             {category.name}
           </motion.h3>
@@ -60,11 +60,11 @@ export default function CategoryCard({ category }: { category: Category }) {
           <AnimatePresence>
             {isHovered && (
               <motion.p
-                className="text-sm sm:text-base text-white/90 mb-4 line-clamp-2"
+                className="text-xs sm:text-sm md:text-base text-white/90 mb-2 sm:mb-3 line-clamp-2"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
               >
                 {category.description}
               </motion.p>
@@ -72,17 +72,19 @@ export default function CategoryCard({ category }: { category: Category }) {
           </AnimatePresence>
 
           <motion.div
-            className="inline-flex items-center space-x-2 text-white"
+            className="inline-flex items-center space-x-1 sm:space-x-2 text-white"
             initial={{ opacity: 0.8 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
           >
-            <span className="text-sm sm:text-base font-medium">Explore</span>
+            <span className="text-xs sm:text-sm md:text-base font-medium">
+              Explore
+            </span>
             <motion.div
-              animate={{ x: isHovered ? 4 : 0 }}
+              animate={{ x: isHovered ? 3 : 0 }}
               transition={{ duration: 0.2 }}
             >
-              <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
             </motion.div>
           </motion.div>
         </motion.div>

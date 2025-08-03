@@ -84,7 +84,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       className={`z-50 bg-card shadow-2xl flex flex-col border border-border/10
     ${
       isMobile
-        ? "fixed bottom-4 left-4 right-4 max-h-[80%] rounded-2xl"
+        ? "fixed bottom-4 left-4 right-4 h-[70%] rounded-2xl"
         : "md:w-96 md:h-[80%] md:rounded-2xl md:static"
     }
     overflow-hidden`}
