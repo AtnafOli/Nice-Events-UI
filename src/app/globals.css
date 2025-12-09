@@ -353,33 +353,3 @@ body {
   overflow-x: hidden;
 }
 
-/* min-h-screen utility (Tailwind usually provides this) */
-/* .min-h-screen { min-height: 100vh; } */
-
-
-/*───────────────────────────────────────────────────────────────────*/
-/* Responsive Tweaks (Consider reviewing/removing)       */
-/*───────────────────────────────────────────────────────────────────*/
-/*
-  Tailwind is mobile-first. It's often better to define base styles
-  for mobile and use screen prefixes (sm:, md:, lg:) for larger sizes.
-  Explicitly overriding Tailwind's responsive text sizes like this
-  can sometimes lead to unexpected behavior. Review if these are necessary
-  or if standard Tailwind classes (text-2xl md:text-3xl etc.) suffice.
-*/
-
-/* Example: Keeping one override for demonstration, but review */
-/* @media (max-width: 768px) { */
-/* .grid-cols-2, */
-/* .grid-cols-3 { */
-/* @apply grid-cols-1; */
-/* Let Tailwind handle this: grid grid-cols-1 md:grid-cols-2 */
-/* } */
-/* } */
-
-
-/*───────────────────────────────────────────────────────────────────*/
-/* Custom Grid Example (Keep as is if needed)            */
-/*───────────────────────────────────────────────────────────────────*/
-/* .grid-container { ... } */
-/* .grid-container > div { ... } */
