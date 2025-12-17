@@ -10,7 +10,6 @@ export const formatPrice = (amount?: number, currency: string = "USD") => {
   }).format(amount || 0);
 };
 
-// Get the human-readable billing cycle label
 export const getBillingCycleLabel = (cycle: BillingCycle) => {
   const labels = {
     MONTH_3: "Quarterly",
@@ -57,5 +56,5 @@ export const getNextBillingCycle = (cycle: BillingCycle) => {
     MONTH_6: BillingCycle.MONTH_6,
     MONTH_12: BillingCycle.MONTH_12,
   };
-  return nextCycle[cycle] || "MONTH_3"; // Default to MONTH_3 if unknown
+  return nextCycle[cycle]
 };
