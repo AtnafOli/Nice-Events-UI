@@ -19,7 +19,7 @@ export type MessageType = "user" | "bot" | "info";
 export interface Message {
   type: MessageType;
   text: string;
-  id: string; // Add unique ID for key prop stability
+  id: string; // unique ID 
 }
 
 export interface EventDetails {
