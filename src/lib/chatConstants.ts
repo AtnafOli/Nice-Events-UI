@@ -41,6 +41,6 @@ export const LOCATION_OPTIONS = [
   "JIJIGA",
 ];
 
-// API Endpoints (adjust as needed)
+
 export const VENDOR_API_ENDPOINT = "http://localhost:8005/api/services/search";
 export const EVENT_API_ENDPOINT = "http://localhost:3005/api/plan-event";
